@@ -17,8 +17,26 @@ extension Identity {
     }
 
     @NSManaged public var timeCreated: Date?
+    @NSManaged public var messages: NSSet?
     @NSManaged public var permanentPrivateKey: Key?
     @NSManaged public var permanentPublicKey: Key?
+
+}
+
+// MARK: Generated accessors for messages
+extension Identity {
+
+    @objc(addMessagesObject:)
+    @NSManaged public func addToMessages(_ value: NaiveMessage)
+
+    @objc(removeMessagesObject:)
+    @NSManaged public func removeFromMessages(_ value: NaiveMessage)
+
+    @objc(addMessages:)
+    @NSManaged public func addToMessages(_ values: NSSet)
+
+    @objc(removeMessages:)
+    @NSManaged public func removeFromMessages(_ values: NSSet)
 
 }
 

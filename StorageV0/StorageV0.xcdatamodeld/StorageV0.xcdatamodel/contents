@@ -15,6 +15,7 @@
     </entity>
     <entity name="Identity" representedClassName="Identity" syncable="YES">
         <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NaiveMessage" inverseName="belongsTo" inverseEntity="NaiveMessage"/>
         <relationship name="permanentPrivateKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPermanentPrivate" inverseEntity="Key"/>
         <relationship name="permanentPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPermanentPublic" inverseEntity="Key"/>
     </entity>
@@ -24,11 +25,18 @@
         <relationship name="keyPermanentPrivate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="permanentPrivateKey" inverseEntity="Identity"/>
         <relationship name="keyPermanentPublic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="permanentPublicKey" inverseEntity="Identity"/>
     </entity>
+    <entity name="NaiveMessage" representedClassName="NaiveMessage" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="messageBody" optional="YES" attributeType="String"/>
+        <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="belongsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="messages" inverseEntity="Identity"/>
+    </entity>
     <elements>
-        <element name="Bytes" positionX="-63" positionY="-18" width="128" height="74"/>
-        <element name="Identity" positionX="-54" positionY="9" width="128" height="74"/>
-        <element name="Key" positionX="-36" positionY="45" width="128" height="89"/>
-        <element name="BdfList" positionX="-18" positionY="81" width="128" height="44"/>
         <element name="Bdf" positionX="0" positionY="90" width="128" height="74"/>
+        <element name="BdfList" positionX="-18" positionY="81" width="128" height="44"/>
+        <element name="Bytes" positionX="-63" positionY="-18" width="128" height="74"/>
+        <element name="Identity" positionX="-54" positionY="9" width="128" height="89"/>
+        <element name="Key" positionX="-36" positionY="45" width="128" height="89"/>
+        <element name="NaiveMessage" positionX="18" positionY="108" width="128" height="89"/>
     </elements>
 </model>

@@ -16,8 +16,8 @@ extension Bdf {
         return NSFetchRequest<Bdf>(entityName: "Bdf")
     }
 
-    @NSManaged public var value: NSObject?
     @NSManaged public var bdfKey: String?
+    @NSManaged public var value: NSObject?
     @NSManaged public var listBdf: BdfList?
 
 }
