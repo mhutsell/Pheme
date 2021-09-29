@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Bdf" representedClassName="Bdf" syncable="YES">
+        <attribute name="bdfKey" optional="YES" attributeType="String"/>
+        <attribute name="value" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
+        <relationship name="listBdf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BdfList" inverseName="bdfEntry" inverseEntity="BdfList"/>
+    </entity>
+    <entity name="BdfList" representedClassName="BdfList" syncable="YES">
+        <relationship name="bdfEntry" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bdf" inverseName="listBdf" inverseEntity="Bdf"/>
+    </entity>
+    <entity name="Bytes" representedClassName="Bytes" syncable="YES">
+        <attribute name="bytes" optional="YES" attributeType="Binary" valueTransformerName=""/>
+        <attribute name="hashCode" optional="YES" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="YES"/>
+        <relationship name="keyBytes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyBody" inverseEntity="Key"/>
+    </entity>
+    <entity name="Identity" representedClassName="Identity" syncable="YES">
+        <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="permanentPrivateKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPermanentPrivate" inverseEntity="Key"/>
+        <relationship name="permanentPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPermanentPublic" inverseEntity="Key"/>
+    </entity>
+    <entity name="Key" representedClassName="Key" syncable="YES">
+        <attribute name="keyTypeAgreement" optional="YES" attributeType="String"/>
+        <relationship name="keyBody" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bytes" inverseName="keyBytes" inverseEntity="Bytes"/>
+        <relationship name="keyPermanentPrivate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="permanentPrivateKey" inverseEntity="Identity"/>
+        <relationship name="keyPermanentPublic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="permanentPublicKey" inverseEntity="Identity"/>
+    </entity>
+    <elements>
+        <element name="Bytes" positionX="-63" positionY="-18" width="128" height="74"/>
+        <element name="Identity" positionX="-54" positionY="9" width="128" height="74"/>
+        <element name="Key" positionX="-36" positionY="45" width="128" height="89"/>
+        <element name="BdfList" positionX="-18" positionY="81" width="128" height="44"/>
+        <element name="Bdf" positionX="0" positionY="90" width="128" height="74"/>
+    </elements>
 </model>
