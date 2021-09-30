@@ -55,8 +55,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		return cell
 	}
 
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		let ms = models[indexPath.row]
+		let sheet = UIAlertController(title: "Edit",message:nil,preferredStyle: .actionSheet)
+		sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		sheet.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: {[weak self] _ in
+			self?.deleteMessage(ms: ms)
+		}))
+		present(sheet, animated: true)
+	}
 
-	// test messages with Core data MOSTNAIVE
+	// test messages with Core data MOST NAIVE
 	func getAllMessages() {
 		do {
 			models = try context.fetch(NaiveMessage.fetchRequest())
@@ -87,6 +97,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		
 		do {
 			try context.save()
+			getAllMessages()
 		} catch {
 			// error
 		}
