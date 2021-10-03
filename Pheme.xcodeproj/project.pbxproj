@@ -3,13 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		011BC706270A3F8500D48B9E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011BC705270A3F8500D48B9E /* Message.swift */; };
+		011BC70E270A3FDF00D48B9E /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011BC70D270A3FDF00D48B9E /* Device.swift */; };
+		011BC713270A3FF400D48B9E /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011BC712270A3FF400D48B9E /* UserData.swift */; };
+		011BC71F270A462100D48B9E /* BerkananSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 011BC71E270A462100D48B9E /* BerkananSDK */; };
+		011BC724270A4A6E00D48B9E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011BC723270A4A6E00D48B9E /* ViewController.swift */; };
 		01BDF99C2706C68A00FE7F0D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDF99B2706C68A00FE7F0D /* AppDelegate.swift */; };
 		01BDF99E2706C68A00FE7F0D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDF99D2706C68A00FE7F0D /* SceneDelegate.swift */; };
-		01BDF9A02706C68A00FE7F0D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDF99F2706C68A00FE7F0D /* ViewController.swift */; };
 		01BDF9A32706C68A00FE7F0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BDF9A12706C68A00FE7F0D /* Main.storyboard */; };
 		01BDF9A62706C68A00FE7F0D /* Pheme.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01BDF9A42706C68A00FE7F0D /* Pheme.xcdatamodeld */; };
 		01BDF9A82706C69200FE7F0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01BDF9A72706C69200FE7F0D /* Assets.xcassets */; };
@@ -36,10 +40,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		011BC705270A3F8500D48B9E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		011BC70D270A3FDF00D48B9E /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
+		011BC712270A3FF400D48B9E /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		011BC723270A4A6E00D48B9E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		01BDF9982706C68A00FE7F0D /* Pheme.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pheme.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01BDF99B2706C68A00FE7F0D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01BDF99D2706C68A00FE7F0D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		01BDF99F2706C68A00FE7F0D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		01BDF9A22706C68A00FE7F0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		01BDF9A52706C68A00FE7F0D /* Pheme.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pheme.xcdatamodel; sourceTree = "<group>"; };
 		01BDF9A72706C69200FE7F0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -58,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				011BC71F270A462100D48B9E /* BerkananSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +86,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		011BC701270A3E7900D48B9E /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				011BC704270A3EB200D48B9E /* Chat */,
+				011BC703270A3E9400D48B9E /* Main */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		011BC702270A3E7F00D48B9E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				011BC705270A3F8500D48B9E /* Message.swift */,
+				011BC70D270A3FDF00D48B9E /* Device.swift */,
+				011BC712270A3FF400D48B9E /* UserData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		011BC703270A3E9400D48B9E /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				011BC723270A4A6E00D48B9E /* ViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		011BC704270A3EB200D48B9E /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 		01BDF98F2706C68A00FE7F0D = {
 			isa = PBXGroup;
 			children = (
@@ -101,9 +143,10 @@
 		01BDF99A2706C68A00FE7F0D /* Pheme */ = {
 			isa = PBXGroup;
 			children = (
+				011BC702270A3E7F00D48B9E /* Models */,
+				011BC701270A3E7900D48B9E /* Scenes */,
 				01BDF99B2706C68A00FE7F0D /* AppDelegate.swift */,
 				01BDF99D2706C68A00FE7F0D /* SceneDelegate.swift */,
-				01BDF99F2706C68A00FE7F0D /* ViewController.swift */,
 				01BDF9A12706C68A00FE7F0D /* Main.storyboard */,
 				01BDF9A72706C69200FE7F0D /* Assets.xcassets */,
 				01BDF9A92706C69200FE7F0D /* LaunchScreen.storyboard */,
@@ -147,6 +190,9 @@
 			dependencies = (
 			);
 			name = Pheme;
+			packageProductDependencies = (
+				011BC71E270A462100D48B9E /* BerkananSDK */,
+			);
 			productName = Pheme;
 			productReference = 01BDF9982706C68A00FE7F0D /* Pheme.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +264,9 @@
 				Base,
 			);
 			mainGroup = 01BDF98F2706C68A00FE7F0D;
+			packageReferences = (
+				011BC71D270A462100D48B9E /* XCRemoteSwiftPackageReference "BerkananSDK" */,
+			);
 			productRefGroup = 01BDF9992706C68A00FE7F0D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -261,8 +310,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01BDF9A02706C68A00FE7F0D /* ViewController.swift in Sources */,
 				01BDF9A62706C68A00FE7F0D /* Pheme.xcdatamodeld in Sources */,
+				011BC713270A3FF400D48B9E /* UserData.swift in Sources */,
+				011BC706270A3F8500D48B9E /* Message.swift in Sources */,
+				011BC70E270A3FDF00D48B9E /* Device.swift in Sources */,
+				011BC724270A4A6E00D48B9E /* ViewController.swift in Sources */,
 				01BDF99C2706C68A00FE7F0D /* AppDelegate.swift in Sources */,
 				01BDF99E2706C68A00FE7F0D /* SceneDelegate.swift in Sources */,
 			);
@@ -591,6 +643,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		011BC71D270A462100D48B9E /* XCRemoteSwiftPackageReference "BerkananSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/zssz/BerkananSDK.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.8;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		011BC71E270A462100D48B9E /* BerkananSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 011BC71D270A462100D48B9E /* XCRemoteSwiftPackageReference "BerkananSDK" */;
+			productName = BerkananSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		01BDF9A42706C68A00FE7F0D /* Pheme.xcdatamodeld */ = {
