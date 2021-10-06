@@ -2,7 +2,7 @@
 //  Identity+CoreDataProperties.swift
 //  StorageV0
 //
-//  Created by Ray Chen on 9/29/21.
+//  Created by Ken Su on 10/6/21.
 //
 //
 
@@ -16,27 +16,47 @@ extension Identity {
         return NSFetchRequest<Identity>(entityName: "Identity")
     }
 
-    @NSManaged public var timeCreated: Date?
-    @NSManaged public var messages: NSSet?
-    @NSManaged public var permanentPrivateKey: Key?
-    @NSManaged public var permanentPublicKey: Key?
+    @NSManaged public var id: Int64
+    @NSManaged public var nickname: String?
+    @NSManaged public var password: Int64
+    @NSManaged public var notMyMessage: NSSet?
+    @NSManaged public var privateKey: Key?
+    @NSManaged public var publicKey: Key?
+    @NSManaged public var contacts: NSSet?
 
 }
 
-// MARK: Generated accessors for messages
+// MARK: Generated accessors for notMyMessage
 extension Identity {
 
-    @objc(addMessagesObject:)
-    @NSManaged public func addToMessages(_ value: NaiveMessage)
+    @objc(addNotMyMessageObject:)
+    @NSManaged public func addToNotMyMessage(_ value: EncryptedMessage)
 
-    @objc(removeMessagesObject:)
-    @NSManaged public func removeFromMessages(_ value: NaiveMessage)
+    @objc(removeNotMyMessageObject:)
+    @NSManaged public func removeFromNotMyMessage(_ value: EncryptedMessage)
 
-    @objc(addMessages:)
-    @NSManaged public func addToMessages(_ values: NSSet)
+    @objc(addNotMyMessage:)
+    @NSManaged public func addToNotMyMessage(_ values: NSSet)
 
-    @objc(removeMessages:)
-    @NSManaged public func removeFromMessages(_ values: NSSet)
+    @objc(removeNotMyMessage:)
+    @NSManaged public func removeFromNotMyMessage(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for contacts
+extension Identity {
+
+    @objc(addContactsObject:)
+    @NSManaged public func addToContacts(_ value: Contact)
+
+    @objc(removeContactsObject:)
+    @NSManaged public func removeFromContacts(_ value: Contact)
+
+    @objc(addContacts:)
+    @NSManaged public func addToContacts(_ values: NSSet)
+
+    @objc(removeContacts:)
+    @NSManaged public func removeFromContacts(_ values: NSSet)
 
 }
 

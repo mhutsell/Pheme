@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Bdf" representedClassName="Bdf" syncable="YES">
-        <attribute name="bdfKey" optional="YES" attributeType="String"/>
-        <attribute name="value" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer"/>
-        <relationship name="listBdf" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BdfList" inverseName="bdfEntry" inverseEntity="BdfList"/>
+    <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
+        <attribute name="hasMyKey" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <relationship name="belongToIdentity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="contacts" inverseEntity="Identity"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="belongToContact" inverseEntity="Message"/>
+        <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyForContact" inverseEntity="Key"/>
     </entity>
-    <entity name="BdfList" representedClassName="BdfList" syncable="YES">
-        <relationship name="bdfEntry" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bdf" inverseName="listBdf" inverseEntity="Bdf"/>
-    </entity>
-    <entity name="Bytes" representedClassName="Bytes" syncable="YES">
-        <attribute name="bytes" optional="YES" attributeType="Binary" valueTransformerName=""/>
-        <attribute name="hashCode" optional="YES" attributeType="Integer 16" defaultValueString="-1" usesScalarValueType="YES"/>
-        <relationship name="keyBytes" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyBody" inverseEntity="Key"/>
+    <entity name="EncryptedMessage" representedClassName="EncryptedMessage" syncable="YES" codeGenerationType="class">
+        <attribute name="encryptedBody" optional="YES" attributeType="String"/>
+        <attribute name="senderID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="middleCarrier" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="notMyMessage" inverseEntity="Identity"/>
     </entity>
     <entity name="Identity" representedClassName="Identity" syncable="YES">
-        <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NaiveMessage" inverseName="belongsTo" inverseEntity="NaiveMessage"/>
-        <relationship name="permanentPrivateKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPermanentPrivate" inverseEntity="Key"/>
-        <relationship name="permanentPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPermanentPublic" inverseEntity="Key"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" inverseName="belongToIdentity" inverseEntity="Contact"/>
+        <relationship name="notMyMessage" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="EncryptedMessage" inverseName="middleCarrier" inverseEntity="EncryptedMessage"/>
+        <relationship name="privateKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPrivate" inverseEntity="Key"/>
+        <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyPublic" inverseEntity="Key"/>
     </entity>
     <entity name="Key" representedClassName="Key" syncable="YES">
+        <attribute name="keyBody" optional="YES" attributeType="String"/>
         <attribute name="keyTypeAgreement" optional="YES" attributeType="String"/>
-        <relationship name="keyBody" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bytes" inverseName="keyBytes" inverseEntity="Bytes"/>
-        <relationship name="keyPermanentPrivate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="permanentPrivateKey" inverseEntity="Identity"/>
-        <relationship name="keyPermanentPublic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="permanentPublicKey" inverseEntity="Identity"/>
+        <relationship name="keyForContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="publicKey" inverseEntity="Contact"/>
+        <relationship name="keyForMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="publicKey" inverseEntity="Message"/>
+        <relationship name="keyPrivate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="privateKey" inverseEntity="Identity"/>
+        <relationship name="keyPublic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="publicKey" inverseEntity="Identity"/>
+    </entity>
+    <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
+        <attribute name="messageBody" optional="YES" attributeType="String"/>
+        <attribute name="messageType" optional="YES" attributeType="String"/>
+        <attribute name="senderID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="belongToContact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="messages" inverseEntity="Contact"/>
+        <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyForMessage" inverseEntity="Key"/>
     </entity>
     <entity name="NaiveMessage" representedClassName="NaiveMessage" syncable="YES">
         <attribute name="identifier" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="messageBody" optional="YES" attributeType="String"/>
         <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="belongsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="messages" inverseEntity="Identity"/>
+        <relationship name="belongsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity"/>
     </entity>
     <elements>
-        <element name="Bdf" positionX="0" positionY="90" width="128" height="74"/>
-        <element name="BdfList" positionX="-18" positionY="81" width="128" height="44"/>
-        <element name="Bytes" positionX="-63" positionY="-18" width="128" height="74"/>
-        <element name="Identity" positionX="-54" positionY="9" width="128" height="89"/>
-        <element name="Key" positionX="-36" positionY="45" width="128" height="89"/>
+        <element name="EncryptedMessage" positionX="-18" positionY="81" width="128" height="74"/>
+        <element name="Identity" positionX="-54" positionY="9" width="128" height="134"/>
+        <element name="Key" positionX="-36" positionY="45" width="128" height="119"/>
         <element name="NaiveMessage" positionX="18" positionY="108" width="128" height="89"/>
+        <element name="Contact" positionX="-9" positionY="90" width="128" height="119"/>
+        <element name="Message" positionX="0" positionY="99" width="128" height="119"/>
     </elements>
 </model>

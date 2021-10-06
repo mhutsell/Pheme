@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		}))
 		present(alert, animated: true)
 	}
-	
+//
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return models.count
 	}
@@ -91,7 +91,39 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 			// error
 		}
 	}
-	
+    
+    func createIdentity(ms: String, _: password, _: id){
+        let newIdentity = Identity(context: context)
+        newIdentity.nickname = ms
+        newIdentity.password = password
+        newIdentity.id = id
+        
+        do {
+            try context.save()
+            getAllMessages()
+        } catch {
+            // error
+        }
+    }
+    
+    @objc private func inputIdentity() {
+        let alert = UIAlertController(title: "New User Sign-up",message:"Enter new username",preferredStyle: .alert)
+        alert.addTextField(configurationHandler: nil)
+        alert.addAction(UIAlertAction(title:"Submit", style: .cancel, handler: {[weak self] _ in
+            guard let field = alert.textFields?.first, let nickname = field.text, !text.isEmpty else {
+                return
+            }
+            guard let field = alert.textFields?.second, let password = field.text, !text.isEmpty else {
+                return
+            }
+            guard let field = alert.textFields?.second, let id = field.text, !text.isEmpty else {
+                return
+            }
+            self!.createIdentity(ms: nickname, password, id)
+        }))
+        present(alert, animated: true)
+    }
+    
 	func deleteMessage(ms: NaiveMessage){
 		context.delete(ms)
 		
