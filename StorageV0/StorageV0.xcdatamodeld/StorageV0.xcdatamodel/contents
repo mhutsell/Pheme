@@ -44,6 +44,7 @@
         <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="belongsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity"/>
     </entity>
+    <entity name="PublicK" representedClassName="PublicK" syncable="YES" codeGenerationType="class"/>
     <elements>
         <element name="Contact" positionX="-9" positionY="90" width="128" height="119"/>
         <element name="EncryptedMessage" positionX="-18" positionY="81" width="128" height="74"/>
@@ -51,5 +52,6 @@
         <element name="Key" positionX="-36" positionY="45" width="128" height="119"/>
         <element name="Message" positionX="0" positionY="99" width="128" height="119"/>
         <element name="NaiveMessage" positionX="18" positionY="108" width="128" height="89"/>
+        <element name="PublicK" positionX="-18" positionY="108" width="128" height="29"/>
     </elements>
 </model>
