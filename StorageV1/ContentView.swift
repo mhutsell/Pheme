@@ -10,60 +10,86 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
+    
+//	sort message with timeCreated, can be changed to different entity to test CRUD functions
+//	to test other entities, they need to be fetchrequested as well
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending: true)],
         animation: .default)
-    private var messages: FetchedResults<Message>
+    private var items: FetchedResults<Message>
+
+//	add more var here to test create with multiple input item
+    @State private var newItem = ""
 
     var body: some View {
-        List {
-            ForEach(messages) { message in
-                Text("Message at \(message.timeCreated!, formatter: itemFormatter)")
-            }
-            .onDelete(perform: deleteMessages)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addMessage) {
-                Label("Add Item", systemImage: "plus")
-            }
-        }
+        NavigationView {
+			List {
+				Section(header: Text("Add message")) {
+					HStack{
+//						add more TextField here to test create with multiple input item
+						TextField("New message", text: self.$newItem)
+						Button(action: {
+//						change the function here to test other CRUD
+							creatMessage(body: self.newItem)
+						}){
+							Image(systemName: "plus.circle.fill")
+								 .foregroundColor(.blue)
+								 .imageScale(.large)
+						}
+					}
+				}
+				ForEach(items) { item in
+//				change what to show here to check succeeful creation
+					Text(item.messageBody ?? "Unspecified")
+				}.onDelete(perform: deleteItem(offsets:))
+			}
+			.navigationTitle("Items")
+		}
     }
-
-    private func addMessage() {
+//	sample functions for creation an entity
+    private func creatMessage(body: String) {
         withAnimation {
             let newMessage = Message(context: viewContext)
             newMessage.timeCreated = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            newMessage.messageBody = body
+            saveContext()
         }
     }
+    
+//    private func createIdentity(nickname: String) {
+//		withAnimation {
+//            let newIdentity = Identity(context: viewContext)
+//            newIdentity.nickname = nickname
+//            saveContext()
+//        }
+//	}
 
-    private func deleteMessages(offsets: IndexSet) {
+	
+    
+//    sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
+    private func deleteItem(offsets: IndexSet) {
         withAnimation {
-            offsets.map { messages[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            offsets.map { items[$0] }.forEach(viewContext.delete)
+            saveContext()
         }
     }
+    
+//		sample functions for creation an entity
+	private func deleteMessage(item: Message) {
+		withAnimation {
+			viewContext.delete(item)
+			saveContext()
+		}
+	}
+    
+//    used at the end of all CRUD functions
+    private func saveContext() {
+		do {
+                try viewContext.save()
+            } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+	}
 }
 
 private let itemFormatter: DateFormatter = {
