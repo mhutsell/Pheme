@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		11082C88270E8D3E0099285E /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7C270E8D3E0099285E /* Contact+CoreDataProperties.swift */; };
 		11082C89270E8D3E0099285E /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7D270E8D3E0099285E /* Identity+CoreDataClass.swift */; };
 		11082C8A270E8D3E0099285E /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7E270E8D3E0099285E /* Identity+CoreDataProperties.swift */; };
+		11082C8D270E9E860099285E /* CryptorRSA in Frameworks */ = {isa = PBXBuildFile; productRef = 11082C8C270E9E860099285E /* CryptorRSA */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11082C8D270E9E860099285E /* CryptorRSA in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +129,9 @@
 			dependencies = (
 			);
 			name = StorageV1;
+			packageProductDependencies = (
+				11082C8C270E9E860099285E /* CryptorRSA */,
+			);
 			productName = StorageV1;
 			productReference = 11082C5C270E7EC40099285E /* StorageV1.app */;
 			productType = "com.apple.product-type.application";
@@ -154,6 +159,9 @@
 				Base,
 			);
 			mainGroup = 11082C53270E7EC40099285E;
+			packageReferences = (
+				11082C8B270E9E860099285E /* XCRemoteSwiftPackageReference "BlueRSA" */,
+			);
 			productRefGroup = 11082C5D270E7EC40099285E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -382,6 +390,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		11082C8B270E9E860099285E /* XCRemoteSwiftPackageReference "BlueRSA" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kitura/BlueRSA";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.201;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		11082C8C270E9E860099285E /* CryptorRSA */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 11082C8B270E9E860099285E /* XCRemoteSwiftPackageReference "BlueRSA" */;
+			productName = CryptorRSA;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */ = {
