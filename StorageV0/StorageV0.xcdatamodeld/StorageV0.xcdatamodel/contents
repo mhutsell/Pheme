@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Contact" representedClassName="Contact" syncable="YES" codeGenerationType="class">
+    <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="hasMyKey" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="nickname" optional="YES" attributeType="String"/>
@@ -8,7 +8,7 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="belongToContact" inverseEntity="Message"/>
         <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Key" inverseName="keyForContact" inverseEntity="Key"/>
     </entity>
-    <entity name="EncryptedMessage" representedClassName="EncryptedMessage" syncable="YES" codeGenerationType="class">
+    <entity name="EncryptedMessage" representedClassName="EncryptedMessage" syncable="YES">
         <attribute name="encryptedBody" optional="YES" attributeType="String"/>
         <attribute name="senderID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="middleCarrier" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="notMyMessage" inverseEntity="Identity"/>
@@ -30,7 +30,7 @@
         <relationship name="keyPrivate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="privateKey" inverseEntity="Identity"/>
         <relationship name="keyPublic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="publicKey" inverseEntity="Identity"/>
     </entity>
-    <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
+    <entity name="Message" representedClassName="Message" syncable="YES">
         <attribute name="messageBody" optional="YES" attributeType="String"/>
         <attribute name="messageType" optional="YES" attributeType="String"/>
         <attribute name="senderID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -45,11 +45,11 @@
         <relationship name="belongsTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity"/>
     </entity>
     <elements>
+        <element name="Contact" positionX="-9" positionY="90" width="128" height="119"/>
         <element name="EncryptedMessage" positionX="-18" positionY="81" width="128" height="74"/>
         <element name="Identity" positionX="-54" positionY="9" width="128" height="134"/>
         <element name="Key" positionX="-36" positionY="45" width="128" height="119"/>
-        <element name="NaiveMessage" positionX="18" positionY="108" width="128" height="89"/>
-        <element name="Contact" positionX="-9" positionY="90" width="128" height="119"/>
         <element name="Message" positionX="0" positionY="99" width="128" height="119"/>
+        <element name="NaiveMessage" positionX="18" positionY="108" width="128" height="89"/>
     </elements>
 </model>

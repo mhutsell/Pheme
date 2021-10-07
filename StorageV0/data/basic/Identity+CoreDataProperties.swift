@@ -2,7 +2,7 @@
 //  Identity+CoreDataProperties.swift
 //  StorageV0
 //
-//  Created by Ken Su on 10/6/21.
+//  Created by Ray Chen on 10/6/21.
 //
 //
 
@@ -19,27 +19,10 @@ extension Identity {
     @NSManaged public var id: Int64
     @NSManaged public var nickname: String?
     @NSManaged public var password: Int64
+    @NSManaged public var contacts: NSSet?
     @NSManaged public var notMyMessage: NSSet?
     @NSManaged public var privateKey: Key?
     @NSManaged public var publicKey: Key?
-    @NSManaged public var contacts: NSSet?
-
-}
-
-// MARK: Generated accessors for notMyMessage
-extension Identity {
-
-    @objc(addNotMyMessageObject:)
-    @NSManaged public func addToNotMyMessage(_ value: EncryptedMessage)
-
-    @objc(removeNotMyMessageObject:)
-    @NSManaged public func removeFromNotMyMessage(_ value: EncryptedMessage)
-
-    @objc(addNotMyMessage:)
-    @NSManaged public func addToNotMyMessage(_ values: NSSet)
-
-    @objc(removeNotMyMessage:)
-    @NSManaged public func removeFromNotMyMessage(_ values: NSSet)
 
 }
 
@@ -57,6 +40,23 @@ extension Identity {
 
     @objc(removeContacts:)
     @NSManaged public func removeFromContacts(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for notMyMessage
+extension Identity {
+
+    @objc(addNotMyMessageObject:)
+    @NSManaged public func addToNotMyMessage(_ value: EncryptedMessage)
+
+    @objc(removeNotMyMessageObject:)
+    @NSManaged public func removeFromNotMyMessage(_ value: EncryptedMessage)
+
+    @objc(addNotMyMessage:)
+    @NSManaged public func addToNotMyMessage(_ values: NSSet)
+
+    @objc(removeNotMyMessage:)
+    @NSManaged public func removeFromNotMyMessage(_ values: NSSet)
 
 }
 

@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11082C43270E6EEF0099285E /* EncryptedMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C37270E6EEF0099285E /* EncryptedMessage+CoreDataClass.swift */; };
+		11082C44270E6EEF0099285E /* EncryptedMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C38270E6EEF0099285E /* EncryptedMessage+CoreDataProperties.swift */; };
+		11082C45270E6EEF0099285E /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C39270E6EEF0099285E /* Message+CoreDataClass.swift */; };
+		11082C46270E6EEF0099285E /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C3A270E6EEF0099285E /* Message+CoreDataProperties.swift */; };
+		11082C47270E6EEF0099285E /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C3B270E6EEF0099285E /* Identity+CoreDataClass.swift */; };
+		11082C48270E6EEF0099285E /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C3C270E6EEF0099285E /* Identity+CoreDataProperties.swift */; };
+		11082C49270E6EEF0099285E /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C3D270E6EEF0099285E /* Contact+CoreDataClass.swift */; };
+		11082C4A270E6EEF0099285E /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C3E270E6EEF0099285E /* Contact+CoreDataProperties.swift */; };
+		11082C4D270E6EEF0099285E /* NaiveMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C41270E6EEF0099285E /* NaiveMessage+CoreDataClass.swift */; };
+		11082C4E270E6EEF0099285E /* NaiveMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C42270E6EEF0099285E /* NaiveMessage+CoreDataProperties.swift */; };
+		11082C51270E71010099285E /* Key+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C4F270E71010099285E /* Key+CoreDataClass.swift */; };
+		11082C52270E71010099285E /* Key+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C50270E71010099285E /* Key+CoreDataProperties.swift */; };
 		1167C81C2704EDDA0032B9DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1167C81B2704EDDA0032B9DA /* AppDelegate.swift */; };
 		1167C81E2704EDDA0032B9DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1167C81D2704EDDA0032B9DA /* SceneDelegate.swift */; };
 		1167C8202704EDDA0032B9DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1167C81F2704EDDA0032B9DA /* ViewController.swift */; };
@@ -14,21 +26,21 @@
 		1167C8262704EDDA0032B9DA /* StorageV0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1167C8242704EDDA0032B9DA /* StorageV0.xcdatamodeld */; };
 		1167C8282704EDDB0032B9DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1167C8272704EDDB0032B9DA /* Assets.xcassets */; };
 		1167C82B2704EDDB0032B9DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1167C8292704EDDB0032B9DA /* LaunchScreen.storyboard */; };
-		117ECA962705166D00670B05 /* BdfList+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA882705166D00670B05 /* BdfList+CoreDataClass.swift */; };
-		117ECA972705166D00670B05 /* BdfList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA892705166D00670B05 /* BdfList+CoreDataProperties.swift */; };
-		117ECA982705166D00670B05 /* Bytes+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA8A2705166D00670B05 /* Bytes+CoreDataClass.swift */; };
-		117ECA992705166D00670B05 /* Bytes+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA8B2705166D00670B05 /* Bytes+CoreDataProperties.swift */; };
-		117ECA9C2705166D00670B05 /* Bdf+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA8E2705166D00670B05 /* Bdf+CoreDataClass.swift */; };
-		117ECA9D2705166D00670B05 /* Bdf+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA8F2705166D00670B05 /* Bdf+CoreDataProperties.swift */; };
-		117ECA9E2705166D00670B05 /* Key+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA902705166D00670B05 /* Key+CoreDataClass.swift */; };
-		117ECA9F2705166D00670B05 /* Key+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECA912705166D00670B05 /* Key+CoreDataProperties.swift */; };
-		117ECAA827051C9700670B05 /* NaiveMessage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECAA427051C9700670B05 /* NaiveMessage+CoreDataClass.swift */; };
-		117ECAA927051C9700670B05 /* NaiveMessage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECAA527051C9700670B05 /* NaiveMessage+CoreDataProperties.swift */; };
-		117ECAAA27051C9700670B05 /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECAA627051C9700670B05 /* Identity+CoreDataClass.swift */; };
-		117ECAAB27051C9700670B05 /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117ECAA727051C9700670B05 /* Identity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11082C37270E6EEF0099285E /* EncryptedMessage+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "EncryptedMessage+CoreDataClass.swift"; path = "../../../EncryptedMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		11082C38270E6EEF0099285E /* EncryptedMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "EncryptedMessage+CoreDataProperties.swift"; path = "../../../EncryptedMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		11082C39270E6EEF0099285E /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataClass.swift"; path = "../../../Message+CoreDataClass.swift"; sourceTree = "<group>"; };
+		11082C3A270E6EEF0099285E /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "../../../Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		11082C3B270E6EEF0099285E /* Identity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		11082C3C270E6EEF0099285E /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		11082C3D270E6EEF0099285E /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataClass.swift"; path = "../../../Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		11082C3E270E6EEF0099285E /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataProperties.swift"; path = "../../../Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		11082C41270E6EEF0099285E /* NaiveMessage+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NaiveMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		11082C42270E6EEF0099285E /* NaiveMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NaiveMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		11082C4F270E71010099285E /* Key+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Key+CoreDataClass.swift"; sourceTree = "<group>"; };
+		11082C50270E71010099285E /* Key+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Key+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1167C8182704EDDA0032B9DA /* StorageV0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorageV0.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1167C81B2704EDDA0032B9DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1167C81D2704EDDA0032B9DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -38,18 +50,6 @@
 		1167C8272704EDDB0032B9DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1167C82A2704EDDB0032B9DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1167C82C2704EDDB0032B9DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		117ECA882705166D00670B05 /* BdfList+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BdfList+CoreDataClass.swift"; sourceTree = "<group>"; };
-		117ECA892705166D00670B05 /* BdfList+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BdfList+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		117ECA8A2705166D00670B05 /* Bytes+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bytes+CoreDataClass.swift"; sourceTree = "<group>"; };
-		117ECA8B2705166D00670B05 /* Bytes+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bytes+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		117ECA8E2705166D00670B05 /* Bdf+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bdf+CoreDataClass.swift"; sourceTree = "<group>"; };
-		117ECA8F2705166D00670B05 /* Bdf+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bdf+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		117ECA902705166D00670B05 /* Key+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Key+CoreDataClass.swift"; sourceTree = "<group>"; };
-		117ECA912705166D00670B05 /* Key+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Key+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		117ECAA427051C9700670B05 /* NaiveMessage+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NaiveMessage+CoreDataClass.swift"; sourceTree = "<group>"; };
-		117ECAA527051C9700670B05 /* NaiveMessage+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NaiveMessage+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		117ECAA627051C9700670B05 /* Identity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		117ECAA727051C9700670B05 /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,16 +107,16 @@
 		1167C84727050F200032B9DA /* basic */ = {
 			isa = PBXGroup;
 			children = (
-				117ECAA627051C9700670B05 /* Identity+CoreDataClass.swift */,
-				117ECAA727051C9700670B05 /* Identity+CoreDataProperties.swift */,
-				117ECA882705166D00670B05 /* BdfList+CoreDataClass.swift */,
-				117ECA892705166D00670B05 /* BdfList+CoreDataProperties.swift */,
-				117ECA8A2705166D00670B05 /* Bytes+CoreDataClass.swift */,
-				117ECA8B2705166D00670B05 /* Bytes+CoreDataProperties.swift */,
-				117ECA8E2705166D00670B05 /* Bdf+CoreDataClass.swift */,
-				117ECA8F2705166D00670B05 /* Bdf+CoreDataProperties.swift */,
-				117ECA902705166D00670B05 /* Key+CoreDataClass.swift */,
-				117ECA912705166D00670B05 /* Key+CoreDataProperties.swift */,
+				11082C4F270E71010099285E /* Key+CoreDataClass.swift */,
+				11082C50270E71010099285E /* Key+CoreDataProperties.swift */,
+				11082C37270E6EEF0099285E /* EncryptedMessage+CoreDataClass.swift */,
+				11082C38270E6EEF0099285E /* EncryptedMessage+CoreDataProperties.swift */,
+				11082C39270E6EEF0099285E /* Message+CoreDataClass.swift */,
+				11082C3A270E6EEF0099285E /* Message+CoreDataProperties.swift */,
+				11082C3B270E6EEF0099285E /* Identity+CoreDataClass.swift */,
+				11082C3C270E6EEF0099285E /* Identity+CoreDataProperties.swift */,
+				11082C3D270E6EEF0099285E /* Contact+CoreDataClass.swift */,
+				11082C3E270E6EEF0099285E /* Contact+CoreDataProperties.swift */,
 			);
 			path = basic;
 			sourceTree = "<group>";
@@ -124,8 +124,8 @@
 		1167C84827050F330032B9DA /* message */ = {
 			isa = PBXGroup;
 			children = (
-				117ECAA427051C9700670B05 /* NaiveMessage+CoreDataClass.swift */,
-				117ECAA527051C9700670B05 /* NaiveMessage+CoreDataProperties.swift */,
+				11082C41270E6EEF0099285E /* NaiveMessage+CoreDataClass.swift */,
+				11082C42270E6EEF0099285E /* NaiveMessage+CoreDataProperties.swift */,
 			);
 			path = message;
 			sourceTree = "<group>";
@@ -200,22 +200,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11082C4A270E6EEF0099285E /* Contact+CoreDataProperties.swift in Sources */,
 				1167C8202704EDDA0032B9DA /* ViewController.swift in Sources */,
-				117ECAA927051C9700670B05 /* NaiveMessage+CoreDataProperties.swift in Sources */,
-				117ECA982705166D00670B05 /* Bytes+CoreDataClass.swift in Sources */,
-				117ECAAB27051C9700670B05 /* Identity+CoreDataProperties.swift in Sources */,
-				117ECA962705166D00670B05 /* BdfList+CoreDataClass.swift in Sources */,
-				117ECA972705166D00670B05 /* BdfList+CoreDataProperties.swift in Sources */,
-				117ECA9E2705166D00670B05 /* Key+CoreDataClass.swift in Sources */,
-				117ECAAA27051C9700670B05 /* Identity+CoreDataClass.swift in Sources */,
+				11082C4D270E6EEF0099285E /* NaiveMessage+CoreDataClass.swift in Sources */,
+				11082C4E270E6EEF0099285E /* NaiveMessage+CoreDataProperties.swift in Sources */,
 				1167C8262704EDDA0032B9DA /* StorageV0.xcdatamodeld in Sources */,
-				117ECA9C2705166D00670B05 /* Bdf+CoreDataClass.swift in Sources */,
+				11082C44270E6EEF0099285E /* EncryptedMessage+CoreDataProperties.swift in Sources */,
+				11082C43270E6EEF0099285E /* EncryptedMessage+CoreDataClass.swift in Sources */,
 				1167C81C2704EDDA0032B9DA /* AppDelegate.swift in Sources */,
-				117ECAA827051C9700670B05 /* NaiveMessage+CoreDataClass.swift in Sources */,
 				1167C81E2704EDDA0032B9DA /* SceneDelegate.swift in Sources */,
-				117ECA9F2705166D00670B05 /* Key+CoreDataProperties.swift in Sources */,
-				117ECA9D2705166D00670B05 /* Bdf+CoreDataProperties.swift in Sources */,
-				117ECA992705166D00670B05 /* Bytes+CoreDataProperties.swift in Sources */,
+				11082C47270E6EEF0099285E /* Identity+CoreDataClass.swift in Sources */,
+				11082C48270E6EEF0099285E /* Identity+CoreDataProperties.swift in Sources */,
+				11082C52270E71010099285E /* Key+CoreDataProperties.swift in Sources */,
+				11082C51270E71010099285E /* Key+CoreDataClass.swift in Sources */,
+				11082C49270E6EEF0099285E /* Contact+CoreDataClass.swift in Sources */,
+				11082C46270E6EEF0099285E /* Message+CoreDataProperties.swift in Sources */,
+				11082C45270E6EEF0099285E /* Message+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
