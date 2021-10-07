@@ -92,7 +92,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 		}
 	}
     
-    func createIdentity(ms: String, _: password, _: id){
+    func createIdentity(ms: String, password: Int64, id: Int64){
         let newIdentity = Identity(context: context)
         newIdentity.nickname = ms
         newIdentity.password = password
