@@ -2,7 +2,7 @@
 //  Encrypted+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/6/21.
+//  Created by Ray Chen on 10/10/21.
 //
 //
 
@@ -17,6 +17,8 @@ extension Encrypted {
     }
 
     @NSManaged public var encryptedBody: String?
+    @NSManaged public var timeCreated: Date?
+    @NSManaged public var messageType: Int16
     @NSManaged public var id: Identity?
     @NSManaged public var senderKey: PublicKey?
 

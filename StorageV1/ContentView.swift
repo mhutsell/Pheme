@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import CryptorRSA
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -104,9 +105,9 @@ struct ContentView: View {
         }
 	}
 	
-//	need at least one of id, contact, eSender, mSender
+//	need at least one of id (type 0, default), contact (type 1), eSender (type 2), mSender (type 3)
 //	TODO: handle error cases
-	private func createPublicKey(kd: String, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int) {
+	private func createPublicKey(kd: String, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int = 0) {
 		withAnimation {
             let newKey = PublicKey(context: viewContext)
             newKey.keyBody = kd
@@ -127,8 +128,36 @@ struct ContentView: View {
         }
 	}
 	
+//	save received encrypted
+//	TODO: now assuming it's not mine, need to decrypt if possible
+	private func createEncrypted(received: Encrypted, id: Identity) {
+		withAnimation {
+			received.id = id
+		}
+	}
+	
+//	encrypt the message "I" create for sending to contact
+	private func createEncryptedFor(ms: Message, id: Identity, contact: Contact) {
+		withAnimation {
+			let newEncrypted = Encrypted(context: viewContext)
+			newEncrypted.id = id
+			newEncrypted.messageType = ms.messageType
+			do {
+				let publicKey = try CryptorRSA.createPublicKey(withBase64: contact.theirKey!.keyBody!)
+				let bodyData: Data = ms.messageBody!.data(using: .utf8)!
+				let plaintext = CryptorRSA.createPlaintext(with: bodyData)
+				let encryptedData = try plaintext.encrypt(with: publicKey, algorithm: .sha1)
+				// TODO: resolve encrypt failure, might give up usgin CryptorRSA but refer to
+				// https://medium.com/@vaibhav.pmeshram/creating-and-dismantling-rsa-key-in-seckey-swift-ios-7b5077e41244
+				// and https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
     
-//    sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
+//  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
     private func deleteItem(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
