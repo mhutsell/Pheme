@@ -40,7 +40,7 @@ struct ContentView: View {
 						Button(action: {
 //						change the function here to test other CRUD
 //							creatMessage(body: self.newItem)
-//							createIdentity(nickname: self.newItem)
+							createIdentity(nickname: self.newItem)
 						}){
 							Image(systemName: "plus.circle.fill")
 								 .foregroundColor(.blue)
@@ -51,7 +51,8 @@ struct ContentView: View {
 				ForEach(items) { item in
 //				change what to show here to check succeeful creation
 //					Text(item.messageBody ?? "Unspecified")
-//					Text(item.publicKey?.keyBody ?? "Unspecified")
+					Text(item.publicKey?.keyBody ?? "Unspecified")
+					Text(item.privateKey?.keyBody ?? "Unspecified")
 // TODO: change show items to id attibutes
 				}.onDelete(perform: deleteItem(offsets:))
 			}
@@ -80,34 +81,21 @@ struct ContentView: View {
 	}
 
 //	generate new rsa key pair with random data
-	private func createRSAKeyPair() -> (public:Data, private:Data) {
-		let publicKeyAttr: [NSObject: NSObject] = [
-            kSecAttrIsPermanent:true as NSObject,
-            kSecAttrApplicationTag:"com.pheme.app.Rsa.public".data(using: String.Encoding.utf8)! as NSObject,
-            kSecClass: kSecClassKey,
-            kSecReturnData: kCFBooleanTrue]
-		let privateKeyAttr: [NSObject: NSObject] = [
-			kSecAttrIsPermanent:true as NSObject,
-			kSecAttrApplicationTag:"com.pheme.app.Rsa.private".data(using: String.Encoding.utf8)! as NSObject,
-			kSecClass: kSecClassKey,
-			kSecReturnData: kCFBooleanTrue]
-		
+	private func createRSAKeyPair() -> (public:String, private:String) {
 		var publicKeySec, privateKeySec: SecKey?
 		let keyattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeySizeInBits as String : 4096
 		] as CFDictionary
 		SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
-		var resultPublicKey: AnyObject?
-		var resultPrivateKey: AnyObject?
-		SecItemCopyMatching(publicKeyAttr as CFDictionary, &resultPublicKey)
-		SecItemCopyMatching(privateKeyAttr as CFDictionary, &resultPrivateKey)
-		let publicKey = resultPublicKey as! Data
-		let privateKey = resultPrivateKey as! Data
-		return (publicKey, privateKey)
+		
+		var error: Unmanaged<CFError>?
+		let dataPub = SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?
+		let dataPri = SecKeyCopyExternalRepresentation(privateKeySec!, &error) as Data?
+		return (dataPub!.base64EncodedString(), dataPri!.base64EncodedString())
 	}
 	
-	private func createPrivateKey(kd: Data, id: Identity) {
+	private func createPrivateKey(kd: String, id: Identity) {
 		withAnimation {
             let newKey = PrivateKey(context: viewContext)
             newKey.keyBody = kd
@@ -118,7 +106,7 @@ struct ContentView: View {
 	
 //	need at least one of id, contact, eSender, mSender
 //	TODO: handle error cases
-	private func createPublicKey(kd: Data, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int) {
+	private func createPublicKey(kd: String, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int) {
 		withAnimation {
             let newKey = PublicKey(context: viewContext)
             newKey.keyBody = kd
@@ -138,6 +126,7 @@ struct ContentView: View {
             saveContext()
         }
 	}
+	
     
 //    sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
     private func deleteItem(offsets: IndexSet) {

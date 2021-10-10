@@ -15,7 +15,7 @@
         <attribute name="nickname" optional="YES" attributeType="String"/>
         <relationship name="contacts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Contact" inverseName="id" inverseEntity="Contact"/>
         <relationship name="notMine" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Encrypted" inverseName="id" inverseEntity="Encrypted"/>
-        <relationship name="privatekey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrivateKey" inverseName="id" inverseEntity="PrivateKey"/>
+        <relationship name="privateKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PrivateKey" inverseName="id" inverseEntity="PrivateKey"/>
         <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublicKey" inverseName="id" inverseEntity="PublicKey"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES">
@@ -26,11 +26,11 @@
         <relationship name="senderKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublicKey" inverseName="messageSender" inverseEntity="PublicKey"/>
     </entity>
     <entity name="PrivateKey" representedClassName="PrivateKey" syncable="YES">
-        <attribute name="keyBody" optional="YES" attributeType="Binary"/>
-        <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="privatekey" inverseEntity="Identity"/>
+        <attribute name="keyBody" optional="YES" attributeType="String"/>
+        <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="privateKey" inverseEntity="Identity"/>
     </entity>
     <entity name="PublicKey" representedClassName="PublicKey" syncable="YES">
-        <attribute name="keyBody" optional="YES" attributeType="Binary"/>
+        <attribute name="keyBody" optional="YES" attributeType="String"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="theirKey" inverseEntity="Contact"/>
         <relationship name="encryptedSender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Encrypted" inverseName="senderKey" inverseEntity="Encrypted"/>
         <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="publicKey" inverseEntity="Identity"/>

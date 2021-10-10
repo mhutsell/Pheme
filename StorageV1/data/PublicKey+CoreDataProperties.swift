@@ -16,7 +16,7 @@ extension PublicKey {
         return NSFetchRequest<PublicKey>(entityName: "PublicKey")
     }
 
-    @NSManaged public var keyBody: Data?
+    @NSManaged public var keyBody: String?
     @NSManaged public var contact: Contact?
     @NSManaged public var encryptedSender: Encrypted?
     @NSManaged public var id: Identity?

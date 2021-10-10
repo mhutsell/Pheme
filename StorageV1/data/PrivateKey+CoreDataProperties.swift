@@ -16,7 +16,7 @@ extension PrivateKey {
         return NSFetchRequest<PrivateKey>(entityName: "PrivateKey")
     }
 
-    @NSManaged public var keyBody: Data?
+    @NSManaged public var keyBody: String?
     @NSManaged public var id: Identity?
 
 }
