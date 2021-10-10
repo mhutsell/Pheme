@@ -26,11 +26,11 @@
         <relationship name="senderKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublicKey" inverseName="messageSender" inverseEntity="PublicKey"/>
     </entity>
     <entity name="PrivateKey" representedClassName="PrivateKey" syncable="YES">
-        <attribute name="keyBody" optional="YES" attributeType="String"/>
+        <attribute name="keyBody" optional="YES" attributeType="Binary"/>
         <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="privatekey" inverseEntity="Identity"/>
     </entity>
     <entity name="PublicKey" representedClassName="PublicKey" syncable="YES">
-        <attribute name="keyBody" optional="YES" attributeType="String"/>
+        <attribute name="keyBody" optional="YES" attributeType="Binary"/>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="theirKey" inverseEntity="Contact"/>
         <relationship name="encryptedSender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Encrypted" inverseName="senderKey" inverseEntity="Encrypted"/>
         <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="publicKey" inverseEntity="Identity"/>

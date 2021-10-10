@@ -51,7 +51,8 @@ struct ContentView: View {
 				ForEach(items) { item in
 //				change what to show here to check succeeful creation
 //					Text(item.messageBody ?? "Unspecified")
-					Text(item.publicKey?.keyBody ?? "Unspecified")
+//					Text(item.publicKey?.keyBody ?? "Unspecified")
+// TODO: change show items to id attibutes
 				}.onDelete(perform: deleteItem(offsets:))
 			}
 			.navigationTitle("Items")
@@ -67,26 +68,76 @@ struct ContentView: View {
         }
     }
     
-//    private func createIdentity(nickname: String) {
-//		withAnimation {
-//            let newIdentity = Identity(context: viewContext)
-//            newIdentity.nickname = nickname
-				
-//            saveContext()
-//        }
-//	}
+    private func createIdentity(nickname: String) {
+		withAnimation {
+            let newIdentity = Identity(context: viewContext)
+            newIdentity.nickname = nickname
+			let result = createRSAKeyPair()
+			createPrivateKey(kd: result.private, id: newIdentity)
+			createPublicKey(kd: result.public, id: newIdentity, type: 0)
+            saveContext()
+        }
+	}
 
-//	private func createRSAKeyPair(tag: String) {
-//		let tag = tag.data(using: .utf8)!
-//		let attributes: [String: Any] =
-//			[kSecAttrType as String: 				  kSecAttrKeyTypeRSA,
-//			 kSecAttrKeySizeInBits as String: 	   					2048,
-//			 kSecPrivateKeyAttrs as String:
-//				[kSecAttrIsPermanent as String:    					true,
-//				 kSecAttrApplicationTag as String:  				 tag]
-//			]
-////			TODO: thenwhat T^T
-//	}
+//	generate new rsa key pair with random data
+	private func createRSAKeyPair() -> (public:Data, private:Data) {
+		let publicKeyAttr: [NSObject: NSObject] = [
+            kSecAttrIsPermanent:true as NSObject,
+            kSecAttrApplicationTag:"com.pheme.app.Rsa.public".data(using: String.Encoding.utf8)! as NSObject,
+            kSecClass: kSecClassKey,
+            kSecReturnData: kCFBooleanTrue]
+		let privateKeyAttr: [NSObject: NSObject] = [
+			kSecAttrIsPermanent:true as NSObject,
+			kSecAttrApplicationTag:"com.pheme.app.Rsa.private".data(using: String.Encoding.utf8)! as NSObject,
+			kSecClass: kSecClassKey,
+			kSecReturnData: kCFBooleanTrue]
+		
+		var publicKeySec, privateKeySec: SecKey?
+		let keyattribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeySizeInBits as String : 4096
+		] as CFDictionary
+		SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
+		var resultPublicKey: AnyObject?
+		var resultPrivateKey: AnyObject?
+		SecItemCopyMatching(publicKeyAttr as CFDictionary, &resultPublicKey)
+		SecItemCopyMatching(privateKeyAttr as CFDictionary, &resultPrivateKey)
+		let publicKey = resultPublicKey as! Data
+		let privateKey = resultPrivateKey as! Data
+		return (publicKey, privateKey)
+	}
+	
+	private func createPrivateKey(kd: Data, id: Identity) {
+		withAnimation {
+            let newKey = PrivateKey(context: viewContext)
+            newKey.keyBody = kd
+            newKey.id = id
+            saveContext()
+        }
+	}
+	
+//	need at least one of id, contact, eSender, mSender
+//	TODO: handle error cases
+	private func createPublicKey(kd: Data, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int) {
+		withAnimation {
+            let newKey = PublicKey(context: viewContext)
+            newKey.keyBody = kd
+            switch type {
+            case 0:
+				newKey.id = id
+			case 1:
+				newKey.contact = contact
+			case 2:
+				newKey.encryptedSender = eSender
+			case 3:
+				newKey.messageSender = mSender
+			default:
+				newKey.id = id
+			}
+            
+            saveContext()
+        }
+	}
     
 //    sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
     private func deleteItem(offsets: IndexSet) {
