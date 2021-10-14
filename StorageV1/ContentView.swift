@@ -86,7 +86,7 @@ struct ContentView: View {
 		var publicKeySec, privateKeySec: SecKey?
 		let keyattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-			kSecAttrKeySizeInBits as String : 4096
+			kSecAttrKeySizeInBits as String : 2048
 		] as CFDictionary
 		SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
 		
@@ -137,24 +137,24 @@ struct ContentView: View {
 	}
 	
 //	encrypt the message "I" create for sending to contact
-	private func createEncryptedFor(ms: Message, id: Identity, contact: Contact) {
-		withAnimation {
-			let newEncrypted = Encrypted(context: viewContext)
-			newEncrypted.id = id
-			newEncrypted.messageType = ms.messageType
-			do {
-				let publicKey = try CryptorRSA.createPublicKey(withBase64: contact.theirKey!.keyBody!)
-				let bodyData: Data = ms.messageBody!.data(using: .utf8)!
-				let plaintext = CryptorRSA.createPlaintext(with: bodyData)
-				let encryptedData = try plaintext.encrypt(with: publicKey, algorithm: .sha1)
-				// TODO: resolve encrypt failure, might give up usgin CryptorRSA but refer to
-				// https://medium.com/@vaibhav.pmeshram/creating-and-dismantling-rsa-key-in-seckey-swift-ios-7b5077e41244
-				// and https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption
-			} catch {
-				print(error)
-			}
-		}
-	}
+//	private func createEncryptedFor(ms: Message, id: Identity, contact: Contact) {
+//		withAnimation {
+//			let newEncrypted = Encrypted(context: viewContext)
+//			newEncrypted.id = id
+//			newEncrypted.messageType = ms.messageType
+//			do {
+//				let publicKey = try CryptorRSA.createPublicKey(withBase64: contact.theirKey!.keyBody!)
+//				let bodyData: Data = ms.messageBody!.data(using: .utf8)!
+//				let plaintext = CryptorRSA.createPlaintext(with: bodyData)
+//				let encryptedData = try plaintext.encrypt(with: publicKey, algorithm: .sha1)
+//				// TODO: resolve encrypt failure, might give up usgin CryptorRSA but refer to
+//				// https://medium.com/@vaibhav.pmeshram/creating-and-dismantling-rsa-key-in-seckey-swift-ios-7b5077e41244
+//				// and https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption
+//			} catch {
+//				print(error)
+//			}
+//		}
+//	}
 	
     
 //  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
