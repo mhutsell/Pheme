@@ -68,7 +68,7 @@ struct ContentView: View {
                 
                 let characters = Array(result.decrypted)
                 
-                
+			
 
 			}
 			.navigationTitle("Items")
@@ -219,7 +219,7 @@ private func retrievePublicKey(s: String) -> SecKey {
 		}
 	}
 	
-	private func deEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
+	private func decryptEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
 		withAnimation {
 			let newMessage = Message(context: viewContext)
 			newMessage.contact = contact
