@@ -66,8 +66,6 @@ struct ContentView: View {
                 Text(String(result.decrypted.count))
                 Text(result.decrypted)
                 
-                let characters = Array(result.decrypted)
-                
 			
 
 			}
@@ -94,17 +92,22 @@ struct ContentView: View {
         ] as CFDictionary
         SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
         
+        var error: Unmanaged<CFError>?
+		let dataPub = (SecKeyCopyExternalRepresentation(publicKeySec!, &error) as CFData?)!
+		
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
+		]
+		let pubKey: SecKey = SecKeyCreateWithData(dataPub, attribute as CFDictionary, &error)!
+		
+		
+        
         let bodyData: CFData = testString.data(using: .utf8)! as CFData
         
-        var error: Unmanaged<CFError>?
-        
-        let encrypted = SecKeyCreateEncryptedData(publicKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)
-        
-        
-        
-//        let encryptedCF: CFData = encrypted as CFData
-        
-        let decrypted: Data = SecKeyCreateDecryptedData(privateKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted!, &error)! as Data
+		let encrypted: Data = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
+		let decrypted: Data = SecKeyCreateDecryptedData(privateKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted as CFData, &error)! as Data
+		// TODO: handle nil case (if need to try decrypting every message)
         
         let str = String(decoding: decrypted, as: UTF8.self)
         
