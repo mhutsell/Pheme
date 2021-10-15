@@ -41,7 +41,10 @@ struct ContentView: View {
 						Button(action: {
 //						change the function here to test other CRUD
 //							creatMessage(body: self.newItem)
-							createIdentity(nickname: self.newItem)
+//							createIdentity(nickname: self.newItem)
+                            
+                            
+                            
 						}){
 							Image(systemName: "plus.circle.fill")
 								 .foregroundColor(.blue)
@@ -49,13 +52,24 @@ struct ContentView: View {
 						}
 					}
 				}
-				ForEach(items) { item in
-//				change what to show here to check succeeful creation
-//					Text(item.messageBody ?? "Unspecified")
-					Text(item.publicKey?.keyBody ?? "Unspecified")
-					Text(item.privateKey?.keyBody ?? "Unspecified")
-// TODO: change show items to id attibutes
-				}.onDelete(perform: deleteItem(offsets:))
+//                ForEach(items) { item in
+//                //    change what to show here to check succeeful creation
+//                //     Text(item.messageBody ?? "Unspecified")
+//                     Text(item.publicKey?.keyBody ?? "Unspecified")
+//                     Text(item.privateKey?.keyBody ?? "Unspecified")
+//                // TODO: change show items to id attibutes
+//                    }.onDelete(perform: deleteItem(offsets:))
+                
+                let result = encryptionTest()
+                Text(result.testString)
+
+                Text(String(result.decrypted.count))
+                Text(result.decrypted)
+                
+                let characters = Array(result.decrypted)
+
+                
+
 			}
 			.navigationTitle("Items")
 		}
@@ -68,6 +82,34 @@ struct ContentView: View {
             newMessage.messageBody = body
             saveContext()
         }
+    }
+    
+    private func encryptionTest() -> (testString:String,  decrypted: String) {
+        let testString = "Hello World"
+        
+        var publicKeySec, privateKeySec: SecKey?
+        let keyattribute = [
+            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+            kSecAttrKeySizeInBits as String : 2048
+        ] as CFDictionary
+        SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
+        
+        let bodyData: CFData = testString.data(using: .utf8)! as CFData
+        
+        var error: Unmanaged<CFError>?
+        
+        let encrypted = SecKeyCreateEncryptedData(publicKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)
+        
+        
+        
+//        let encryptedCF: CFData = encrypted as CFData
+        
+        let decrypted: Data = SecKeyCreateDecryptedData(privateKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted!, &error)! as Data
+        
+        let str = String(decoding: decrypted, as: UTF8.self)
+        
+//        return (testString, encrypted.base64EncodedString(), str)
+        return (testString,  str)
     }
     
     private func createIdentity(nickname: String) {
