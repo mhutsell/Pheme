@@ -67,7 +67,7 @@ struct ContentView: View {
                 Text(result.decrypted)
                 
                 let characters = Array(result.decrypted)
-
+                
                 
 
 			}
