@@ -178,25 +178,61 @@ struct ContentView: View {
 		}
 	}
 	
+private func retrievePublicKey(s: String) -> SecKey {
+		let keyData = Data(s.utf8)
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
+		]
+		var error: Unmanaged<CFError>?
+		let pubKey: SecKey = SecKeyCreateWithData(keyData as CFData, attribute as CFDictionary, &error)!
+		return pubKey
+	}
+	
+	private func retrievePrivateKey(s: String) -> SecKey {
+		let keyData = Data(s.utf8)
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
+		]
+		var error: Unmanaged<CFError>?
+		let priKey: SecKey = SecKeyCreateWithData(keyData as CFData, attribute as CFDictionary, &error)!
+		return priKey
+	}
+
+	
 //	encrypt the message "I" create for sending to contact
-//	private func createEncryptedFor(ms: Message, id: Identity, contact: Contact) {
-//		withAnimation {
-//			let newEncrypted = Encrypted(context: viewContext)
-//			newEncrypted.id = id
-//			newEncrypted.messageType = ms.messageType
-//			do {
-//				let publicKey = try CryptorRSA.createPublicKey(withBase64: contact.theirKey!.keyBody!)
-//				let bodyData: Data = ms.messageBody!.data(using: .utf8)!
-//				let plaintext = CryptorRSA.createPlaintext(with: bodyData)
-//				let encryptedData = try plaintext.encrypt(with: publicKey, algorithm: .sha1)
-//				// TODO: resolve encrypt failure, might give up usgin CryptorRSA but refer to
-//				// https://medium.com/@vaibhav.pmeshram/creating-and-dismantling-rsa-key-in-seckey-swift-ios-7b5077e41244
-//				// and https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption
-//			} catch {
-//				print(error)
-//			}
-//		}
-//	}
+//	TODO: need to change my own public key to the contact's public key
+	private func createEncryptedFor(ms: Message, id: Identity) {
+		withAnimation {
+			let newEncrypted = Encrypted(context: viewContext)
+			newEncrypted.id = id
+			newEncrypted.messageType = ms.messageType
+			newEncrypted.timeCreated = ms.timeCreated
+			newEncrypted.senderKey = id.publicKey
+			let publicKey: SecKey = retrievePublicKey(s: (id.publicKey?.keyBody)!)
+			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
+			var error: Unmanaged<CFError>?
+			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, bodyData, &error)! as Data
+			newEncrypted.encryptedBody = encryptedBody.base64EncodedString()
+			saveContext()
+		}
+	}
+	
+	private func deEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
+		withAnimation {
+			let newMessage = Message(context: viewContext)
+			newMessage.contact = contact
+			newMessage.timeCreated = ec.timeCreated
+			let encryptedData: CFData = ec.encryptedBody!.data(using: .utf8)! as CFData
+			let privateKey: SecKey = retrievePrivateKey(s: (id.privateKey?.keyBody)!)
+			var error: Unmanaged<CFError>?
+			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, encryptedData, &error)! as Data
+			let dstring = String(decoding: decryptedBody, as: UTF8.self)
+			newMessage.messageBody = dstring
+			saveContext()
+		}
+	}
 	
     
 //  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
