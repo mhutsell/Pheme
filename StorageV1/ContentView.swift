@@ -17,8 +17,8 @@ struct ContentView: View {
 ////    	sort the messages by its timeCreated
 //        sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending: true)],
 //        animation: .default)
-//    private var items: FetchedResults<Message>
-//
+//    private var messages: FetchedResults<Message>
+
     @FetchRequest(
 //    	sort the identities by its nickname
         sortDescriptors: [NSSortDescriptor(keyPath: \Identity.nickname, ascending: true)],
@@ -27,23 +27,36 @@ struct ContentView: View {
 
 //	add more var here to test create with multiple input item
     @State private var newItem = ""
+    @State private var newMessage = ""
+    @State private var encrypted = ""
+	@State private var decrypted = ""
 
     var body: some View {
         NavigationView {
 			List {
-//				Section(header: Text("Add message")) {
 				Section(header: Text("Add identity")) {
 					HStack{
 //						add more TextField here to test create with multiple input item
-//						TextField("New message", text: self.$newItem)
 						TextField("New nickname", text: self.$newItem)
 						Button(action: {
 //						change the function here to test other CRUD
-//							creatMessage(body: self.newItem)
-//							createIdentity(nickname: self.newItem)
-                            
-                            
-                            
+							createIdentity(nickname: self.newItem)
+						}){
+							Image(systemName: "plus.circle.fill")
+								 .foregroundColor(.blue)
+								 .imageScale(.large)
+						}
+					}
+				}
+				Section(header: Text("raw, encrypted, and decrypted message")) {
+					HStack{
+//						add more TextField here to test create with multiple input item
+						TextField("New message", text: self.$newMessage)
+						Button(action: {
+//						change the function here to test other CRUD
+							let result = encryptionTest(testString: self.newMessage)
+							self.decrypted = result.decrypted
+							self.encrypted = result.encrypted
 						}){
 							Image(systemName: "plus.circle.fill")
 								 .foregroundColor(.blue)
@@ -58,12 +71,21 @@ struct ContentView: View {
 //                     Text(item.privateKey?.keyBody ?? "Unspecified")
 //                // TODO: change show items to id attibutes
 //                    }.onDelete(perform: deleteItem(offsets:))
-                
-                let result = encryptionTest()
-                Text(result.testString)
+				ForEach(items) { item in
+					Text(item.nickname ?? "Unspecified")
+					Text(self.newMessage)
+					Text(self.encrypted)
+					Text(self.decrypted)
+				}.onDelete(perform: deleteItem(offsets:))
+				
 
-                Text(String(result.decrypted.count))
-                Text(result.decrypted)
+
+//                test for encryption and decryption
+//                let result = encryptionTest()
+//                Text(result.testString)
+//
+//                Text(String(result.decrypted.count))
+//                Text(result.decrypted)
                 
 			
 
@@ -72,7 +94,9 @@ struct ContentView: View {
 		}
     }
 //	sample functions for creation an entity
+//	need to add contact
     private func createMessage(body: String, contact: Contact) {
+//    private func createMessage(body: String) {
         withAnimation {
             let newMessage = Message(context: viewContext)
             newMessage.timeCreated = Date()
@@ -82,8 +106,10 @@ struct ContentView: View {
         }
     }
     
-    private func encryptionTest() -> (testString:String,  decrypted: String) {
-        let testString = "Hello World"
+//    TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
+//    private func createContact() {}
+    
+    private func encryptionTest(testString: String = "Hello World") -> (testString:String,  encrypted: String, decrypted: String) {
         
         var publicKeySec, privateKeySec: SecKey?
         let keyattribute = [
@@ -93,26 +119,31 @@ struct ContentView: View {
         SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
         
         var error: Unmanaged<CFError>?
-		let dataPub = (SecKeyCopyExternalRepresentation(publicKeySec!, &error) as CFData?)!
+		let dataPub = SecKeyCopyExternalRepresentation(publicKeySec!, &error)! as Data
+		let dataPri = SecKeyCopyExternalRepresentation(privateKeySec!, &error)! as Data
 		
 		let attribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
 		]
-		let pubKey: SecKey = SecKeyCreateWithData(dataPub, attribute as CFDictionary, &error)!
+		let pubKey: SecKey = SecKeyCreateWithData(dataPub as CFData, attribute as CFDictionary, &error)!
 		
+		let priattribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
+		]
+		let priKey: SecKey = SecKeyCreateWithData(dataPri as CFData, priattribute as CFDictionary, &error)!
 		
-        
         let bodyData: CFData = testString.data(using: .utf8)! as CFData
         
 		let encrypted: Data = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
-		let decrypted: Data = SecKeyCreateDecryptedData(privateKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted as CFData, &error)! as Data
+		let decrypted: Data = SecKeyCreateDecryptedData(priKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted as CFData, &error)! as Data
 		// TODO: handle nil case (if need to try decrypting every message)
         
         let str = String(decoding: decrypted, as: UTF8.self)
         
-//        return (testString, encrypted.base64EncodedString(), str)
-        return (testString,  str)
+        return (testString, encrypted.base64EncodedString(), str)
+//        return (testString,  str)
     }
     
     private func createIdentity(nickname: String) {
