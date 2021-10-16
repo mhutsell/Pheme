@@ -19,11 +19,11 @@ struct ContentView: View {
 //        animation: .default)
 //    private var items: FetchedResults<Message>
 //
-//    @FetchRequest(
-////    	sort the identities by its nickname
-//        sortDescriptors: [NSSortDescriptor(keyPath: \Identity.nickname, ascending: true)],
-//        animation: .default)
-//    private var items: FetchedResults<Identity>
+    @FetchRequest(
+//    	sort the identities by its nickname
+        sortDescriptors: [NSSortDescriptor(keyPath: \Identity.nickname, ascending: true)],
+        animation: .default)
+    private var items: FetchedResults<Identity>
 
 //	add more var here to test create with multiple input item
     @State private var newItem = ""
