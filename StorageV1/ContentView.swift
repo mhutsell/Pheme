@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoreData
-import CryptorRSA
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -18,7 +17,7 @@ struct ContentView: View {
 ////    	sort the messages by its timeCreated
 //        sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending: true)],
 //        animation: .default)
-//    private var items: FetchedResults<Message>
+//    private var messages: FetchedResults<Message>
 
     @FetchRequest(
 //    	sort the identities by its nickname
@@ -28,23 +27,37 @@ struct ContentView: View {
 
 //	add more var here to test create with multiple input item
     @State private var newItem = ""
+    @State private var newMessage = ""
+    @State private var encrypted = ""
+	@State private var decrypted = ""
 
     var body: some View {
         NavigationView {
 			List {
-//				Section(header: Text("Add message")) {
 				Section(header: Text("Add identity")) {
 					HStack{
 //						add more TextField here to test create with multiple input item
-//						TextField("New message", text: self.$newItem)
 						TextField("New nickname", text: self.$newItem)
 						Button(action: {
 //						change the function here to test other CRUD
-//							creatMessage(body: self.newItem)
-//							createIdentity(nickname: self.newItem)
-                            
-                            
-                            
+							createIdentity(nickname: self.newItem)
+						}){
+							Image(systemName: "plus.circle.fill")
+								 .foregroundColor(.blue)
+								 .imageScale(.large)
+						}
+					}
+				}
+				// need to at least create one identity
+				Section(header: Text("raw, encrypted, and decrypted message")) {
+					HStack{
+//						add more TextField here to test create with multiple input item
+						TextField("New message", text: self.$newMessage)
+						Button(action: {
+//						change the function here to test other CRUD
+							let result = encryptionTest(testString: self.newMessage, id: items[0])
+							self.decrypted = result.decrypted
+							self.encrypted = result.encrypted
 						}){
 							Image(systemName: "plus.circle.fill")
 								 .foregroundColor(.blue)
@@ -59,72 +72,86 @@ struct ContentView: View {
 //                     Text(item.privateKey?.keyBody ?? "Unspecified")
 //                // TODO: change show items to id attibutes
 //                    }.onDelete(perform: deleteItem(offsets:))
-                
-                let result = encryptionTest()
-                Text(result.testString)
+				ForEach(items) { item in
+					Text(item.nickname ?? "Unspecified")
+					Text(self.newMessage)
+					Text(self.encrypted)
+					Text(self.decrypted)
+				}.onDelete(perform: deleteItem(offsets:))
+				
 
-                Text(String(result.decrypted.count))
-                Text(result.decrypted)
+
+//                test for encryption and decryption
+//                let result = encryptionTest()
+//                Text(result.testString)
+//
+//                Text(String(result.decrypted.count))
+//                Text(result.decrypted)
                 
-                let characters = Array(result.decrypted)
-                
-                
+			
 
 			}
 			.navigationTitle("Items")
 		}
     }
 //	sample functions for creation an entity
-    private func createMessage(body: String) {
+//	need to add contact
+    private func createMessage(body: String, contact: Contact) {
+//    private func createMessage(body: String) {
         withAnimation {
             let newMessage = Message(context: viewContext)
             newMessage.timeCreated = Date()
             newMessage.messageBody = body
+            newMessage.contact = contact
             saveContext()
         }
     }
     
-    private func encryptionTest() -> (testString:String,  decrypted: String) {
-        let testString = "Hello World"
-        
-        var publicKeySec, privateKeySec: SecKey?
-        let keyattribute = [
-            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits as String : 2048
-        ] as CFDictionary
-        SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
-        
-        let bodyData: CFData = testString.data(using: .utf8)! as CFData
+//    TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
+//    private func createContact() {}
+    
+    private func encryptionTest(testString: String = "Hello World", id: Identity) -> (testString:String,  encrypted: String, decrypted: String) {
         
         var error: Unmanaged<CFError>?
+		
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
+		]
+		let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
+		
+		let priattribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
+		]
+		let priKey: SecKey = SecKeyCreateWithData(id.privateKey!.keyBody! as CFData, priattribute as CFDictionary, &error)! as SecKey
+		
+        let bodyData: CFData = testString.data(using: .utf8)! as CFData
         
-        let encrypted = SecKeyCreateEncryptedData(publicKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)
-        
-        
-        
-//        let encryptedCF: CFData = encrypted as CFData
-        
-        let decrypted: Data = SecKeyCreateDecryptedData(privateKeySec!, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted!, &error)! as Data
+		let encrypted: Data = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
+		let decrypted: Data = SecKeyCreateDecryptedData(priKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted as CFData, &error)! as Data
+		// TODO: handle nil case (if need to try decrypting every message)
         
         let str = String(decoding: decrypted, as: UTF8.self)
         
-//        return (testString, encrypted.base64EncodedString(), str)
-        return (testString,  str)
+        return (testString, encrypted.base64EncodedString(), str)
+//        return (testString,  str)
     }
     
     private func createIdentity(nickname: String) {
 		withAnimation {
             let newIdentity = Identity(context: viewContext)
             newIdentity.nickname = nickname
+            newIdentity.id = UUID()
 			let result = createRSAKeyPair()
-			createPrivateKey(kd: result.private, id: newIdentity)
+			createPrivateKey(data: result.private, id: newIdentity)
 			createPublicKey(kd: result.public, id: newIdentity, type: 0)
             saveContext()
         }
 	}
 
 //	generate new rsa key pair with random data
-	private func createRSAKeyPair() -> (public:String, private:String) {
+	private func createRSAKeyPair() -> (public:Data, private:Data) {
 		var publicKeySec, privateKeySec: SecKey?
 		let keyattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
@@ -135,27 +162,27 @@ struct ContentView: View {
 		var error: Unmanaged<CFError>?
 		let dataPub = SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?
 		let dataPri = SecKeyCopyExternalRepresentation(privateKeySec!, &error) as Data?
-		return (dataPub!.base64EncodedString(), dataPri!.base64EncodedString())
+		return (dataPub!, dataPri!)
 	}
 	
-	private func createPrivateKey(kd: String, id: Identity) {
+	private func createPrivateKey(data: Data, id: Identity) {
 		withAnimation {
             let newKey = PrivateKey(context: viewContext)
-            newKey.keyBody = kd
-            newKey.id = id
+            newKey.keyBody = data
+            newKey.identity = id
             saveContext()
         }
 	}
 	
 //	need at least one of id (type 0, default), contact (type 1), eSender (type 2), mSender (type 3)
 //	TODO: handle error cases
-	private func createPublicKey(kd: String, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int = 0) {
+	private func createPublicKey(kd: Data, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int = 0) {
 		withAnimation {
             let newKey = PublicKey(context: viewContext)
             newKey.keyBody = kd
             switch type {
             case 0:
-				newKey.id = id
+				newKey.identity = id
 			case 1:
 				newKey.contact = contact
 			case 2:
@@ -163,7 +190,7 @@ struct ContentView: View {
 			case 3:
 				newKey.messageSender = mSender
 			default:
-				newKey.id = id
+				newKey.identity = id
 			}
             
             saveContext()
@@ -174,29 +201,63 @@ struct ContentView: View {
 //	TODO: now assuming it's not mine, need to decrypt if possible
 	private func createEncrypted(received: Encrypted, id: Identity) {
 		withAnimation {
-			received.id = id
+			received.identity = id
 		}
 	}
 	
+private func retrievePublicKey(keyBody: Data) -> SecKey {
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
+		]
+		var error: Unmanaged<CFError>?
+		let pubKey: SecKey = SecKeyCreateWithData(keyBody as CFData, attribute as CFDictionary, &error)!
+		return pubKey
+	}
+	
+	private func retrievePrivateKey(keyBody: Data) -> SecKey {
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
+		]
+		var error: Unmanaged<CFError>?
+		let priKey: SecKey = SecKeyCreateWithData(keyBody as CFData, attribute as CFDictionary, &error)!
+		return priKey
+	}
+
+	
 //	encrypt the message "I" create for sending to contact
-//	private func createEncryptedFor(ms: Message, id: Identity, contact: Contact) {
-//		withAnimation {
-//			let newEncrypted = Encrypted(context: viewContext)
-//			newEncrypted.id = id
-//			newEncrypted.messageType = ms.messageType
-//			do {
-//				let publicKey = try CryptorRSA.createPublicKey(withBase64: contact.theirKey!.keyBody!)
-//				let bodyData: Data = ms.messageBody!.data(using: .utf8)!
-//				let plaintext = CryptorRSA.createPlaintext(with: bodyData)
-//				let encryptedData = try plaintext.encrypt(with: publicKey, algorithm: .sha1)
-//				// TODO: resolve encrypt failure, might give up usgin CryptorRSA but refer to
-//				// https://medium.com/@vaibhav.pmeshram/creating-and-dismantling-rsa-key-in-seckey-swift-ios-7b5077e41244
-//				// and https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/using_keys_for_encryption
-//			} catch {
-//				print(error)
-//			}
-//		}
-//	}
+//	TODO: need to change my own public key to the contact's public key
+	private func createEncryptedFor(ms: Message, id: Identity) {
+		withAnimation {
+			let newEncrypted = Encrypted(context: viewContext)
+			newEncrypted.identity = id
+			newEncrypted.receiverId = ms.contact!.id
+			newEncrypted.messageType = ms.messageType
+			newEncrypted.timeCreated = ms.timeCreated
+			newEncrypted.senderKey = id.publicKey
+			let publicKey: SecKey = retrievePublicKey(keyBody: id.publicKey!.keyBody!)
+			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
+			var error: Unmanaged<CFError>?
+			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
+			newEncrypted.encryptedBody = encryptedBody
+			saveContext()
+		}
+	}
+	
+	private func decryptEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
+		withAnimation {
+			let newMessage = Message(context: viewContext)
+			newMessage.contact = contact
+			newMessage.timeCreated = ec.timeCreated
+			let privateKey: SecKey = retrievePrivateKey(keyBody: id.privateKey!.keyBody!)
+			var error: Unmanaged<CFError>?
+			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, ec.encryptedBody! as CFData, &error)! as Data
+			let dstring = String(decoding: decryptedBody, as: UTF8.self)
+			newMessage.messageBody = dstring
+			saveContext()
+		}
+	}
 	
     
 //  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below

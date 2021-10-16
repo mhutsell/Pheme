@@ -2,7 +2,7 @@
 //  PublicKey+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/10/21.
+//  Created by Ray Chen on 10/16/21.
 //
 //
 
@@ -16,10 +16,10 @@ extension PublicKey {
         return NSFetchRequest<PublicKey>(entityName: "PublicKey")
     }
 
-    @NSManaged public var keyBody: String?
+    @NSManaged public var keyBody: Data?
     @NSManaged public var contact: Contact?
     @NSManaged public var encryptedSender: Encrypted?
-    @NSManaged public var id: Identity?
+    @NSManaged public var identity: Identity?
     @NSManaged public var messageSender: Message?
 
 }

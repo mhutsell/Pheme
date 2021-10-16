@@ -2,7 +2,7 @@
 //  PrivateKey+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/10/21.
+//  Created by Ray Chen on 10/16/21.
 //
 //
 
@@ -16,8 +16,8 @@ extension PrivateKey {
         return NSFetchRequest<PrivateKey>(entityName: "PrivateKey")
     }
 
-    @NSManaged public var keyBody: String?
-    @NSManaged public var id: Identity?
+    @NSManaged public var keyBody: Data?
+    @NSManaged public var identity: Identity?
 
 }
 
