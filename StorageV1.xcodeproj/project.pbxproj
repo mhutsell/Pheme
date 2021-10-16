@@ -13,19 +13,19 @@
 		11082C67270E7EC60099285E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C66270E7EC60099285E /* Preview Assets.xcassets */; };
 		11082C69270E7EC60099285E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C68270E7EC60099285E /* Persistence.swift */; };
 		11082C6C270E7EC60099285E /* StorageV1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */; };
-		11082C7F270E8D3E0099285E /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C73270E8D3E0099285E /* Message+CoreDataClass.swift */; };
-		11082C80270E8D3E0099285E /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C74270E8D3E0099285E /* Message+CoreDataProperties.swift */; };
-		11082C87270E8D3E0099285E /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7B270E8D3E0099285E /* Contact+CoreDataClass.swift */; };
-		11082C88270E8D3E0099285E /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7C270E8D3E0099285E /* Contact+CoreDataProperties.swift */; };
 		11082C8D270E9E860099285E /* CryptorRSA in Frameworks */ = {isa = PBXBuildFile; productRef = 11082C8C270E9E860099285E /* CryptorRSA */; };
-		1151F740271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F73E271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift */; };
-		1151F741271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F73F271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift */; };
-		1151F746271B4024007EE2D0 /* PrivateKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F742271B4024007EE2D0 /* PrivateKey+CoreDataClass.swift */; };
-		1151F747271B4024007EE2D0 /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F743271B4024007EE2D0 /* PrivateKey+CoreDataProperties.swift */; };
-		1151F748271B4024007EE2D0 /* PublicKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F744271B4024007EE2D0 /* PublicKey+CoreDataClass.swift */; };
-		1151F749271B4024007EE2D0 /* PublicKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F745271B4024007EE2D0 /* PublicKey+CoreDataProperties.swift */; };
-		11F92FB92713627D0049929A /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB72713627D0049929A /* Identity+CoreDataClass.swift */; };
-		11F92FBA2713627D0049929A /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB82713627D0049929A /* Identity+CoreDataProperties.swift */; };
+		116FAC7C271B443500D94FDD /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC70271B443500D94FDD /* Contact+CoreDataClass.swift */; };
+		116FAC7D271B443500D94FDD /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC71271B443500D94FDD /* Contact+CoreDataProperties.swift */; };
+		116FAC7E271B443500D94FDD /* PrivateKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC72271B443500D94FDD /* PrivateKey+CoreDataClass.swift */; };
+		116FAC7F271B443500D94FDD /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC73271B443500D94FDD /* PrivateKey+CoreDataProperties.swift */; };
+		116FAC80271B443500D94FDD /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC74271B443500D94FDD /* Message+CoreDataClass.swift */; };
+		116FAC81271B443500D94FDD /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC75271B443500D94FDD /* Message+CoreDataProperties.swift */; };
+		116FAC82271B443500D94FDD /* PublicKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC76271B443500D94FDD /* PublicKey+CoreDataClass.swift */; };
+		116FAC83271B443500D94FDD /* PublicKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC77271B443500D94FDD /* PublicKey+CoreDataProperties.swift */; };
+		116FAC84271B443500D94FDD /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC78271B443500D94FDD /* Encrypted+CoreDataClass.swift */; };
+		116FAC85271B443500D94FDD /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC79271B443500D94FDD /* Encrypted+CoreDataProperties.swift */; };
+		116FAC86271B443500D94FDD /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC7A271B443500D94FDD /* Identity+CoreDataClass.swift */; };
+		116FAC87271B443500D94FDD /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116FAC7B271B443500D94FDD /* Identity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,18 +37,18 @@
 		11082C68270E7EC60099285E /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		11082C6B270E7EC60099285E /* StorageV1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StorageV1.xcdatamodel; sourceTree = "<group>"; };
 		11082C6D270E7EC60099285E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		11082C73270E8D3E0099285E /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataClass.swift"; path = "StorageV1/data/Message+CoreDataClass.swift"; sourceTree = "<group>"; };
-		11082C74270E8D3E0099285E /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "StorageV1/data/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		11082C7B270E8D3E0099285E /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataClass.swift"; path = "StorageV1/data/Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
-		11082C7C270E8D3E0099285E /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataProperties.swift"; path = "StorageV1/data/Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1151F73E271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
-		1151F73F271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1151F742271B4024007EE2D0 /* PrivateKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataClass.swift"; path = "StorageV1/data/PrivateKey+CoreDataClass.swift"; sourceTree = "<group>"; };
-		1151F743271B4024007EE2D0 /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1151F744271B4024007EE2D0 /* PublicKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataClass.swift"; path = "StorageV1/data/PublicKey+CoreDataClass.swift"; sourceTree = "<group>"; };
-		1151F745271B4024007EE2D0 /* PublicKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataProperties.swift"; path = "StorageV1/data/PublicKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		11F92FB72713627D0049929A /* Identity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataClass.swift"; path = "StorageV1/data/Identity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		11F92FB82713627D0049929A /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataProperties.swift"; path = "StorageV1/data/Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		116FAC70271B443500D94FDD /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataClass.swift"; path = "StorageV1/data/Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		116FAC71271B443500D94FDD /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataProperties.swift"; path = "StorageV1/data/Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		116FAC72271B443500D94FDD /* PrivateKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataClass.swift"; path = "StorageV1/data/PrivateKey+CoreDataClass.swift"; sourceTree = "<group>"; };
+		116FAC73271B443500D94FDD /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		116FAC74271B443500D94FDD /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataClass.swift"; path = "StorageV1/data/Message+CoreDataClass.swift"; sourceTree = "<group>"; };
+		116FAC75271B443500D94FDD /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "StorageV1/data/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		116FAC76271B443500D94FDD /* PublicKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataClass.swift"; path = "StorageV1/data/PublicKey+CoreDataClass.swift"; sourceTree = "<group>"; };
+		116FAC77271B443500D94FDD /* PublicKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataProperties.swift"; path = "StorageV1/data/PublicKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		116FAC78271B443500D94FDD /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
+		116FAC79271B443500D94FDD /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		116FAC7A271B443500D94FDD /* Identity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataClass.swift"; path = "StorageV1/data/Identity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		116FAC7B271B443500D94FDD /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataProperties.swift"; path = "StorageV1/data/Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,18 +66,18 @@
 		11082C53270E7EC40099285E = {
 			isa = PBXGroup;
 			children = (
-				1151F742271B4024007EE2D0 /* PrivateKey+CoreDataClass.swift */,
-				1151F743271B4024007EE2D0 /* PrivateKey+CoreDataProperties.swift */,
-				1151F744271B4024007EE2D0 /* PublicKey+CoreDataClass.swift */,
-				1151F745271B4024007EE2D0 /* PublicKey+CoreDataProperties.swift */,
-				1151F73E271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift */,
-				1151F73F271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift */,
-				11F92FB72713627D0049929A /* Identity+CoreDataClass.swift */,
-				11F92FB82713627D0049929A /* Identity+CoreDataProperties.swift */,
-				11082C73270E8D3E0099285E /* Message+CoreDataClass.swift */,
-				11082C74270E8D3E0099285E /* Message+CoreDataProperties.swift */,
-				11082C7B270E8D3E0099285E /* Contact+CoreDataClass.swift */,
-				11082C7C270E8D3E0099285E /* Contact+CoreDataProperties.swift */,
+				116FAC70271B443500D94FDD /* Contact+CoreDataClass.swift */,
+				116FAC71271B443500D94FDD /* Contact+CoreDataProperties.swift */,
+				116FAC72271B443500D94FDD /* PrivateKey+CoreDataClass.swift */,
+				116FAC73271B443500D94FDD /* PrivateKey+CoreDataProperties.swift */,
+				116FAC74271B443500D94FDD /* Message+CoreDataClass.swift */,
+				116FAC75271B443500D94FDD /* Message+CoreDataProperties.swift */,
+				116FAC76271B443500D94FDD /* PublicKey+CoreDataClass.swift */,
+				116FAC77271B443500D94FDD /* PublicKey+CoreDataProperties.swift */,
+				116FAC78271B443500D94FDD /* Encrypted+CoreDataClass.swift */,
+				116FAC79271B443500D94FDD /* Encrypted+CoreDataProperties.swift */,
+				116FAC7A271B443500D94FDD /* Identity+CoreDataClass.swift */,
+				116FAC7B271B443500D94FDD /* Identity+CoreDataProperties.swift */,
 				11082C5E270E7EC40099285E /* StorageV1 */,
 				11082C5D270E7EC40099285E /* Products */,
 			);
@@ -188,22 +188,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1151F749271B4024007EE2D0 /* PublicKey+CoreDataProperties.swift in Sources */,
-				1151F746271B4024007EE2D0 /* PrivateKey+CoreDataClass.swift in Sources */,
+				116FAC83271B443500D94FDD /* PublicKey+CoreDataProperties.swift in Sources */,
+				116FAC80271B443500D94FDD /* Message+CoreDataClass.swift in Sources */,
+				116FAC7D271B443500D94FDD /* Contact+CoreDataProperties.swift in Sources */,
+				116FAC87271B443500D94FDD /* Identity+CoreDataProperties.swift in Sources */,
+				116FAC82271B443500D94FDD /* PublicKey+CoreDataClass.swift in Sources */,
 				11082C69270E7EC60099285E /* Persistence.swift in Sources */,
-				11082C88270E8D3E0099285E /* Contact+CoreDataProperties.swift in Sources */,
-				11F92FBA2713627D0049929A /* Identity+CoreDataProperties.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
-				1151F747271B4024007EE2D0 /* PrivateKey+CoreDataProperties.swift in Sources */,
-				11F92FB92713627D0049929A /* Identity+CoreDataClass.swift in Sources */,
-				1151F740271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift in Sources */,
-				1151F748271B4024007EE2D0 /* PublicKey+CoreDataClass.swift in Sources */,
-				11082C80270E8D3E0099285E /* Message+CoreDataProperties.swift in Sources */,
+				116FAC86271B443500D94FDD /* Identity+CoreDataClass.swift in Sources */,
+				116FAC7E271B443500D94FDD /* PrivateKey+CoreDataClass.swift in Sources */,
 				11082C6C270E7EC60099285E /* StorageV1.xcdatamodeld in Sources */,
+				116FAC7F271B443500D94FDD /* PrivateKey+CoreDataProperties.swift in Sources */,
 				11082C60270E7EC40099285E /* StorageV1App.swift in Sources */,
-				11082C87270E8D3E0099285E /* Contact+CoreDataClass.swift in Sources */,
-				1151F741271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift in Sources */,
-				11082C7F270E8D3E0099285E /* Message+CoreDataClass.swift in Sources */,
+				116FAC85271B443500D94FDD /* Encrypted+CoreDataProperties.swift in Sources */,
+				116FAC81271B443500D94FDD /* Message+CoreDataProperties.swift in Sources */,
+				116FAC84271B443500D94FDD /* Encrypted+CoreDataClass.swift in Sources */,
+				116FAC7C271B443500D94FDD /* Contact+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
