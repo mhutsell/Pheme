@@ -127,7 +127,7 @@ struct ContentView: View {
 	}
 
 //	generate new rsa key pair with random data
-	private func createRSAKeyPair() -> (public:String, private:String) {
+	private func createRSAKeyPair() -> (public:Data, private:Data) {
 		var publicKeySec, privateKeySec: SecKey?
 		let keyattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
@@ -138,10 +138,10 @@ struct ContentView: View {
 		var error: Unmanaged<CFError>?
 		let dataPub = SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?
 		let dataPri = SecKeyCopyExternalRepresentation(privateKeySec!, &error) as Data?
-		return (dataPub!.base64EncodedString(), dataPri!.base64EncodedString())
+		return (dataPub!, dataPri!)
 	}
 	
-	private func createPrivateKey(kd: String, id: Identity) {
+	private func createPrivateKey(kd: Data, id: Identity) {
 		withAnimation {
             let newKey = PrivateKey(context: viewContext)
             newKey.keyBody = kd
@@ -152,7 +152,7 @@ struct ContentView: View {
 	
 //	need at least one of id (type 0, default), contact (type 1), eSender (type 2), mSender (type 3)
 //	TODO: handle error cases
-	private func createPublicKey(kd: String, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int = 0) {
+	private func createPublicKey(kd: Data, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int = 0) {
 		withAnimation {
             let newKey = PublicKey(context: viewContext)
             newKey.keyBody = kd
@@ -181,25 +181,23 @@ struct ContentView: View {
 		}
 	}
 	
-private func retrievePublicKey(s: String) -> SecKey {
-		let keyData = Data(s.utf8)
+private func retrievePublicKey(keyBody: Data) -> SecKey {
 		let attribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
 		]
 		var error: Unmanaged<CFError>?
-		let pubKey: SecKey = SecKeyCreateWithData(keyData as CFData, attribute as CFDictionary, &error)!
+		let pubKey: SecKey = SecKeyCreateWithData(keyBody as CFData, attribute as CFDictionary, &error)!
 		return pubKey
 	}
 	
-	private func retrievePrivateKey(s: String) -> SecKey {
-		let keyData = Data(s.utf8)
+	private func retrievePrivateKey(keyBody: Data) -> SecKey {
 		let attribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
 		]
 		var error: Unmanaged<CFError>?
-		let priKey: SecKey = SecKeyCreateWithData(keyData as CFData, attribute as CFDictionary, &error)!
+		let priKey: SecKey = SecKeyCreateWithData(keyBody as CFData, attribute as CFDictionary, &error)!
 		return priKey
 	}
 
@@ -213,7 +211,7 @@ private func retrievePublicKey(s: String) -> SecKey {
 			newEncrypted.messageType = ms.messageType
 			newEncrypted.timeCreated = ms.timeCreated
 			newEncrypted.senderKey = id.publicKey
-			let publicKey: SecKey = retrievePublicKey(s: (id.publicKey?.keyBody)!)
+			let publicKey: SecKey = retrievePublicKey(keyBody: (id.publicKey?.keyBody)!)
 			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
 			var error: Unmanaged<CFError>?
 			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, bodyData, &error)! as Data
@@ -227,7 +225,7 @@ private func retrievePublicKey(s: String) -> SecKey {
 			let newMessage = Message(context: viewContext)
 			newMessage.contact = contact
 			newMessage.timeCreated = ec.timeCreated
-			let privateKey: SecKey = retrievePrivateKey(s: (id.privateKey?.keyBody)!)
+			let privateKey: SecKey = retrievePrivateKey(keyBody: (id.privateKey?.keyBody)!)
 			var error: Unmanaged<CFError>?
 			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, ec.encryptedBody! as CFData, &error)! as Data
 			let dstring = String(decoding: decryptedBody, as: UTF8.self)
