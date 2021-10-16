@@ -17,6 +17,7 @@ extension Identity {
     }
 
     @NSManaged public var nickname: String?
+    @NSManaged public var id: UUID?
     @NSManaged public var contacts: NSSet?
     @NSManaged public var notMine: NSSet?
     @NSManaged public var privateKey: PrivateKey?

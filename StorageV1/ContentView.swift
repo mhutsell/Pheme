@@ -72,11 +72,12 @@ struct ContentView: View {
 		}
     }
 //	sample functions for creation an entity
-    private func createMessage(body: String) {
+    private func createMessage(body: String, contact: Contact) {
         withAnimation {
             let newMessage = Message(context: viewContext)
             newMessage.timeCreated = Date()
             newMessage.messageBody = body
+            newMessage.contact = contact
             saveContext()
         }
     }
@@ -118,6 +119,7 @@ struct ContentView: View {
 		withAnimation {
             let newIdentity = Identity(context: viewContext)
             newIdentity.nickname = nickname
+            newIdentity.id = UUID()
 			let result = createRSAKeyPair()
 			createPrivateKey(data: result.private, id: newIdentity)
 			createPublicKey(kd: result.public, id: newIdentity, type: 0)
@@ -144,7 +146,7 @@ struct ContentView: View {
 		withAnimation {
             let newKey = PrivateKey(context: viewContext)
             newKey.keyBody = data
-            newKey.id = id
+            newKey.identity = id
             saveContext()
         }
 	}
@@ -157,7 +159,7 @@ struct ContentView: View {
             newKey.keyBody = kd
             switch type {
             case 0:
-				newKey.id = id
+				newKey.identity = id
 			case 1:
 				newKey.contact = contact
 			case 2:
@@ -165,7 +167,7 @@ struct ContentView: View {
 			case 3:
 				newKey.messageSender = mSender
 			default:
-				newKey.id = id
+				newKey.identity = id
 			}
             
             saveContext()
@@ -176,7 +178,7 @@ struct ContentView: View {
 //	TODO: now assuming it's not mine, need to decrypt if possible
 	private func createEncrypted(received: Encrypted, id: Identity) {
 		withAnimation {
-			received.id = id
+			received.identity = id
 		}
 	}
 	
@@ -203,35 +205,36 @@ private func retrievePublicKey(keyBody: Data) -> SecKey {
 	
 //	encrypt the message "I" create for sending to contact
 //	TODO: need to change my own public key to the contact's public key
-//	private func createEncryptedFor(ms: Message, id: Identity) {
-//		withAnimation {
-//			let newEncrypted = Encrypted(context: viewContext)
-//			newEncrypted.id = id
-//			newEncrypted.messageType = ms.messageType
-//			newEncrypted.timeCreated = ms.timeCreated
-//			newEncrypted.senderKey = id.publicKey
-//			let publicKey: SecKey = retrievePublicKey(keyBody: id.publicKey!.keyBody!)
-//			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
-//			var error: Unmanaged<CFError>?
-//			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
-//			newEncrypted.encryptedBody = encryptedBody
-//			saveContext()
-//		}
-//	}
-//	
-//	private func decryptEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
-//		withAnimation {
-//			let newMessage = Message(context: viewContext)
-//			newMessage.contact = contact
-//			newMessage.timeCreated = ec.timeCreated
-//			let privateKey: SecKey = retrievePrivateKey(keyBody: id.privateKey!.keyBody!)
-//			var error: Unmanaged<CFError>?
-//			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, ec.encryptedBody! as CFData, &error)! as Data
-//			let dstring = String(decoding: decryptedBody, as: UTF8.self)
-//			newMessage.messageBody = dstring
-//			saveContext()
-//		}
-//	}
+	private func createEncryptedFor(ms: Message, id: Identity) {
+		withAnimation {
+			let newEncrypted = Encrypted(context: viewContext)
+			newEncrypted.identity = id
+			newEncrypted.receiverId = ms.contact!.id
+			newEncrypted.messageType = ms.messageType
+			newEncrypted.timeCreated = ms.timeCreated
+			newEncrypted.senderKey = id.publicKey
+			let publicKey: SecKey = retrievePublicKey(keyBody: id.publicKey!.keyBody!)
+			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
+			var error: Unmanaged<CFError>?
+			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
+			newEncrypted.encryptedBody = encryptedBody
+			saveContext()
+		}
+	}
+	
+	private func decryptEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
+		withAnimation {
+			let newMessage = Message(context: viewContext)
+			newMessage.contact = contact
+			newMessage.timeCreated = ec.timeCreated
+			let privateKey: SecKey = retrievePrivateKey(keyBody: id.privateKey!.keyBody!)
+			var error: Unmanaged<CFError>?
+			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, ec.encryptedBody! as CFData, &error)! as Data
+			let dstring = String(decoding: decryptedBody, as: UTF8.self)
+			newMessage.messageBody = dstring
+			saveContext()
+		}
+	}
 	
     
 //  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below

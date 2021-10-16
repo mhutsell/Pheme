@@ -19,7 +19,7 @@ extension PublicKey {
     @NSManaged public var keyBody: Data?
     @NSManaged public var contact: Contact?
     @NSManaged public var encryptedSender: Encrypted?
-    @NSManaged public var id: Identity?
+    @NSManaged public var identity: Identity?
     @NSManaged public var messageSender: Message?
 
 }

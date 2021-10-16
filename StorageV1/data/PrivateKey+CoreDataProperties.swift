@@ -17,7 +17,7 @@ extension PrivateKey {
     }
 
     @NSManaged public var keyBody: Data?
-    @NSManaged public var id: Identity?
+    @NSManaged public var identity: Identity?
 
 }
 

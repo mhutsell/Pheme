@@ -17,7 +17,8 @@ extension Contact {
     }
 
     @NSManaged public var nickname: String?
-    @NSManaged public var id: Identity?
+    @NSManaged public var id: UUID?
+    @NSManaged public var identity: Identity?
     @NSManaged public var messages: NSSet?
     @NSManaged public var theirKey: PublicKey?
 
