@@ -18,14 +18,14 @@
 		11082C87270E8D3E0099285E /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7B270E8D3E0099285E /* Contact+CoreDataClass.swift */; };
 		11082C88270E8D3E0099285E /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C7C270E8D3E0099285E /* Contact+CoreDataProperties.swift */; };
 		11082C8D270E9E860099285E /* CryptorRSA in Frameworks */ = {isa = PBXBuildFile; productRef = 11082C8C270E9E860099285E /* CryptorRSA */; };
+		1151F740271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F73E271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift */; };
+		1151F741271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1151F73F271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift */; };
 		11F92FB32713622B0049929A /* PublicKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FAF2713622B0049929A /* PublicKey+CoreDataClass.swift */; };
 		11F92FB42713622B0049929A /* PublicKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB02713622B0049929A /* PublicKey+CoreDataProperties.swift */; };
 		11F92FB52713622B0049929A /* PrivateKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB12713622B0049929A /* PrivateKey+CoreDataClass.swift */; };
 		11F92FB62713622B0049929A /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB22713622B0049929A /* PrivateKey+CoreDataProperties.swift */; };
 		11F92FB92713627D0049929A /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB72713627D0049929A /* Identity+CoreDataClass.swift */; };
 		11F92FBA2713627D0049929A /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FB82713627D0049929A /* Identity+CoreDataProperties.swift */; };
-		11F92FC127136F230049929A /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FBF27136F230049929A /* Encrypted+CoreDataClass.swift */; };
-		11F92FC227136F230049929A /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F92FC027136F230049929A /* Encrypted+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,14 +41,14 @@
 		11082C74270E8D3E0099285E /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "StorageV1/data/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		11082C7B270E8D3E0099285E /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataClass.swift"; path = "StorageV1/data/Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11082C7C270E8D3E0099285E /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataProperties.swift"; path = "StorageV1/data/Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1151F73E271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1151F73F271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		11F92FAF2713622B0049929A /* PublicKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataClass.swift"; path = "StorageV1/data/PublicKey+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11F92FB02713622B0049929A /* PublicKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataProperties.swift"; path = "StorageV1/data/PublicKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		11F92FB12713622B0049929A /* PrivateKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataClass.swift"; path = "StorageV1/data/PrivateKey+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11F92FB22713622B0049929A /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		11F92FB72713627D0049929A /* Identity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataClass.swift"; path = "StorageV1/data/Identity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11F92FB82713627D0049929A /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataProperties.swift"; path = "StorageV1/data/Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		11F92FBF27136F230049929A /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
-		11F92FC027136F230049929A /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,8 +66,8 @@
 		11082C53270E7EC40099285E = {
 			isa = PBXGroup;
 			children = (
-				11F92FBF27136F230049929A /* Encrypted+CoreDataClass.swift */,
-				11F92FC027136F230049929A /* Encrypted+CoreDataProperties.swift */,
+				1151F73E271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift */,
+				1151F73F271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift */,
 				11F92FB72713627D0049929A /* Identity+CoreDataClass.swift */,
 				11F92FB82713627D0049929A /* Identity+CoreDataProperties.swift */,
 				11F92FAF2713622B0049929A /* PublicKey+CoreDataClass.swift */,
@@ -196,13 +196,13 @@
 				11F92FB62713622B0049929A /* PrivateKey+CoreDataProperties.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
 				11F92FB92713627D0049929A /* Identity+CoreDataClass.swift in Sources */,
-				11F92FC127136F230049929A /* Encrypted+CoreDataClass.swift in Sources */,
+				1151F740271B3BDB007EE2D0 /* Encrypted+CoreDataClass.swift in Sources */,
 				11082C80270E8D3E0099285E /* Message+CoreDataProperties.swift in Sources */,
 				11082C6C270E7EC60099285E /* StorageV1.xcdatamodeld in Sources */,
 				11082C60270E7EC40099285E /* StorageV1App.swift in Sources */,
 				11F92FB52713622B0049929A /* PrivateKey+CoreDataClass.swift in Sources */,
 				11082C87270E8D3E0099285E /* Contact+CoreDataClass.swift in Sources */,
-				11F92FC227136F230049929A /* Encrypted+CoreDataProperties.swift in Sources */,
+				1151F741271B3BDB007EE2D0 /* Encrypted+CoreDataProperties.swift in Sources */,
 				11082C7F270E8D3E0099285E /* Message+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

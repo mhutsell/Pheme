@@ -2,7 +2,7 @@
 //  Encrypted+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/10/21.
+//  Created by Ray Chen on 10/16/21.
 //
 //
 
@@ -16,9 +16,9 @@ extension Encrypted {
         return NSFetchRequest<Encrypted>(entityName: "Encrypted")
     }
 
-    @NSManaged public var encryptedBody: String?
-    @NSManaged public var timeCreated: Date?
+    @NSManaged public var encryptedBody: Data?
     @NSManaged public var messageType: Int16
+    @NSManaged public var timeCreated: Date?
     @NSManaged public var id: Identity?
     @NSManaged public var senderKey: PublicKey?
 

@@ -217,7 +217,7 @@ private func retrievePublicKey(s: String) -> SecKey {
 			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
 			var error: Unmanaged<CFError>?
 			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, bodyData, &error)! as Data
-			newEncrypted.encryptedBody = encryptedBody.base64EncodedString()
+			newEncrypted.encryptedBody = encryptedBody
 			saveContext()
 		}
 	}
@@ -227,10 +227,9 @@ private func retrievePublicKey(s: String) -> SecKey {
 			let newMessage = Message(context: viewContext)
 			newMessage.contact = contact
 			newMessage.timeCreated = ec.timeCreated
-			let encryptedData: CFData = ec.encryptedBody!.data(using: .utf8)! as CFData
 			let privateKey: SecKey = retrievePrivateKey(s: (id.privateKey?.keyBody)!)
 			var error: Unmanaged<CFError>?
-			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, encryptedData, &error)! as Data
+			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA512, ec.encryptedBody! as CFData, &error)! as Data
 			let dstring = String(decoding: decryptedBody, as: UTF8.self)
 			newMessage.messageBody = dstring
 			saveContext()

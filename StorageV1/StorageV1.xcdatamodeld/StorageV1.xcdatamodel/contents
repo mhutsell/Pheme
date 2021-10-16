@@ -7,7 +7,7 @@
         <relationship name="theirKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublicKey" inverseName="contact" inverseEntity="PublicKey"/>
     </entity>
     <entity name="Encrypted" representedClassName="Encrypted" syncable="YES">
-        <attribute name="encryptedBody" optional="YES" attributeType="String"/>
+        <attribute name="encryptedBody" optional="YES" attributeType="Binary"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="id" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="notMine" inverseEntity="Identity"/>
