@@ -48,13 +48,14 @@ struct ContentView: View {
 						}
 					}
 				}
+				// need to at least create one identity
 				Section(header: Text("raw, encrypted, and decrypted message")) {
 					HStack{
 //						add more TextField here to test create with multiple input item
 						TextField("New message", text: self.$newMessage)
 						Button(action: {
 //						change the function here to test other CRUD
-							let result = encryptionTest(testString: self.newMessage)
+							let result = encryptionTest(testString: self.newMessage, id: items[0])
 							self.decrypted = result.decrypted
 							self.encrypted = result.encrypted
 						}){
@@ -109,30 +110,21 @@ struct ContentView: View {
 //    TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
 //    private func createContact() {}
     
-    private func encryptionTest(testString: String = "Hello World") -> (testString:String,  encrypted: String, decrypted: String) {
-        
-        var publicKeySec, privateKeySec: SecKey?
-        let keyattribute = [
-            kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-            kSecAttrKeySizeInBits as String : 2048
-        ] as CFDictionary
-        SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
+    private func encryptionTest(testString: String = "Hello World", id: Identity) -> (testString:String,  encrypted: String, decrypted: String) {
         
         var error: Unmanaged<CFError>?
-		let dataPub = SecKeyCopyExternalRepresentation(publicKeySec!, &error)! as Data
-		let dataPri = SecKeyCopyExternalRepresentation(privateKeySec!, &error)! as Data
 		
 		let attribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
 		]
-		let pubKey: SecKey = SecKeyCreateWithData(dataPub as CFData, attribute as CFDictionary, &error)!
+		let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
 		
 		let priattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
 		]
-		let priKey: SecKey = SecKeyCreateWithData(dataPri as CFData, priattribute as CFDictionary, &error)!
+		let priKey: SecKey = SecKeyCreateWithData(id.privateKey!.keyBody! as CFData, priattribute as CFDictionary, &error)! as SecKey
 		
         let bodyData: CFData = testString.data(using: .utf8)! as CFData
         
