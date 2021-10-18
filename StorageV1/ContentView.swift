@@ -128,8 +128,8 @@ struct ContentView: View {
 		
         let bodyData: CFData = testString.data(using: .utf8)! as CFData
         
-		let encrypted: Data = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
-		let decrypted: Data = SecKeyCreateDecryptedData(priKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, encrypted as CFData, &error)! as Data
+		let encrypted: Data = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, bodyData, &error)! as Data
+		let decrypted: Data = SecKeyCreateDecryptedData(priKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, encrypted as CFData, &error)! as Data
 		// TODO: handle nil case (if need to try decrypting every message)
         
         let str = String(decoding: decrypted, as: UTF8.self)
@@ -239,7 +239,7 @@ private func retrievePublicKey(keyBody: Data) -> SecKey {
 			let publicKey: SecKey = retrievePublicKey(keyBody: id.publicKey!.keyBody!)
 			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
 			var error: Unmanaged<CFError>?
-			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, bodyData, &error)! as Data
+			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, bodyData, &error)! as Data
 			newEncrypted.encryptedBody = encryptedBody
 			saveContext()
 		}
@@ -252,7 +252,7 @@ private func retrievePublicKey(keyBody: Data) -> SecKey {
 			newMessage.timeCreated = ec.timeCreated
 			let privateKey: SecKey = retrievePrivateKey(keyBody: id.privateKey!.keyBody!)
 			var error: Unmanaged<CFError>?
-			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA1, ec.encryptedBody! as CFData, &error)! as Data
+			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, ec.encryptedBody! as CFData, &error)! as Data
 			let dstring = String(decoding: decryptedBody, as: UTF8.self)
 			newMessage.messageBody = dstring
 			saveContext()
