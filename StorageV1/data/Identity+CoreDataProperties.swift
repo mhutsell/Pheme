@@ -2,7 +2,7 @@
 //  Identity+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/10/21.
+//  Created by Ray Chen on 10/16/21.
 //
 //
 
@@ -17,6 +17,7 @@ extension Identity {
     }
 
     @NSManaged public var nickname: String?
+    @NSManaged public var id: UUID?
     @NSManaged public var contacts: NSSet?
     @NSManaged public var notMine: NSSet?
     @NSManaged public var privateKey: PrivateKey?
