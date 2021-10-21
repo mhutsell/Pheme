@@ -96,7 +96,7 @@ struct ContentView: View {
     }
 //	sample functions for creation an entity
 //	need to add contact
-    private func createMessage(body: String, contact: Contact) {
+    private func createMessage(body: String, id: Identity, contact: Contact) {
 //    private func createMessage(body: String) {
         withAnimation {
             let newMessage = Message(context: viewContext)
@@ -104,6 +104,7 @@ struct ContentView: View {
             newMessage.messageBody = body
             newMessage.contact = contact
             saveContext()
+            createEncryptedFor(ms: newMessage, id: id)
         }
     }
     
@@ -145,7 +146,7 @@ struct ContentView: View {
             newIdentity.id = UUID()
 			let result = createRSAKeyPair()
 			createPrivateKey(data: result.private, id: newIdentity)
-			createPublicKey(kd: result.public, id: newIdentity, type: 0)
+			createPublicKey(data: result.public, id: newIdentity, type: 0)
             saveContext()
         }
 	}
@@ -174,12 +175,11 @@ struct ContentView: View {
         }
 	}
 	
-//	need at least one of id (type 0, default), contact (type 1), eSender (type 2), mSender (type 3)
-//	TODO: handle error cases
-	private func createPublicKey(kd: Data, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, mSender: Message? = nil, type: Int = 0) {
+//	need at least one of id (type 0, default), contact (type 1), eSender (type 2)
+	private func createPublicKey(data: Data, id: Identity? = nil, contact: Contact? = nil, eSender: Encrypted? = nil, type: Int = 0) {
 		withAnimation {
             let newKey = PublicKey(context: viewContext)
-            newKey.keyBody = kd
+            newKey.keyBody = data
             switch type {
             case 0:
 				newKey.identity = id
@@ -187,8 +187,6 @@ struct ContentView: View {
 				newKey.contact = contact
 			case 2:
 				newKey.encryptedSender = eSender
-			case 3:
-				newKey.messageSender = mSender
 			default:
 				newKey.identity = id
 			}
@@ -202,17 +200,18 @@ struct ContentView: View {
 	private func createEncrypted(received: Encrypted, id: Identity) {
 		withAnimation {
 			received.identity = id
+			saveContext()
 		}
 	}
 	
-private func retrievePublicKey(keyBody: Data) -> SecKey {
-		let attribute = [
-			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
-		]
-		var error: Unmanaged<CFError>?
-		let pubKey: SecKey = SecKeyCreateWithData(keyBody as CFData, attribute as CFDictionary, &error)!
-		return pubKey
+	private func retrievePublicKey(keyBody: Data) -> SecKey {
+			let attribute = [
+				kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+				kSecAttrKeyClass as String : kSecAttrKeyClassPublic
+			]
+			var error: Unmanaged<CFError>?
+			let pubKey: SecKey = SecKeyCreateWithData(keyBody as CFData, attribute as CFDictionary, &error)!
+			return pubKey
 	}
 	
 	private func retrievePrivateKey(keyBody: Data) -> SecKey {
@@ -227,7 +226,7 @@ private func retrievePublicKey(keyBody: Data) -> SecKey {
 
 	
 //	encrypt the message "I" create for sending to contact
-//	TODO: need to change my own public key to the contact's public key
+//	TODO: only checked with encryption/decryption with my own key paris, need to test with using the contact's
 	private func createEncryptedFor(ms: Message, id: Identity) {
 		withAnimation {
 			let newEncrypted = Encrypted(context: viewContext)
@@ -236,7 +235,7 @@ private func retrievePublicKey(keyBody: Data) -> SecKey {
 			newEncrypted.messageType = ms.messageType
 			newEncrypted.timeCreated = ms.timeCreated
 			newEncrypted.senderKey = id.publicKey
-			let publicKey: SecKey = retrievePublicKey(keyBody: id.publicKey!.keyBody!)
+			let publicKey: SecKey = retrievePublicKey(keyBody: ms.contact!.theirKey!.keyBody!)
 			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
 			var error: Unmanaged<CFError>?
 			let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, bodyData, &error)! as Data
@@ -245,6 +244,7 @@ private func retrievePublicKey(keyBody: Data) -> SecKey {
 		}
 	}
 	
+	// TODO: need the aux function to look for the contact (sender) and check the necessarity to decrypt
 	private func decryptEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
 		withAnimation {
 			let newMessage = Message(context: viewContext)

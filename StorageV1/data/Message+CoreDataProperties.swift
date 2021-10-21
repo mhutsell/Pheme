@@ -2,7 +2,7 @@
 //  Message+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/16/21.
+//  Created by Ray Chen on 10/20/21.
 //
 //
 
@@ -20,7 +20,6 @@ extension Message {
     @NSManaged public var messageType: Int16
     @NSManaged public var timeCreated: Date?
     @NSManaged public var contact: Contact?
-    @NSManaged public var senderKey: PublicKey?
 
 }
 
