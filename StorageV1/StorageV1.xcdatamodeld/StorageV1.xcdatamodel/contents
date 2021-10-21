@@ -12,6 +12,7 @@
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="receiverId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="senderId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="senderNickname" optional="YES" attributeType="String"/>
         <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="identity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="notMine" inverseEntity="Identity"/>
         <relationship name="senderKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PublicKey" inverseName="encryptedSender" inverseEntity="PublicKey"/>
@@ -42,7 +43,7 @@
     </entity>
     <elements>
         <element name="Contact" positionX="-18" positionY="81" width="128" height="104"/>
-        <element name="Encrypted" positionX="9" positionY="99" width="128" height="134"/>
+        <element name="Encrypted" positionX="9" positionY="99" width="128" height="149"/>
         <element name="Identity" positionX="-27" positionY="54" width="128" height="119"/>
         <element name="Message" positionX="-63" positionY="-18" width="128" height="89"/>
         <element name="PrivateKey" positionX="-36" positionY="45" width="128" height="59"/>

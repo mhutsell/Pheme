@@ -19,8 +19,9 @@ extension Encrypted {
     @NSManaged public var encryptedBody: Data?
     @NSManaged public var messageType: Int16
     @NSManaged public var receiverId: UUID?
-    @NSManaged public var timeCreated: Date?
     @NSManaged public var senderId: UUID?
+    @NSManaged public var timeCreated: Date?
+    @NSManaged public var senderNickname: String?
     @NSManaged public var identity: Identity?
     @NSManaged public var senderKey: PublicKey?
 

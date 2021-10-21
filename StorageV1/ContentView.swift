@@ -235,6 +235,7 @@ struct ContentView: View {
 			newEncrypted.messageType = ms.messageType
 			newEncrypted.timeCreated = ms.timeCreated
 			newEncrypted.senderKey = id.publicKey
+			newEncrypted.senderNickname = ms.contact!.nickname
 			let publicKey: SecKey = retrievePublicKey(keyBody: ms.contact!.theirKey!.keyBody!)
 			let bodyData: CFData = ms.messageBody!.data(using: .utf8)! as CFData
 			var error: Unmanaged<CFError>?
