@@ -74,9 +74,10 @@ struct ContentView: View {
 //                    }.onDelete(perform: deleteItem(offsets:))
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
-					Text(self.newMessage)
-					Text(self.encrypted)
-					Text(self.decrypted)
+					Text(myPublicKeyString())
+//					Text(self.newMessage)
+//					Text(self.encrypted)
+//					Text(self.decrypted)
 				}.onDelete(perform: deleteItem(offsets:))
 				
 
@@ -202,6 +203,19 @@ struct ContentView: View {
 			received.identity = id
 			saveContext()
 		}
+	}
+	
+//	return the string for showing QR
+//	TODO: need to add nickname for qr too, concatenation is needed
+	private func myPublicKeyString() -> String {
+		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+		fr.fetchLimit = 1
+		do {
+			let identity = try viewContext.fetch(fr).first
+			return (identity!.publicKey!.keyBody?.base64EncodedString())!
+		} catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
 	}
 	
 	private func retrievePublicKey(keyBody: Data) -> SecKey {
