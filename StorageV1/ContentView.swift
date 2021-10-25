@@ -247,6 +247,7 @@ struct ContentView: View {
 			let newEncrypted = Encrypted(context: viewContext)
 			newEncrypted.identity = id
 			newEncrypted.receiverId = ms.contact!.id
+			newEncrypted.senderId = id.id
 			newEncrypted.messageType = ms.messageType
 			newEncrypted.timeCreated = ms.timeCreated
 			newEncrypted.senderKey = id.publicKey
