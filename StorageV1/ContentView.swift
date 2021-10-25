@@ -74,10 +74,10 @@ struct ContentView: View {
 //                    }.onDelete(perform: deleteItem(offsets:))
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
-//					Text(myPublicKeyString())
-					Text(self.newMessage)
-					Text(self.encrypted)
-					Text(self.decrypted)
+					Text(myPublicKeyString())
+//					Text(self.newMessage)
+//					Text(self.encrypted)
+//					Text(self.decrypted)
 				}.onDelete(perform: deleteItem(offsets:))
 				
 
@@ -122,9 +122,14 @@ struct ContentView: View {
 			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
 		]
 		
-		let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: myPublicKeyString())! as CFData, attribute as CFDictionary, &error)! as SecKey
-//		let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
-		
+        
+//        let keyString: String = myInfo().key!
+        
+//        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: keyString)! as CFData, attribute as CFDictionary, &error)! as SecKey
+        
+//        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: myPublicKeyString())! as CFData, attribute as CFDictionary, &error)! as SecKey
+        let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
+        
 		let priattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
@@ -210,16 +215,29 @@ struct ContentView: View {
 	
 //	return the string for showing QR
 //	TODO: need to add nickname for qr too, concatenation is needed
-	private func myPublicKeyString() -> String {
+    private func myPublicKeyString() -> String {
 		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
 		fr.fetchLimit = 1
 		do {
 			let identity = try viewContext.fetch(fr).first
-			return (identity!.publicKey!.keyBody?.base64EncodedString())!
+            return (identity!.publicKey!.keyBody?.base64EncodedString())!
 		} catch {let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
 	}
+    
+//    return a tuple for showing publickey, nickname, UUID
+//    TODO: need to add nickname for qr too, concatenation is needed
+    private func myInfo() -> (key: String?, nickname: String?, id: String? ) {
+        let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+        fr.fetchLimit = 1
+        do {
+            let identity = try viewContext.fetch(fr).first
+            return (identity!.publicKey!.keyBody!.base64EncodedString(), identity!.nickname, identity!.id!.uuidString)
+        } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+    }
 	
 	private func retrievePublicKey(keyBody: Data) -> SecKey {
 			let attribute = [
