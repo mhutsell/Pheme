@@ -104,6 +104,7 @@ struct ContentView: View {
             newMessage.timeCreated = Date()
             newMessage.messageBody = body
             newMessage.contact = contact
+            newMessage.sentByMe = true
             saveContext()
             createEncryptedFor(ms: newMessage, id: id)
         }
@@ -270,9 +271,13 @@ struct ContentView: View {
 			let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, ec.encryptedBody! as CFData, &error)! as Data
 			let dstring = String(decoding: decryptedBody, as: UTF8.self)
 			newMessage.messageBody = dstring
+			newMessage.sentByMe = false
 			saveContext()
 		}
 	}
+
+//	TODO: search if this encrypted is for me and search the contact who send this message
+//	private func checkAndSearch(ec: Encrypted, id: Identity) {}
 	
     
 //  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
