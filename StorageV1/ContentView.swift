@@ -75,6 +75,9 @@ struct ContentView: View {
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
 					Text(myPublicKeyString())
+                    Text(myInfo().id!)
+                    Text(myInfo().key!)
+                    Text(myInfo().nickname!)
 //					Text(self.newMessage)
 //					Text(self.encrypted)
 //					Text(self.decrypted)
@@ -123,12 +126,13 @@ struct ContentView: View {
 		]
 		
         
-//        let keyString: String = myInfo().key!
+        let keyString: String = myInfo().key!
         
-//        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: keyString)! as CFData, attribute as CFDictionary, &error)! as SecKey
+        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: keyString)! as CFData, attribute as CFDictionary, &error)! as SecKey
         
 //        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: myPublicKeyString())! as CFData, attribute as CFDictionary, &error)! as SecKey
-        let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
+        
+//        let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
         
 		let priattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
