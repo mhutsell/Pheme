@@ -74,10 +74,10 @@ struct ContentView: View {
 //                    }.onDelete(perform: deleteItem(offsets:))
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
-					Text(myPublicKeyString())
-//					Text(self.newMessage)
-//					Text(self.encrypted)
-//					Text(self.decrypted)
+//					Text(myPublicKeyString())
+					Text(self.newMessage)
+					Text(self.encrypted)
+					Text(self.decrypted)
 				}.onDelete(perform: deleteItem(offsets:))
 				
 
@@ -121,7 +121,9 @@ struct ContentView: View {
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
 			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
 		]
-		let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
+		
+		let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: myPublicKeyString())! as CFData, attribute as CFDictionary, &error)! as SecKey
+//		let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
 		
 		let priattribute = [
 			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
