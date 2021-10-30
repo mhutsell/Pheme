@@ -74,7 +74,6 @@ struct ContentView: View {
 //                    }.onDelete(perform: deleteItem(offsets:))
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
-					Text(myPublicKeyString())
                     Text(myInfo().id!)
                     Text(myInfo().key!)
                     Text(myInfo().nickname!)
@@ -209,7 +208,6 @@ struct ContentView: View {
 	}
 	
 //	save received encrypted
-//	TODO: now assuming it's not mine, need to decrypt if possible
 	private func createEncrypted(received: Encrypted, id: Identity) {
 		withAnimation {
 			received.identity = id
@@ -217,21 +215,20 @@ struct ContentView: View {
 		}
 	}
 	
-//	return the string for showing QR
-//	TODO: need to add nickname for qr too, concatenation is needed
-    private func myPublicKeyString() -> String {
-		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
-		fr.fetchLimit = 1
-		do {
-			let identity = try viewContext.fetch(fr).first
-            return (identity!.publicKey!.keyBody?.base64EncodedString())!
-		} catch {let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-	}
+////	return the string for showing QR
+////	TODO: need to add nickname for qr too, concatenation is needed
+//    private func myPublicKeyString() -> String {
+//		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+//		fr.fetchLimit = 1
+//		do {
+//			let identity = try viewContext.fetch(fr).first
+//            return (identity!.publicKey!.keyBody?.base64EncodedString())!
+//		} catch {let nsError = error as NSError
+//                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+//            }
+//	}
     
 //    return a tuple for showing publickey, nickname, UUID
-//    TODO: need to add nickname for qr too, concatenation is needed
     private func myInfo() -> (key: String?, nickname: String?, id: String? ) {
         let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
         fr.fetchLimit = 1
@@ -240,7 +237,7 @@ struct ContentView: View {
             return (identity!.publicKey!.keyBody!.base64EncodedString(), identity!.nickname, identity!.id!.uuidString)
         } catch {let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+		}
     }
 	
 	private func retrievePublicKey(keyBody: Data) -> SecKey {
@@ -301,9 +298,41 @@ struct ContentView: View {
 		}
 	}
 
-//	TODO: search if this encrypted is for me and search the contact who send this message
-//	private func checkAndSearch(ec: Encrypted, id: Identity) {}
+//	search if this encrypted is for me and search the contact who send this message
+//	if no existing contact exists, create contact
+//	TODO: untested yet
+	private func checkAndSearch(ec: Encrypted, id: Identity) {
+		if (ec.receiverId != id.id) {
+			createEncrypted(received: ec, id: id)
+		} else {
+			let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+			fr.predicate = NSPredicate(
+				format: "id == %@", ec.senderId! as CVarArg
+			)
+			fr.fetchLimit = 1
+			do {
+				let ct = try viewContext.fetch(fr).first  ?? createContact(nn: ec.senderNickname!, key: ec.senderKey!, id: ec.senderId!)
+				decryptEncrypted(ec: ec, id: id, contact: ct)
+			} catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+			}
+		}
+	}
 	
+//	create contact (called in checkAndSearch() and TODO: QRContact())
+    private func createContact(nn: String, key: PublicKey, id: UUID) -> Contact {
+		withAnimation {
+			let newContact = Contact(context: viewContext)
+			newContact.nickname = nn
+			newContact.id = id
+			newContact.theirKey = key
+			saveContext()
+			return newContact
+		}
+	}
+	
+//	retrieve messages with a particular contact
+//	private func retrieveMessages(ct: Contact) {}
     
 //  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
     private func deleteItem(offsets: IndexSet) {
