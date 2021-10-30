@@ -112,6 +112,30 @@ struct ContentView: View {
         }
     }
     
+    // attemp to sort encrypted messages by date in ascending order
+    private func sortAnddeleteEncrypted(deleteNumber: Int) {
+//        let context = _viewContext
+//        let fetchRequest = NSFetchRequest<Encrypted>(entityName: "Encrypted")
+//        let sort = NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)
+//        fetchRequest.sortDescriptors = [sort]
+//        do {
+//            encrypted = try context.fetch(fetchRequest)
+//        } catch {
+//            print("Cannot fetch encrypted messages")
+//        }
+        @FetchRequest(
+            sortDescriptors: [NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)],
+            animation: .default)
+        var encryptedMessages: FetchedResults<Encrypted>
+        //count the numebr of items in the struct 'encrypted'
+//        if count(encryptedMessages) >= 50 {
+//            encryptedMessages.dropFirst(deleteNumber)
+//        }
+        //TO-DO: check if encrypted messages in the core data are correctly deleted
+    }
+    
+// attemp to delete encrypted messages not belonging to a user when the number of messages exceeds 50
+    
 //    TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
 //    private func createContact() {}
     
