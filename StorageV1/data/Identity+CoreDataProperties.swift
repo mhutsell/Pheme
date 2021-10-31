@@ -2,7 +2,7 @@
 //  Identity+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/16/21.
+//  Created by Ray Chen on 10/31/21.
 //
 //
 
@@ -16,8 +16,9 @@ extension Identity {
         return NSFetchRequest<Identity>(entityName: "Identity")
     }
 
-    @NSManaged public var nickname: String?
     @NSManaged public var id: UUID?
+    @NSManaged public var nickname: String?
+    @NSManaged public var maxEncrypted: Int16
     @NSManaged public var contacts: NSSet?
     @NSManaged public var notMine: NSSet?
     @NSManaged public var privateKey: PrivateKey?
