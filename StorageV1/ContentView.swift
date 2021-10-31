@@ -358,7 +358,7 @@ struct ContentView: View {
 	
 //	retrive the latest message of all contacts
 //	TODO: frontend needs to add the Msg struct
-//	private func retrieveLatest() -> [Msg] {
+//	private func retrieveLatests() -> [Msg] {
 //		withAnimation {
 //			let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
 //			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)]
