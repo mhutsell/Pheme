@@ -123,10 +123,12 @@ struct ContentView: View {
 //        } catch {
 //            print("Cannot fetch encrypted messages")
 //        }
-        @FetchRequest(
-            sortDescriptors: [NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)],
-            animation: .default)
-        var encryptedMessages: FetchedResults<Encrypted>
+        
+//        @FetchRequest(
+//            sortDescriptors: [NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)],
+//            animation: .default)
+//        var encryptedMessages: FetchedResults<Encrypted>
+        
         //count the numebr of items in the struct 'encrypted'
 //        if count(encryptedMessages) >= 50 {
 //            encryptedMessages.dropFirst(deleteNumber)
