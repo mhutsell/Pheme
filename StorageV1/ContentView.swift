@@ -112,7 +112,9 @@ struct ContentView: View {
         }
     }
     
+//    TODO: Ken needs to finish it soon
     // attemp to sort encrypted messages by date in ascending order
+
     private func sortAnddeleteEncrypted(deleteNumber: Int) {
 //        let context = _viewContext
 //        let fetchRequest = NSFetchRequest<Encrypted>(entityName: "Encrypted")
@@ -124,10 +126,12 @@ struct ContentView: View {
 //            print("Cannot fetch encrypted messages")
 //        }
         
+
 //        @FetchRequest(
 //            sortDescriptors: [NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)],
 //            animation: .default)
 //        var encryptedMessages: FetchedResults<Encrypted>
+
         
         //count the numebr of items in the struct 'encrypted'
 //        if count(encryptedMessages) >= 50 {
@@ -135,6 +139,7 @@ struct ContentView: View {
 //        }
         //TO-DO: check if encrypted messages in the core data are correctly deleted
     }
+
     
 // attemp to delete encrypted messages not belonging to a user when the number of messages exceeds 50
     
@@ -352,10 +357,49 @@ struct ContentView: View {
 			newContact.nickname = nn
 			newContact.id = id
 			newContact.theirKey = key
-			saveContext()
-			return newContact
+			let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+			fr.fetchLimit = 1
+			do {
+				let identity = try viewContext.fetch(fr).first
+				newContact.identity = identity
+				saveContext()
+				return newContact
+			} catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+			}
 		}
 	}
+	
+//	retrive the latest message of all contacts
+//	TODO: frontend needs to add the Msg struct
+//	private func retrieveLatests() -> [Msg] {
+//		withAnimation {
+//			let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+//			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)]
+//			do {
+//				let contacts = try viewContext.fetch(fr)
+////				var data = [Msg]()
+//				for (ct, idx) in contacts.enumerated() {
+//					let fr2: NSFetchRequest<Message> = Message.fetchRequest()
+//					fr2.predicate = NSPredicate(
+//						format: "contact LIKE %@", ct
+//					)
+//					fr.fetchLimit = 1
+//					fr2.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
+//					do {
+//						let ms = try viewContext.fetch(fr2).first
+//						return Msg(id: idx, name: ct.nickname, msg: ms?.messageBody, date: ms?.timeCreated)
+////						let ms = try viewContext.fetch(fr2).first  ??
+////						TODO: what to send if it's a newly added contact without conversation yet>
+//					} catch {let nsError = error as NSError
+//						fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+//					}
+//				}
+//			} catch {let nsError = error as NSError
+//                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+//			}
+//		}
+//	}
 	
 //	retrieve messages with a particular contact
 //	private func retrieveMessages(ct: Contact) {}
@@ -373,6 +417,21 @@ struct ContentView: View {
 		withAnimation {
 			viewContext.delete(item)
 			saveContext()
+		}
+	}
+	
+//	update the max number of encrypte stored
+	private func updateMaxEncrypted(max: Int16) {
+		withAnimation {
+			let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+			fr.fetchLimit = 1
+			do {
+				let identity = try viewContext.fetch(fr).first
+				identity?.maxEncrypted = max
+				saveContext()
+			} catch {let nsError = error as NSError
+					fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+			}
 		}
 	}
     

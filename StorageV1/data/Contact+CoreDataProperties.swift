@@ -2,7 +2,7 @@
 //  Contact+CoreDataProperties.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/16/21.
+//  Created by Ray Chen on 10/31/21.
 //
 //
 
@@ -16,8 +16,9 @@ extension Contact {
         return NSFetchRequest<Contact>(entityName: "Contact")
     }
 
-    @NSManaged public var nickname: String?
     @NSManaged public var id: UUID?
+    @NSManaged public var nickname: String?
+    @NSManaged public var timeLatest: Date?
     @NSManaged public var identity: Identity?
     @NSManaged public var messages: NSSet?
     @NSManaged public var theirKey: PublicKey?
