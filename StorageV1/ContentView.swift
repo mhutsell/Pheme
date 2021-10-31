@@ -351,8 +351,16 @@ struct ContentView: View {
 			newContact.nickname = nn
 			newContact.id = id
 			newContact.theirKey = key
-			saveContext()
-			return newContact
+			let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+			fr.fetchLimit = 1
+			do {
+				let identity = try viewContext.fetch(fr).first
+				newContact.identity = identity
+				saveContext()
+				return newContact
+			} catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+			}
 		}
 	}
 	
