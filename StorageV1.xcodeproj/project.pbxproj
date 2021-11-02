@@ -25,6 +25,7 @@
 		1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */; };
 		11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */; };
 		11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */; };
+		B70659B02731FE9200DD72B7 /* backend_util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70659AF2731FE9200DD72B7 /* backend_util.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B70659AF2731FE9200DD72B7 /* backend_util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = backend_util.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				11082C6D270E7EC60099285E /* Info.plist */,
 				11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */,
 				11082C65270E7EC60099285E /* Preview Content */,
+				B70659AF2731FE9200DD72B7 /* backend_util.swift */,
 			);
 			path = StorageV1;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				111BA8192720F31F0062CF2F /* PublicKey+CoreDataProperties.swift in Sources */,
+				B70659B02731FE9200DD72B7 /* backend_util.swift in Sources */,
 				11082C69270E7EC60099285E /* Persistence.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
 				1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */,
