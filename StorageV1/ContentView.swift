@@ -181,6 +181,7 @@ struct ContentView: View {
             let newIdentity = Identity(context: viewContext)
             newIdentity.nickname = nickname
             newIdentity.id = UUID()
+            newIdentity.maxEncrypted = 50
 			let result = createRSAKeyPair()
 			createPrivateKey(data: result.private, id: newIdentity)
 			createPublicKey(data: result.public, id: newIdentity, type: 0)
@@ -366,7 +367,7 @@ struct ContentView: View {
 	
 //	retrive the latest message of all contacts
 //	TODO: frontend needs to add the Msg struct
-//	private func retrieveLatests() -> [Msg] {
+//	private func fetchLatests() -> [Msg] {
 //		withAnimation {
 //			let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
 //			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)]
@@ -378,7 +379,7 @@ struct ContentView: View {
 //					fr2.predicate = NSPredicate(
 //						format: "contact LIKE %@", ct
 //					)
-//					fr.fetchLimit = 1
+//					fr2.fetchLimit = 1
 //					fr2.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
 //					do {
 //						let ms = try viewContext.fetch(fr2).first
@@ -428,6 +429,34 @@ struct ContentView: View {
 			}
 		}
 	}
+	
+//	fetch the identity (assume have the only one)
+	private func fetchIdentity() -> Identity {
+		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+        fr.fetchLimit = 1
+        do {
+			let identity = (try viewContext.fetch(fr).first)!
+            return identity
+        } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+	
+//	fetch the list of all messages of a contact
+	private func fetchMessages(ct: Contact) -> [Message] {
+		let fr: NSFetchRequest<Message> = Message.fetchRequest()
+		fr.predicate = NSPredicate(
+			format: "contact LIKE %@", ct
+		)
+		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
+		do {
+			let mss = try viewContext.fetch(fr)
+			return mss
+		} catch {let nsError = error as NSError
+			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+	
     
 //    used at the end of all CRUD functions
     private func saveContext() {

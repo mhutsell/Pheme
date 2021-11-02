@@ -23,6 +23,7 @@ extension Identity {
     @NSManaged public var notMine: NSSet?
     @NSManaged public var privateKey: PrivateKey?
     @NSManaged public var publicKey: PublicKey?
+    
 
 }
 
