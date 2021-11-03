@@ -431,18 +431,7 @@ struct ContentView: View {
 			}
 		}
 	}
-	
-//	fetch the identity (assume have the only one)
-	private func fetchIdentity() -> Identity {
-		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
-        fr.fetchLimit = 1
-        do {
-			let identity = (try viewContext.fetch(fr).first)!
-            return identity
-        } catch {let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-		}
-	}
+
 	
 //	fetch the list of all messages of all 
 	private func fetchMessages(ct: Contact) -> [Message] {
