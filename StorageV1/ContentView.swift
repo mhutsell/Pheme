@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) var viewContext
     
 //	sort message with timeCreated, can be changed to different entity to test CRUD functions
 //	to test other entities, they need to be fetchrequested as well
@@ -41,6 +41,8 @@ struct ContentView: View {
 						Button(action: {
 //						change the function here to test other CRUD
 							createIdentity(nickname: self.newItem)
+//							let id = Identity.fetchIdentity()
+//							newMessage = id.nickname!
 						}){
 							Image(systemName: "plus.circle.fill")
 								 .foregroundColor(.blue)
@@ -72,11 +74,12 @@ struct ContentView: View {
 //                     Text(item.privateKey?.keyBody ?? "Unspecified")
 //                // TODO: change show items to id attibutes
 //                    }.onDelete(perform: deleteItem(offsets:))
+//				Text(self.newMessage)
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
-                    Text(myInfo().id!)
-                    Text(myInfo().key!)
-                    Text(myInfo().nickname!)
+////                    Text(myInfo().id!)
+////                    Text(myInfo().key!)
+//                    Text(myInfo().nickname!)
 //					Text(self.newMessage)
 //					Text(self.encrypted)
 //					Text(self.decrypted)
@@ -191,7 +194,7 @@ struct ContentView: View {
 			let result = createRSAKeyPair()
 			createPrivateKey(data: result.private, id: newIdentity)
 			createPublicKey(data: result.public, id: newIdentity, type: 0)
-            saveContext()
+//			saveContext()
         }
 	}
 
@@ -314,7 +317,6 @@ struct ContentView: View {
 		}
 	}
 	
-	// TODO: need the aux function to look for the contact (sender) and check the necessarity to decrypt
 	private func decryptEncrypted(ec: Encrypted, id: Identity, contact: Contact) {
 		withAnimation {
 			let newMessage = Message(context: viewContext)
@@ -448,7 +450,7 @@ struct ContentView: View {
 		}
 	}
 	
-//	fetch the list of all messages of a contact
+//	fetch the list of all messages of all 
 	private func fetchMessages(ct: Contact) -> [Message] {
 		let fr: NSFetchRequest<Message> = Message.fetchRequest()
 		fr.predicate = NSPredicate(
