@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension Identity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Identity> {
@@ -23,8 +22,22 @@ extension Identity {
     @NSManaged public var notMine: NSSet?
     @NSManaged public var privateKey: PrivateKey?
     @NSManaged public var publicKey: PublicKey?
-    
-
+	
+ }
+ 
+extension Identity {
+	
+	static func fetchIdentity() -> Identity {
+		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+        fr.fetchLimit = 1
+        do {
+			let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
+            return identity
+        } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+	
 }
 
 // MARK: Generated accessors for contacts
