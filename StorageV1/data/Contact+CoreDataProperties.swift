@@ -25,6 +25,25 @@ extension Contact {
 
 }
 
+extension Contact {
+
+	//	fetch the list of all messages of all
+	 func fetchMessages() -> [Message] {
+		let fr: NSFetchRequest<Message> = Message.fetchRequest()
+		fr.predicate = NSPredicate(
+			format: "contact LIKE %@", self
+		)
+		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
+		do {
+			let mss = try PersistenceController.shared.container.viewContext.fetch(fr)
+			return mss
+		} catch {let nsError = error as NSError
+			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+
+}
+
 // MARK: Generated accessors for messages
 extension Contact {
 
