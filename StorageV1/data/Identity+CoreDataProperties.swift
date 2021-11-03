@@ -27,6 +27,7 @@ extension Identity {
  
 extension Identity {
 	
+	//	fetch the identity (assume have the only one)
 	static func fetchIdentity() -> Identity {
 		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
         fr.fetchLimit = 1
