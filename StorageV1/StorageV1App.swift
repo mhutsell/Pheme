@@ -14,7 +14,7 @@ struct StorageV1App: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
         .onChange(of: viewContext) {_ in

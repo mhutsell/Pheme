@@ -25,6 +25,8 @@
 		1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */; };
 		11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */; };
 		11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */; };
+		B70659BB2734966C00DD72B7 /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70659BA2734966C00DD72B7 /* mainView.swift */; };
+		B70659BF2734998800DD72B7 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70659BE2734998800DD72B7 /* Contacts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B70659BA2734966C00DD72B7 /* mainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
+		B70659BE2734998800DD72B7 /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,7 +98,9 @@
 			children = (
 				11605DB0273216EC0034CAB7 /* api */,
 				11082C5F270E7EC40099285E /* StorageV1App.swift */,
+				B70659BA2734966C00DD72B7 /* mainView.swift */,
 				11082C61270E7EC40099285E /* ContentView.swift */,
+				B70659BE2734998800DD72B7 /* Contacts.swift */,
 				11082C63270E7EC60099285E /* Assets.xcassets */,
 				11082C68270E7EC60099285E /* Persistence.swift */,
 				11082C6D270E7EC60099285E /* Info.plist */,
@@ -194,9 +200,11 @@
 			files = (
 				111BA8192720F31F0062CF2F /* PublicKey+CoreDataProperties.swift in Sources */,
 				11082C69270E7EC60099285E /* Persistence.swift in Sources */,
+				B70659BF2734998800DD72B7 /* Contacts.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
 				1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */,
 				1156B09A272F0B92005555EF /* Contact+CoreDataProperties.swift in Sources */,
+				B70659BB2734966C00DD72B7 /* mainView.swift in Sources */,
 				1156B099272F0B92005555EF /* Contact+CoreDataClass.swift in Sources */,
 				1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */,
 				1156B09D272F0FF6005555EF /* Identity+CoreDataClass.swift in Sources */,
