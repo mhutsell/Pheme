@@ -23,6 +23,21 @@ extension PublicKey {
 
 }
 
+extension PublicKey {
+
+	// convert data to public key
+	func dataToKey() -> SecKey {
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
+		]
+		var error: Unmanaged<CFError>?
+		let pubKey: SecKey = SecKeyCreateWithData(self.keyBody! as CFData, attribute as CFDictionary, &error)!
+		return pubKey
+	}
+
+}
+
 extension PublicKey : Identifiable {
 
 }
