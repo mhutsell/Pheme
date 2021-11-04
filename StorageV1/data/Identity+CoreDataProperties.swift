@@ -38,7 +38,64 @@ extension Identity {
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
 	}
-
+	
+	//	return if there is an identity
+	//	TODO: untested yet
+	static func hasIdentity() -> Bool {
+		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+        fr.fetchLimit = 1
+        do {
+			let count = try PersistenceController.shared.container.viewContext.count(for: fr)
+            return count == 1
+        } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+	
+	//	no check for existing identity
+	static func createIdentity(nickname: String) {
+		let newIdentity = Identity(context: PersistenceController.shared.container.viewContext)
+		newIdentity.nickname = nickname
+		newIdentity.id = UUID()
+		newIdentity.maxEncrypted = 50
+		newIdentity.createRSAKeyPair()
+	}
+	
+	//	generate new rsa key pair with random data for the identity
+	//	merge create private and publickey into this func because they won't be used otherwise
+	func createRSAKeyPair() {
+		var publicKeySec, privateKeySec: SecKey?
+		let keyattribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeySizeInBits as String : 2048
+		] as CFDictionary
+		SecKeyGeneratePair(keyattribute, &publicKeySec, &privateKeySec)
+		
+		var error: Unmanaged<CFError>?
+		let priKey = PrivateKey(context: PersistenceController.shared.container.viewContext)
+		priKey.keyBody = SecKeyCopyExternalRepresentation(privateKeySec!, &error) as Data?
+		priKey.identity = self
+		let pubKey = PublicKey(context: PersistenceController.shared.container.viewContext)
+		pubKey.keyBody = SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?
+		pubKey.identity = self
+	}
+	
+	//  return a tuple for showing publickey, nickname, UUID, for QR
+    static func myInfo() -> (key: String, nickname: String, id: String) {
+        let identity = Identity.fetchIdentity()
+		return (identity.publicKey!.keyBody!.base64EncodedString(), identity.nickname!, identity.id!.uuidString)
+    }
+	
+	//	update the max number of encrypte stored
+	static func updateMaxEncrypted(max: Int16) {
+		self.fetchIdentity().maxEncrypted = max
+	}
+	
+	// retrieve my own private key
+	static func retrievePrivateKey() -> SecKey {
+		return self.fetchIdentity().privateKey!.dataToKey()
+	}
+	
 	
 }
 
