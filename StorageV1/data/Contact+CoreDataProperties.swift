@@ -42,6 +42,33 @@ extension Contact {
 		}
 	}
 	
+	// fetch the list of all contacts, opt = 0 for sort based on timeLatest
+	static func fetchContacts(opt: Bool = true) -> [Contact] {
+		let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+		if (opt) {
+			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.nickname, ascending: true)]
+		} else {
+			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)]
+		}
+		do {
+			let cts = try PersistenceController.shared.container.viewContext.fetch(fr)
+			return cts
+		} catch {let nsError = error as NSError
+			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+	
+	//	retrive the latest message of all contacts
+	private func fetchLatests() -> [Message] {
+		let contacts = Contact.fetchContacts(opt: false)
+		var data = [Message]()
+		for ct in contacts {
+				data.append(ct.fetchMessages()[0])
+		}
+		return data
+	}
+	
+	
 	//	create contact (called in checkAndSearch() and TODO: QRContact())
     static func createContact(nn: String, key: PublicKey, id: UUID) -> Contact {
 		let newContact = Contact(context: PersistenceController.shared.container.viewContext)
@@ -50,6 +77,7 @@ extension Contact {
 		newContact.theirKey = key
 		let identity = Identity.fetchIdentity()
 		newContact.identity = identity
+		PersistenceController.shared.save()
 		return newContact
 	}
 	

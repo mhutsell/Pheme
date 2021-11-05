@@ -60,8 +60,7 @@ extension Identity {
 		newIdentity.id = UUID()
 		newIdentity.maxEncrypted = 50
 		newIdentity.createRSAKeyPair()
-//        let persistenceController = PersistenceController.shared
-//        persistenceController.save()
+        PersistenceController.shared.save()
 	}
 	
 	//	generate new rsa key pair with random data for the identity

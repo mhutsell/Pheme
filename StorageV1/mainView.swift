@@ -22,7 +22,7 @@ struct MainView: View {
         TabView {
             Contacts()
                 .tabItem {
-                    Label("Home", systemImage: "star")
+                    Label("Contacts", systemImage: "star")
                 }
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
             ContentView()

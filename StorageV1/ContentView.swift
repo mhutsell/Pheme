@@ -24,13 +24,13 @@ struct ContentView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Identity.nickname, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Identity>
-
+	
 //	add more var here to test create with multiple input item
     @State private var newItem = ""
     @State private var newMessage = ""
     @State private var encrypted = ""
 	@State private var decrypted = ""
-
+    
     var body: some View {
         NavigationView {
 			List {
@@ -51,15 +51,16 @@ struct ContentView: View {
 					}
 				}
 				// need to at least create one identity
-				Section(header: Text("raw, encrypted, and decrypted message")) {
+				Section(header: Text("contact")) {
 					HStack{
 //						add more TextField here to test create with multiple input item
-						TextField("New message", text: self.$newMessage)
+						TextField("New contact nickname", text: self.$newMessage)
 						Button(action: {
 //						change the function here to test other CRUD
 //							let result = encryptionTest(testString: self.newMessage, id: items[0])
 //							self.decrypted = result.decrypted
 //							self.encrypted = result.encrypted
+							_ = Contact.createContact(nn: newMessage, key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
 						}){
 							Image(systemName: "plus.circle.fill")
 								 .foregroundColor(.blue)
@@ -77,16 +78,24 @@ struct ContentView: View {
 //				Text(self.newMessage)
 				ForEach(items) { item in
 					Text(item.nickname ?? "Unspecified")
-////                    Text(myInfo().id!)
-////                    Text(myInfo().key!)
-//                    Text(myInfo().nickname!)
-//					Text(self.newMessage)
-//					Text(self.encrypted)
-//					Text(self.decrypted)
+					Text(Identity.fetchIdentity().nickname!)
+					Text(String(Contact.fetchContacts(opt: false).count))
+					let contacts = Contact.fetchContacts()
+					ForEach(contacts) { ct in
+						Text(ct.nickname!)
+					}
+//////                    Text(myInfo().id!)
+//////                    Text(myInfo().key!)
+////                    Text(myInfo().nickname!)
+////					Text(self.newMessage)
+////					Text(self.encrypted)
+////					Text(self.decrypted)
 				}.onDelete(perform: deleteItem(offsets:))
 				
-
-
+				let contacts = Contact.fetchContacts()
+				Text(contacts[0].nickname!)
+				Text(contacts[1].nickname!)
+				Text(contacts[2].nickname!)
 //                test for encryption and decryption
 //                let result = encryptionTest()
 //                Text(result.testString)
@@ -105,7 +114,7 @@ struct ContentView: View {
 //    TODO: Ken needs to finish it soon
     // attemp to sort encrypted messages by date in ascending order
 
-    private func sortAnddeleteEncrypted(deleteNumber: Int) {
+//    private func sortAnddeleteEncrypted(deleteNumber: Int) {
 //        let context = _viewContext
 //        let fetchRequest = NSFetchRequest<Encrypted>(entityName: "Encrypted")
 //        let sort = NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)
@@ -128,7 +137,7 @@ struct ContentView: View {
 //            encryptedMessages.dropFirst(deleteNumber)
 //        }
         //TO-DO: check if encrypted messages in the core data are correctly deleted
-    }
+//    }
 
     
     
@@ -217,7 +226,7 @@ struct ContentView: View {
     private func deleteItem(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
-            //saveContext()
+            PersistenceController.shared.save()
         }
     }
     	

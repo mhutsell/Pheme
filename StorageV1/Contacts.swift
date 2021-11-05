@@ -19,7 +19,11 @@ struct Contacts: View {
     
     var body: some View {
         NavigationView {
-            Text("HELLO!")
+			List{
+				ForEach(Contact.fetchContacts()) { ct in
+				Text(ct.nickname!)
+				}
+			}
         }
             
     }
