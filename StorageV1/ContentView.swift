@@ -112,34 +112,48 @@ struct ContentView: View {
         }
     }
     
-//    TODO: Ken needs to finish it soon
-    // attemp to sort encrypted messages by date in ascending order
-//    private func sortAnddeleteEncrypted(deleteNumber: Int) {
-////        let context = _viewContext
-////        let fetchRequest = NSFetchRequest<Encrypted>(entityName: "Encrypted")
-////        let sort = NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)
-////        fetchRequest.sortDescriptors = [sort]
-////        do {
-////            encrypted = try context.fetch(fetchRequest)
-////        } catch {
-////            print("Cannot fetch encrypted messages")
-////        }
-//        @FetchRequest(
-//            sortDescriptors: [NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)],
-//            animation: .default)
-//        var encryptedMessages: FetchedResults<Encrypted>
-//        //count the numebr of items in the struct 'encrypted'
-////        if count(encryptedMessages) >= 50 {
-////            encryptedMessages.dropFirst(deleteNumber)
-////        }
-//        //TO-DO: check if encrypted messages in the core data are correctly deleted
-//    }
+    private func deleteEncrypted(item: Encrypted) {
+        withAnimation {
+            viewContext.delete(item)
+            saveContext()
+        }
+    }
     
-// attemp to delete encrypted messages not belonging to a user when the number of messages exceeds 50
+//attemp to sort encrypted messages by date in ascending order
+    private func fetchEncrypted(id: Identity) -> [Encrypted] {
+        let fr: NSFetchRequest<Encrypted> = Encrypted.fetchRequest()
+        fr.predicate = NSPredicate(
+            format: "identity LIKE %@", id
+        )
+        fr.sortDescriptors = [NSSortDescriptor(keyPath: \Encrypted.timeCreated, ascending:true)]
+        do {
+            let enc = try viewContext.fetch(fr)
+            return enc
+        } catch {let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
     
-//    TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
-//    private func createContact() {}
+//automatic deletion
+    private func autoDeleteEncrypted(list: [Encrypted], id: Identity) {
+        let listSize = list.count
+        if (listSize >= 50) {
+            let fr: NSFetchRequest<Encrypted> = Encrypted.fetchRequest()
+            fr.predicate = NSPredicate(
+                format: "identity LIKE %@", id
+            )
+            fr.fetchLimit = 1
+            fr.sortDescriptors = [NSSortDescriptor(keyPath: \Encrypted.timeCreated, ascending:true)]
+            do {
+                let enc = try viewContext.fetch(fr)
+                deleteEncrypted(item: enc[0])
+            } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
+    }
     
+    //TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
     private func encryptionTest(testString: String = "Hello World", id: Identity) -> (testString:String,  encrypted: String, decrypted: String) {
         
         var error: Unmanaged<CFError>?
