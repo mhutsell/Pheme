@@ -1,255 +1,553 @@
-//
-//  ContentView.swift
-//  StorageV1
-//
-//  Created by Ray Chen on 10/6/21.
-//
+//  Pheme
+//  Message, Contact, Setttings Page
 
 import SwiftUI
+import CoreImage.CIFilterBuiltins
 import CoreData
 
-struct ContentView: View {
-    @Environment(\.managedObjectContext) var viewContext
-    
-//	sort message with timeCreated, can be changed to different entity to test CRUD functions
-//	to test other entities, they need to be fetchrequested as well
-//    @FetchRequest(
-////    	sort the messages by its timeCreated
-//        sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending: true)],
-//        animation: .default)
-//    private var messages: FetchedResults<Message>
 
-    @FetchRequest(
-//    	sort the identities by its nickname
-        sortDescriptors: [NSSortDescriptor(keyPath: \Identity.nickname, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Identity>
-	
-//	add more var here to test create with multiple input item
-    @State private var newItem = ""
-    @State private var newMessage = ""
-    @State private var encrypted = ""
-	@State private var decrypted = ""
+// Create the base view
+//@available(iOS 14.0, *)
+struct ContentView: View {
+    
+    var username : String
     
     var body: some View {
-        NavigationView {
-			List {
-				Section(header: Text("Add identity")) {
-					HStack{
-//						add more TextField here to test create with multiple input item
-						TextField("New nickname", text: self.$newItem)
-						Button(action: {
-//						change the function here to test other CRUD
-							Identity.createIdentity(nickname: self.newItem)
-//							let id = Identity.fetchIdentity()
-//							newMessage = id.nickname!
-						}){
-							Image(systemName: "plus.circle.fill")
-								 .foregroundColor(.blue)
-								 .imageScale(.large)
-						}
-					}
-				}
-				// need to at least create one identity
-				Section(header: Text("contact")) {
-					HStack{
-//						add more TextField here to test create with multiple input item
-						TextField("New contact nickname", text: self.$newMessage)
-						Button(action: {
-//						change the function here to test other CRUD
-//							let result = encryptionTest(testString: self.newMessage, id: items[0])
-//							self.decrypted = result.decrypted
-//							self.encrypted = result.encrypted
-							_ = Contact.createContact(nn: newMessage, key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
-						}){
-							Image(systemName: "plus.circle.fill")
-								 .foregroundColor(.blue)
-								 .imageScale(.large)
-						}
-					}
-				}
-//                ForEach(items) { item in
-//                //    change what to show here to check succeeful creation
-//                //     Text(item.messageBody ?? "Unspecified")
-//                     Text(item.publicKey?.keyBody ?? "Unspecified")
-//                     Text(item.privateKey?.keyBody ?? "Unspecified")
-//                // TODO: change show items to id attibutes
-//                    }.onDelete(perform: deleteItem(offsets:))
-//				Text(self.newMessage)
-				ForEach(items) { item in
-					Text(item.nickname ?? "Unspecified")
-					Text(Identity.fetchIdentity().nickname!)
-					Text(String(Contact.fetchContacts(opt: false).count))
-					let contacts = Contact.fetchContacts()
-					ForEach(contacts) { ct in
-						Text(ct.nickname!)
-					}
-//////                    Text(myInfo().id!)
-//////                    Text(myInfo().key!)
-////                    Text(myInfo().nickname!)
-////					Text(self.newMessage)
-////					Text(self.encrypted)
-////					Text(self.decrypted)
-				}.onDelete(perform: deleteItem(offsets:))
-				
-				let contacts = Contact.fetchContacts()
-				Text(contacts[0].nickname!)
-				Text(contacts[1].nickname!)
-				Text(contacts[2].nickname!)
-//                test for encryption and decryption
-//                let result = encryptionTest()
-//                Text(result.testString)
-//
-//                Text(String(result.decrypted.count))
-//                Text(result.decrypted)
-                
-			
-
-			}
-			.navigationTitle("Items")
-		}
-    }
-
-    
-//    TODO: Ken needs to finish it soon
-    // attemp to sort encrypted messages by date in ascending order
-
-//    private func sortAnddeleteEncrypted(deleteNumber: Int) {
-//        let context = _viewContext
-//        let fetchRequest = NSFetchRequest<Encrypted>(entityName: "Encrypted")
-//        let sort = NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)
-//        fetchRequest.sortDescriptors = [sort]
-//        do {
-//            encrypted = try context.fetch(fetchRequest)
-//        } catch {
-//            print("Cannot fetch encrypted messages")
-//        }
         
-
-//        @FetchRequest(
-//            sortDescriptors: [NSSortDescriptor(key: #keyPath(Encrypted.timeCreated), ascending: true)],
-//            animation: .default)
-//        var encryptedMessages: FetchedResults<Encrypted>
-
-        
-        //count the numebr of items in the struct 'encrypted'
-//        if count(encryptedMessages) >= 50 {
-//            encryptedMessages.dropFirst(deleteNumber)
-//        }
-        //TO-DO: check if encrypted messages in the core data are correctly deleted
-//    }
-
-    
-    
-// attemp to delete encrypted messages not belonging to a user when the number of messages exceeds 50
-    
-//    TODO: need to reconsider qr -> includes both one's public key and uuis (by concatenation?)
-//    private func createContact() {}
-    
-//    private func encryptionTest(testString: String = "Hello World", id: Identity) -> (testString:String,  encrypted: String, decrypted: String) {
-//
-//        var error: Unmanaged<CFError>?
-//
-//		let attribute = [
-//			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-//			kSecAttrKeyClass as String : kSecAttrKeyClassPublic
-//		]
-//
-//
-//        let keyString: String = myInfo().key!
-//
-//        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: keyString)! as CFData, attribute as CFDictionary, &error)! as SecKey
-//
-////        let pubKey: SecKey = SecKeyCreateWithData(Data(base64Encoded: myPublicKeyString())! as CFData, attribute as CFDictionary, &error)! as SecKey
-//
-////        let pubKey: SecKey = SecKeyCreateWithData(id.publicKey!.keyBody! as CFData, attribute as CFDictionary, &error)! as SecKey
-//
-//		let priattribute = [
-//			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
-//			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
-//		]
-//		let priKey: SecKey = SecKeyCreateWithData(id.privateKey!.keyBody! as CFData, priattribute as CFDictionary, &error)! as SecKey
-//
-//        let bodyData: CFData = testString.data(using: .utf8)! as CFData
-//
-//		let encrypted: Data = SecKeyCreateEncryptedData(pubKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, bodyData, &error)! as Data
-//		let decrypted: Data = SecKeyCreateDecryptedData(priKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, encrypted as CFData, &error)! as Data
-//		// TODO: handle nil case (if need to try decrypting every message)
-//
-//        let str = String(decoding: decrypted, as: UTF8.self)
-//
-//        return (testString, encrypted.base64EncodedString(), str)
-////        return (testString,  str)
-//    }
-    
-    
-
-	
-
-		
-	
-//	retrive the latest message of all contacts
-//	TODO: frontend needs to add the Msg struct
-//	private func fetchLatests() -> [Msg] {
-//		withAnimation {
-//			let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
-//			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)]
-//			do {
-//				let contacts = try viewContext.fetch(fr)
-////				var data = [Msg]()
-//				for (ct, idx) in contacts.enumerated() {
-//					let fr2: NSFetchRequest<Message> = Message.fetchRequest()
-//					fr2.predicate = NSPredicate(
-//						format: "contact LIKE %@", ct
-//					)
-//					fr2.fetchLimit = 1
-//					fr2.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
-//					do {
-//						let ms = try viewContext.fetch(fr2).first
-//						return Msg(id: idx, name: ct.nickname, msg: ms?.messageBody, date: ms?.timeCreated)
-////						let ms = try viewContext.fetch(fr2).first  ??
-////						TODO: what to send if it's a newly added contact without conversation yet>
-//					} catch {let nsError = error as NSError
-//						fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-//					}
-//				}
-//			} catch {let nsError = error as NSError
-//                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-//			}
-//		}
-//	}
-	
-//	retrieve messages with a particular contact
-//	private func retrieveMessages(ct: Contact) {}
-    
-//  sample function to delete entity by swiping to left, more delete functions are needed like deleteMessage() below
-    private func deleteItem(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-            PersistenceController.shared.save()
+        if #available(iOS 14.0, *) {
+            Home(username: self.username)
+                .navigationBarBackButtonHidden(true)
+        } else {
+            // Fallback on earlier versions
         }
     }
-    	
-    
-//    used at the end of all CRUD functions
-    private func saveContext() {
-		do {
-                try viewContext.save()
-            } catch {let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-	}
 }
 
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
+@available(iOS 14.0, *)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+        ContentView(username: "KunalSuri")
     }
 }
+
+
+// This determines which part of homepage is displayed
+struct Home : View {
+    var username : String
+    
+    @State var index = 1
+    @State var expand = false
+    
+    
+    var body : some View{
+        
+        ZStack{
+            
+            VStack{
+                
+                Color.white
+                Color("Color")
+            }
+            
+            VStack{
+                // checks Messages, Contacts, Settings
+                ZStack{
+                    
+//                    Messages(expand: self.$expand).opacity(self.index == 0 ? 1 : 0)
+                    
+                    Contacts(expand: self.$expand).opacity(self.index == 1 ? 1 : 0)
+                    
+                    Settings(username: self.username).opacity(self.index == 2 ? 1 : 0)
+                }
+                
+                BottomView(index: self.$index)
+                    .padding()
+                
+            }
+        }
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct BottomView : View {
+    
+    @Binding var index : Int
+    
+    var body : some View{
+        
+        HStack{
+            
+            Button(action: {
+                
+                self.index = 0
+                
+            }) {
+                
+                Image(systemName: "message.fill")
+                .resizable()
+                .frame(width: 25, height: 25)
+                    .foregroundColor(self.index == 0 ? Color.white : Color.white.opacity(0.5))
+                .padding(.horizontal)
+            }
+            
+            Spacer(minLength: 10)
+            
+            Button(action: {
+                
+                self.index = 1
+                
+            }) {
+                
+                Image(systemName: "person.2.fill")
+                .resizable()
+                .frame(width: 28, height: 25)
+                .foregroundColor(self.index == 1 ? Color.white : Color.white.opacity(0.5))
+                .padding(.horizontal)
+            }
+            
+            Spacer(minLength: 10)
+            
+            Button(action: {
+
+                self.index = 2
+
+            }) {
+
+                Image(systemName: "gearshape.fill")
+                .resizable()
+                .frame(width: 25, height: 25)
+                .foregroundColor(self.index == 2 ? Color.white : Color.white.opacity(0.5))
+                .padding(.horizontal)
+            }
+            
+        }.padding(.horizontal, 30)
+        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+    }
+}
+
+struct shape : Shape {
+    
+    func path(in rect: CGRect) -> Path {
+        
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: [.bottomLeft,.bottomRight], cornerRadii: CGSize(width: 30, height: 30))
+        
+        return Path(path.cgPath)
+    }
+}
+
+
+
+
+/*
+Everything we need for the Messages page
+ - struct Messages
+ - struct chatTopView
+ - struct messagesCentertview
+ - struct cellMessagesView
+*/
+
+//struct Messages : View {
+//
+//    @Binding var expand : Bool
+//
+//    var body : some View{
+//        VStack(spacing: 0){
+//
+//            chatTopView(expand: self.$expand)
+//                .zIndex(25)
+//
+//            List(data){i in
+//
+//                if i.id == 0{
+//
+//                    if #available(iOS 14.0, *) {
+//                        NavigationLink(destination: ChatView(id: i.id)) {
+//                            cellMessagesView(data : i)
+//                                .onAppear{
+//                                    self.expand = true
+//                                }
+//                                .onDisappear{
+//                                    self.expand = false
+//                                }
+//                        }
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
+//                }
+//                else{
+//                    if #available(iOS 14.0, *) {
+//                        NavigationLink(destination: ChatView(id: i.id)) {
+//                            cellMessagesView(data : i)
+//                        }
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
+//                }
+//
+//            }
+//            .padding(.top, 5)
+//            .background(Color.white)
+//            .clipShape(shape())
+//            .offset(y: -25)
+//        }
+//    }
+//}
+//
+//struct chatTopView : View {
+//
+//    @State var username: String = "abc"
+//    private let context = CIContext()
+//    private let filter = CIFilter.qrCodeGenerator()
+//
+//    @State var search = ""
+//    @Binding var expand : Bool
+//
+//    var body : some View{
+//
+//        VStack(spacing: 5){
+//
+//            if self.expand{
+//
+//                HStack{
+//
+//                    Text("Messages")
+//                        .fontWeight(.bold)
+//                        .font(.title)
+//                        .foregroundColor(Color.black.opacity(0.7))
+//
+//                    Spacer()
+//
+//                    Button(action: {
+//
+//                    }) {
+//
+//                        Image("menu")
+//                        .resizable()
+//                        .frame(width: 20, height: 20)
+//                        .foregroundColor(Color.black.opacity(0.4))
+//                    }
+//                }
+//
+//                Image(uiImage: generateQRCode(from: "\(username)"))
+//                    .interpolation(.none)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 200, height: 200)
+//                    .padding()
+//
+//            }
+//
+//            HStack(spacing: 12){
+//
+//                Image(systemName: "magnifyingglass")
+//                .resizable()
+//                .frame(width: 18, height: 18)
+//                .foregroundColor(Color.black.opacity(0.3))
+//
+//                TextField("Search Messages...", text: self.$search)
+//
+//            }.padding()
+//            .background(Color.white)
+//            .cornerRadius(8)
+//            .padding(.bottom, 5)
+//
+//        }.padding()
+//        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+//        .background(Color("Color1"))
+//        .clipShape(shape())
+//        .animation(.default)
+//
+//    }
+//
+//    func generateQRCode(from string: String) -> UIImage {
+//        let data = Data(string.utf8)
+//        filter.setValue(data, forKey: "inputMessage")
+//
+//        if let outputImage = filter.outputImage{
+//            if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
+//                return UIImage(cgImage: cgimg)
+//            }
+//        }
+//        return UIImage(systemName: "xmark.circle") ?? UIImage()
+//    }
+//}
+//
+//
+//struct cellMessagesView : View {
+//
+//    var data : Msg
+//
+//    var body : some View{
+//
+//        HStack(spacing: 12){
+//
+//            Image(data.img)
+//            .resizable()
+//            .frame(width: 55, height: 55)
+//
+//            VStack(alignment: .leading, spacing: 12) {
+//
+//                Text(data.name)
+//
+//                Text(data.msg).font(.caption)
+//            }
+//
+//            Spacer(minLength: 0)
+//
+//            VStack{
+//
+//                Text(data.date)
+//
+//                Spacer()
+//            }
+//        }.padding(.vertical)
+//    }
+//}
+
+/*
+Everything needed for the Contact page
+ - struct Contacts
+ - struct contactTopView
+*/
+
+struct Contacts : View {
+    
+    @Binding var expand : Bool
+    
+//    @FetchRequest(
+//            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
+//            animation: .default)
+//        var contact_list: FetchedResults<Contact>
+    
+    var body : some View{
+        
+        VStack(spacing: 0) {
+            
+            contactTopView(expand: self.$expand)
+                .zIndex(25)
+            
+            Button(action: {
+                                        Identity.createIdentity(nickname: "test")
+                                        _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
+                                    }){
+                                        Image(systemName: "plus.circle.fill")
+                                             .foregroundColor(.blue)
+                                             .imageScale(.large)
+                                    }
+            
+            List(contact_list, id:\.nickname){i in
+//                        if i.id == 0{
+                            
+                            if #available(iOS 14.0, *) {
+                                NavigationLink(destination: ChatView(id: i.nickname!)) {
+                                    cellContactView(contact_list : i)
+                                        .onAppear{
+                                            self.expand = true
+                                        }
+                                        .onDisappear{
+                                            self.expand = false
+                                        }
+                                }
+                            } else {
+                                // Fallback on earlier versions
+                            }
+//                        }
+//                        else{
+//                            if #available(iOS 14.0, *) {
+//                                NavigationLink(destination: ChatView(id: i.id)) {
+//                                    cellContactView(contact_list : i)
+//                                }
+//                            } else {
+//                                // Fallback on earlier versions
+//                            }
+                        }
+                        
+            }       .padding(.top, 5)
+                    .background(Color.white)
+                    .clipShape(shape())
+                    .offset(y : -25)
+            }
+        
+        
+    }
+    
+
+
+struct contactTopView : View {
+    
+    @State var search = ""
+    @Binding var expand : Bool
+    
+    var body : some View{
+        
+        VStack(spacing: 22){
+            
+            if self.expand{
+                
+                HStack{
+                    
+                    Text("Contacts")
+                        .fontWeight(.bold)
+                        .font(.title)
+                        .foregroundColor(Color.black.opacity(0.7))
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        
+                    }) {
+                        
+                        Image("menu")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(Color.black.opacity(0.4))
+                    }
+                }
+                
+            }
+            
+            HStack(spacing: 12){
+                
+                Image(systemName: "magnifyingglass")
+                .resizable()
+                .frame(width: 18, height: 18)
+                .foregroundColor(Color.black.opacity(0.3))
+                
+                TextField("Search Contacts...", text: self.$search)
+                
+            }.padding()
+            .background(Color.white)
+            .cornerRadius(8)
+            .padding(.bottom, 5)
+            
+        }.padding()
+        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+        .background(Color("Color1"))
+        .clipShape(shape())
+        .animation(.default)
+        
+    }
+}
+
+
+struct cellContactView : View {
+    
+    var contact_list : Contact
+    @State var next: Bool = false
+    
+    var body : some View{
+        HStack(spacing: 12){
+            
+//            Image(contact_list.img)
+//            .resizable()
+//            .frame(width: 55, height: 55)
+//
+            VStack(alignment: .leading, spacing: 12) {
+            
+                Text(contact_list.nickname!)
+                
+//                Text("@" + contact_list.username).font(.caption)
+            }
+            
+            Spacer(minLength: 0)
+            
+            VStack{
+                
+                
+                Spacer()
+            }
+
+        }.padding(.vertical)
+    }
+}
+
+struct Settings : View {
+    
+    var username : String
+
+    private let context = CIContext()
+    private let filter = CIFilter.qrCodeGenerator()
+    
+    var body : some View{
+        
+        GeometryReader{_ in
+            
+            VStack{
+                
+                Image(uiImage: generateQRCode(from: "\(username)"))
+                    .interpolation(.none)
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+                
+                Text(self.username)
+                    .font(.title)
+                
+            }
+            .padding(.top)
+        }
+        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+        .background(Color.white)
+        .clipShape(shape())
+        .padding(.bottom)
+    }
+    
+    func generateQRCode(from string: String) -> UIImage {
+        let data = Data(string.utf8)
+        filter.setValue(data, forKey: "inputMessage")
+
+        if let outputImage = filter.outputImage{
+            if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
+                return UIImage(cgImage: cgimg)
+            }
+        }
+        return UIImage(systemName: "xmark.circle") ?? UIImage()
+    }
+
+}
+
+
+/*
+GLOBAL stuff
+ - Msg (data)
+ - Contact (contact_list)
+*/
+
+struct Msg : Identifiable {
+    
+    var id : Int
+    var name : String
+    var msg : String
+    var date : String
+    var img : String
+}
+
+//struct Contact : Identifiable {
+//    var id : Int
+//    var public_key : Int
+//    var name : String
+//    var username : String
+//    var img : String
+//}
+
+var data = [
+    
+    Msg(id: 0, name: "John Doe", msg: "Hey!", date: "10/30/21",img: "pic1"),
+    Msg(id: 1, name: "Sarah L", msg: "How are you doing?", date: "10/30/21",img: "pic2"),
+    Msg(id: 2, name: "Catherine C", msg: "yeah it was super fun", date: "10/29/21",img: "pic3"),
+    Msg(id: 3, name: "Chris H", msg: "Hey", date: "10/18/21",img: "pic4"),
+    Msg(id: 4, name: "Lina T", msg: "yeah I'm really enjoying the class", date: "10/17/21",img: "pic5"),
+    Msg(id: 5, name: "Kate G", msg: "we could meet at the library", date: "10/17/21",img: "pic6"),
+    Msg(id: 6, name: "Frank S", msg: "I'll take a look", date: "10/16/21",img: "pic7"),
+    Msg(id: 7, name: "James O", msg: "Hello", date: "10/12/21",img: "pic8"),
+    Msg(id: 8, name: "Becca", msg: "How are you?", date: "10/12/21",img: "pic9"),
+    Msg(id: 9, name: "Brian L", msg: "awesome stuff!", date: "10/11/21",img: "pic10"),
+    Msg(id: 10, name: "Julia U", msg: "Are you ready to go?", date: "09/24/21",img: "pic11"),
+    Msg(id: 11, name: "Lauren A", msg: "glad you got it done", date: "09/16/21",img: "pic12"),
+    
+]
+
+
+
+var contact_list:[Contact] = Contact.fetchContacts()
+

@@ -12,7 +12,6 @@
 		11082C64270E7EC60099285E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C63270E7EC60099285E /* Assets.xcassets */; };
 		11082C67270E7EC60099285E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C66270E7EC60099285E /* Preview Assets.xcassets */; };
 		11082C69270E7EC60099285E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C68270E7EC60099285E /* Persistence.swift */; };
-		11082C6C270E7EC60099285E /* StorageV1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */; };
 		11108AFC2726315200EF87C8 /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11108AFA2726315200EF87C8 /* Message+CoreDataClass.swift */; };
 		11108AFD2726315200EF87C8 /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11108AFB2726315200EF87C8 /* Message+CoreDataProperties.swift */; };
 		111BA8182720F31F0062CF2F /* PublicKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BA8162720F31F0062CF2F /* PublicKey+CoreDataClass.swift */; };
@@ -23,6 +22,8 @@
 		1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156B09C272F0FF6005555EF /* Identity+CoreDataProperties.swift */; };
 		1176E686271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176E67A271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift */; };
 		1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */; };
+		119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */; };
+		119C624A2738D6A200116A4F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C62492738D6A200116A4F /* ChatView.swift */; };
 		11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */; };
 		11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */; };
 		B70659BB2734966C00DD72B7 /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70659BA2734966C00DD72B7 /* mainView.swift */; };
@@ -48,6 +49,7 @@
 		1156B09C272F0FF6005555EF /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataProperties.swift"; path = "StorageV1/data/Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1176E67A271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataClass.swift"; path = "StorageV1/data/PrivateKey+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		119C62492738D6A200116A4F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B70659BA2734966C00DD72B7 /* mainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				11082C6D270E7EC60099285E /* Info.plist */,
 				11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */,
 				11082C65270E7EC60099285E /* Preview Content */,
+				119C62492738D6A200116A4F /* ChatView.swift */,
 			);
 			path = StorageV1;
 			sourceTree = "<group>";
@@ -206,10 +209,11 @@
 				1156B09A272F0B92005555EF /* Contact+CoreDataProperties.swift in Sources */,
 				B70659BB2734966C00DD72B7 /* mainView.swift in Sources */,
 				1156B099272F0B92005555EF /* Contact+CoreDataClass.swift in Sources */,
+				119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */,
 				1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */,
 				1156B09D272F0FF6005555EF /* Identity+CoreDataClass.swift in Sources */,
 				11108AFD2726315200EF87C8 /* Message+CoreDataProperties.swift in Sources */,
-				11082C6C270E7EC60099285E /* StorageV1.xcdatamodeld in Sources */,
+				119C624A2738D6A200116A4F /* ChatView.swift in Sources */,
 				11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */,
 				111BA8182720F31F0062CF2F /* PublicKey+CoreDataClass.swift in Sources */,
 				11108AFC2726315200EF87C8 /* Message+CoreDataClass.swift in Sources */,

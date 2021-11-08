@@ -20,17 +20,17 @@ struct MainView: View {
     
     var body: some View {
         TabView {
-            Contacts()
-                .tabItem {
-                    Label("Contacts", systemImage: "star")
-                }
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            ContentView()
-                .tabItem {
-                    Label("EnternApp", systemImage: "radio")
-                }
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-            
+//            Contacts()
+//                .tabItem {
+//                    Label("Contacts", systemImage: "star")
+//                }
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//            ContentView()
+//                .tabItem {
+//                    Label("EnternApp", systemImage: "radio")
+//                }
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//
 
         }
 

@@ -59,7 +59,7 @@ extension Contact {
 	}
 	
 	//	retrive the latest message of all contacts
-	private func fetchLatests() -> [Message] {
+	func fetchLatests() -> [Message] {
 		let contacts = Contact.fetchContacts(opt: false)
 		var data = [Message]()
 		for ct in contacts {
