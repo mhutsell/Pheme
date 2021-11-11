@@ -28,6 +28,7 @@ extension Contact {
 extension Contact {
 
 	//	fetch the list of all messages of all
+	//	TODO: change to use contact.message
 	 func fetchMessages() -> [Message] {
 		let fr: NSFetchRequest<Message> = Message.fetchRequest()
 		fr.predicate = NSPredicate(
@@ -59,7 +60,7 @@ extension Contact {
 	}
 	
 	//	retrive the latest message of all contacts
-	private func fetchLatests() -> [Message] {
+	func fetchLatests() -> [Message] {
 		let contacts = Contact.fetchContacts(opt: false)
 		var data = [Message]()
 		for ct in contacts {
