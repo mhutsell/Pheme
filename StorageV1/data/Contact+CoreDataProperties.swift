@@ -28,19 +28,7 @@ extension Contact {
 extension Contact {
 
 	//	fetch the list of all messages of all
-	 func fetchMessages() -> [Message] {
-//		let fr: NSFetchRequest<Message> = Message.fetchRequest()
-//		fr.predicate = NSPredicate(
-//			format: "contact LIKE %@", self
-//		)
-//		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
-//		do {
-//			let mss = try PersistenceController.shared.container.viewContext.fetch(fr)
-//			return Array(mss)
-//		} catch {let nsError = error as NSError
-//			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-//		}
-        let mss = self.messages
+	 func fetchMessages() -> [Message] {let mss = self.messages
         return Array(_immutableCocoaArray: mss!)
 	}
     
@@ -62,7 +50,7 @@ extension Contact {
 	}
 	
 	// search Contact based on uuid
-	static func fetchContacts(id: UUID) -> Contact {
+	static func fetchContactWithID(id: UUID) -> Contact {
 		let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
 		fr.predicate = NSPredicate(
 			format: "id LIKE %@", id as CVarArg
