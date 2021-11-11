@@ -30,18 +30,21 @@ extension Contact {
 	//	fetch the list of all messages of all
 	//	TODO: change to use contact.message
 	 func fetchMessages() -> [Message] {
-		let fr: NSFetchRequest<Message> = Message.fetchRequest()
-		fr.predicate = NSPredicate(
-			format: "contact LIKE %@", self
-		)
-		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
-		do {
-			let mss = try PersistenceController.shared.container.viewContext.fetch(fr)
-			return mss
-		} catch {let nsError = error as NSError
-			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-		}
+//		let fr: NSFetchRequest<Message> = Message.fetchRequest()
+//		fr.predicate = NSPredicate(
+//			format: "contact LIKE %@", self
+//		)
+//		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
+//		do {
+//			let mss = try PersistenceController.shared.container.viewContext.fetch(fr)
+//			return Array(mss)
+//		} catch {let nsError = error as NSError
+//			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+//		}
+        let mss = self.messages
+        return Array(_immutableCocoaArray: mss!)
 	}
+    
 	
 	// fetch the list of all contacts, opt = 0 for sort based on timeLatest
 	static func fetchContacts(opt: Bool = true) -> [Contact] {
