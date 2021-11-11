@@ -64,9 +64,9 @@ extension Message {
 	
 	// sort the list of message by date
     static func sortByDate(list: [Message]) -> [Message] {
-		let returnList: [Message] = list
-        return  returnList.sorted{ $0.timeCreated! > $1.timeCreated! }
+        return list.sorted{ $0.timeCreated! > $1.timeCreated! }
     }
+    
 	//	delete
 	func delete() {
 		PersistenceController.shared.container.viewContext.delete(self)
