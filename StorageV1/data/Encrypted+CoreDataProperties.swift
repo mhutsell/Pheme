@@ -29,6 +29,28 @@ extension Encrypted {
 
 extension Encrypted {
 
+	//	fetch the list of all encrypted
+	static func fetchEncrypted(ascending: Bool = false) -> [Encrypted] {
+        let fr: NSFetchRequest<Encrypted> = Encrypted.fetchRequest()
+        fr.sortDescriptors = [NSSortDescriptor(keyPath: \Encrypted.timeCreated, ascending:ascending)]
+        do {
+            let ecs = try PersistenceController.shared.container.viewContext.fetch(fr)
+            return ecs
+        } catch {let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
+    //	autodelete encrypted based on the id.maxEncrypted
+    static func autoDeleteEncrypted() {
+        let listSize = Encrypted.fetchEncrypted().count
+        let identity = Identity.fetchIdentity()
+        if (listSize > identity.maxEncrypted) {
+			let ecs = Encrypted.fetchEncrypted(ascending: true)
+            ecs[0].delete()
+        }
+    }
+	
 	//	search if this encrypted is for me and search the contact who send this message
 	//	if no existing contact exists, create contact
 	//	TODO: need func for input->encrypted
