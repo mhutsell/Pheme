@@ -28,7 +28,6 @@ extension Contact {
 extension Contact {
 
 	//	fetch the list of all messages of all
-	//	TODO: change to use contact.message
 	 func fetchMessages() -> [Message] {
 		let fr: NSFetchRequest<Message> = Message.fetchRequest()
 		fr.predicate = NSPredicate(
@@ -95,6 +94,11 @@ extension Contact {
 		} catch {let nsError = error as NSError
 			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
+	}
+	
+	//	delete
+	func delete() {
+		PersistenceController.shared.container.viewContext.delete(self)
 	}
 
 }

@@ -98,6 +98,10 @@ extension Identity {
 		return self.fetchIdentity().privateKey!.dataToKey()
 	}
 	
+	//	delete
+	func delete() {
+		PersistenceController.shared.container.viewContext.delete(self)
+	}
 	
 }
 
