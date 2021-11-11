@@ -28,7 +28,6 @@ extension Contact {
 extension Contact {
 
 	//	fetch the list of all messages of all
-	//	TODO: change to use contact.message
 	 func fetchMessages() -> [Message] {
 //		let fr: NSFetchRequest<Message> = Message.fetchRequest()
 //		fr.predicate = NSPredicate(
@@ -62,6 +61,20 @@ extension Contact {
 		}
 	}
 	
+	// search Contact based on uuid
+	static func fetchContacts(id: UUID) -> Contact {
+		let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+		fr.predicate = NSPredicate(
+			format: "id LIKE %@", id as CVarArg
+		)
+		do {
+			let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
+            return identity
+        } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+		}
+	}
+	
 	//	retrive the latest message of all contacts
 	func fetchLatests() -> [Message] {
 		let contacts = Contact.fetchContacts(opt: false)
@@ -72,6 +85,16 @@ extension Contact {
 		return data
 	}
 	
+	//	create message
+    func createMessage(body: String) {
+       let newMessage = Message(context: PersistenceController.shared.container.viewContext)
+		newMessage.timeCreated = Date()
+		newMessage.messageBody = body
+		newMessage.contact = self
+		newMessage.sentByMe = true
+		newMessage.encryptAndQueue()
+		PersistenceController.shared.save()
+    }
 	
 	//	create contact (called in checkAndSearch() and TODO: QRContact())
     static func createContact(nn: String, key: PublicKey, id: UUID) -> Contact {
@@ -98,6 +121,11 @@ extension Contact {
 		} catch {let nsError = error as NSError
 			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
+	}
+	
+	//	delete
+	func delete() {
+		PersistenceController.shared.container.viewContext.delete(self)
 	}
 
 }

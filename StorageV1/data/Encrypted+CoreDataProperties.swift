@@ -42,7 +42,7 @@ extension Encrypted {
     }
     
     //	autodelete encrypted based on the id.maxEncrypted
-    static func autoDeleteEncrypted() {
+    static func checkMaxEncrypted() {
         let listSize = Encrypted.fetchEncrypted().count
         let identity = Identity.fetchIdentity()
         if (listSize > identity.maxEncrypted) {
@@ -60,7 +60,7 @@ extension Encrypted {
 		let identity = Identity.fetchIdentity()
 		if (self.receiverId != identity.id) {
 			self.identity = identity
-			//	Identity.checkMaxEncrypted()
+			Encrypted.checkMaxEncrypted()
 		} else {
 			let ct = Contact.searchOrCreate(nn: self.senderNickname!, key: self.senderKey!, id: self.senderId!)
 			self.decryptTo(contact: ct)
@@ -75,6 +75,7 @@ extension Encrypted {
 		newMessage.timeCreated = self.timeCreated
 		newMessage.messageBody = Encrypted.decryptToString(privateKey: Identity.retrievePrivateKey(), body: self.encryptedBody!)
 		newMessage.sentByMe = false
+		PersistenceController.shared.save()
 	}
 	
 	// decrypt body with private key and return the converted string

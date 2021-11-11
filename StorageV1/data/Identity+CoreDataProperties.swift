@@ -80,6 +80,7 @@ extension Identity {
 		let pubKey = PublicKey(context: PersistenceController.shared.container.viewContext)
 		pubKey.keyBody = SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?
 		pubKey.identity = self
+		PersistenceController.shared.save()
 	}
 	
 	//  return a tuple for showing publickey, nickname, UUID, for QR
@@ -91,6 +92,7 @@ extension Identity {
 	//	update the max number of encrypte stored
 	static func updateMaxEncrypted(max: Int16) {
 		self.fetchIdentity().maxEncrypted = max
+		PersistenceController.shared.save()
 	}
 	
 	// retrieve my own private key
@@ -98,6 +100,10 @@ extension Identity {
 		return self.fetchIdentity().privateKey!.dataToKey()
 	}
 	
+	//	delete
+	func delete() {
+		PersistenceController.shared.container.viewContext.delete(self)
+	}
 	
 }
 

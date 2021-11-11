@@ -45,7 +45,6 @@ struct PersistenceController {
     
     func save() {
 		let context = container.viewContext
-		
 		do {
 			try context.save()
 		} catch {let nsError = error as NSError

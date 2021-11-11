@@ -26,6 +26,7 @@ extension Message {
 
 extension Message {
 
+
 	//	create message
     static func createMessageFor(body: String, contact: Contact) {
        let newMessage = Message(context: PersistenceController.shared.container.viewContext)
@@ -36,7 +37,6 @@ extension Message {
 		newMessage.encryptAndQueue()
     }
 
-    
     
 	//	encrypt the message "I" create for sending to contact
 	//	TODO: only checked with encryption/decryption with my own key paris, need to test with using the contact's
@@ -51,6 +51,7 @@ extension Message {
 		newEncrypted.senderKey = identity.publicKey
 		newEncrypted.senderNickname = identity.nickname
 		newEncrypted.encryptedBody = Message.encryptToData(publicKey: self.contact!.theirKey!.dataToKey(), msBody: self.messageBody!)
+		PersistenceController.shared.save()
 	}
 	
 	// encrypt string with public key and return the converted data
