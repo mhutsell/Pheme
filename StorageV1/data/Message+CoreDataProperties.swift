@@ -34,6 +34,7 @@ extension Message {
 		newMessage.contact = contact
 		newMessage.sentByMe = true
 		newMessage.encryptAndQueue()
+		PersistenceController.shared.save()
     }
 
 	//	encrypt the message "I" create for sending to contact
@@ -49,6 +50,7 @@ extension Message {
 		newEncrypted.senderKey = identity.publicKey
 		newEncrypted.senderNickname = identity.nickname
 		newEncrypted.encryptedBody = Message.encryptToData(publicKey: self.contact!.theirKey!.dataToKey(), msBody: self.messageBody!)
+		PersistenceController.shared.save()
 	}
 	
 	// encrypt string with public key and return the converted data

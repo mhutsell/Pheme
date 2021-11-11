@@ -75,6 +75,7 @@ extension Encrypted {
 		newMessage.timeCreated = self.timeCreated
 		newMessage.messageBody = Encrypted.decryptToString(privateKey: Identity.retrievePrivateKey(), body: self.encryptedBody!)
 		newMessage.sentByMe = false
+		PersistenceController.shared.save()
 	}
 	
 	// decrypt body with private key and return the converted string

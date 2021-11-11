@@ -34,8 +34,6 @@ extension PrivateKey {
 		return priKey
 	}
 
-
-
 }
 
 extension PrivateKey : Identifiable {

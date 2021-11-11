@@ -95,7 +95,7 @@ struct ContentView: View {
 				let contacts = Contact.fetchContacts()
 				Text(contacts[0].nickname!)
 				Text(contacts[1].nickname!)
-				Text(contacts[2].nickname!)
+//				Text(contacts[2].nickname!)
 //                test for encryption and decryption
 //                let result = encryptionTest()
 //                Text(result.testString)
