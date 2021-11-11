@@ -21,6 +21,21 @@ extension PrivateKey {
 
 }
 
+extension PrivateKey {
+
+	// convert data to private key
+	func dataToKey() -> SecKey {
+		let attribute = [
+			kSecAttrKeyType as String: kSecAttrKeyTypeRSA,
+			kSecAttrKeyClass as String : kSecAttrKeyClassPrivate
+		]
+		var error: Unmanaged<CFError>?
+		let priKey: SecKey = SecKeyCreateWithData(self.keyBody! as CFData, attribute as CFDictionary, &error)!
+		return priKey
+	}
+
+}
+
 extension PrivateKey : Identifiable {
 
 }
