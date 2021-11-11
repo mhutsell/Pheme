@@ -92,7 +92,7 @@ struct ContentView: View {
 ////					Text(self.decrypted)
 				}.onDelete(perform: deleteItem(offsets:))
 				
-				let contacts = Contact.fetchContacts()
+//				let contacts = Contact.fetchContacts()
 
 //				Text(contacts[0].nickname!)
 //				Text(contacts[1].nickname!)

@@ -62,6 +62,7 @@ extension Message {
 		return encryptedBody
 	}
 	
+	// sort the list of message by date
     static func sortByDate(list: [Message]) -> [Message] {
 		let returnList: [Message] = list
         return  returnList.sorted{ $0.timeCreated! > $1.timeCreated! }
