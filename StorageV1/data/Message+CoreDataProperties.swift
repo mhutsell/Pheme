@@ -26,17 +26,6 @@ extension Message {
 
 extension Message {
 
-	//	create message
-    static func createMessageFor(body: String, contact: Contact) {
-       let newMessage = Message(context: PersistenceController.shared.container.viewContext)
-		newMessage.timeCreated = Date()
-		newMessage.messageBody = body
-		newMessage.contact = contact
-		newMessage.sentByMe = true
-		newMessage.encryptAndQueue()
-		PersistenceController.shared.save()
-    }
-
 	//	encrypt the message "I" create for sending to contact
 	//	TODO: only checked with encryption/decryption with my own key paris, need to test with using the contact's
 	func encryptAndQueue() {
