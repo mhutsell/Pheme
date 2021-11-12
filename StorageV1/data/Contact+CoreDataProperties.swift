@@ -64,7 +64,7 @@ extension Contact {
 	}
 	
 	//	retrive the latest message of all contacts
-	func fetchLatests() -> [Message] {
+	static func fetchLatests() -> [Message] {
 		let contacts = Contact.fetchContacts(opt: false)
 		var data = [Message]()
 		for ct in contacts {
@@ -84,7 +84,7 @@ extension Contact {
 		PersistenceController.shared.save()
     }
 	
-	//	create contact (called in checkAndSearch() and TODO: QRContact())
+	//	create contact (called in checkAndSearch())
     static func createContact(nn: String, key: PublicKey, id: UUID) -> Contact {
 		let newContact = Contact(context: PersistenceController.shared.container.viewContext)
 		newContact.nickname = nn
@@ -94,6 +94,11 @@ extension Contact {
 		newContact.identity = identity
 		PersistenceController.shared.save()
 		return newContact
+	}
+	
+	//	create contact (called when QR scanned)
+    static func createContact(nn: String, keybody: String, id: String) -> Contact {
+		return createContact(nn: nn, key: PublicKey.createPublicKey(key: keybody), id: UUID(uuidString: id)!)
 	}
 	
 	// search contact with id, if not exist, create with nn, id, key

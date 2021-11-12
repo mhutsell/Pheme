@@ -35,6 +35,14 @@ extension PublicKey {
 		let pubKey: SecKey = SecKeyCreateWithData(self.keyBody! as CFData, attribute as CFDictionary, &error)!
 		return pubKey
 	}
+	
+	// create public key called by createContact()
+	static func createPublicKey(key: String) -> PublicKey {
+		let newKey = PublicKey(context: PersistenceController.shared.container.viewContext)
+		newKey.keyBody = Data(base64Encoded: key, options: .ignoreUnknownCharacters)
+        PersistenceController.shared.save()
+        return newKey
+	}
 
 }
 
