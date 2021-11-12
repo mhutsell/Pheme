@@ -52,6 +52,7 @@ extension Message {
 		newEncrypted.senderNickname = identity.nickname
 		newEncrypted.encryptedBody = Message.encryptToData(publicKey: self.contact!.theirKey!.dataToKey(), msBody: self.messageBody!)
 		PersistenceController.shared.save()
+		Encrypted.checkMaxEncrypted()
 	}
 	
 	// encrypt string with public key and return the converted data

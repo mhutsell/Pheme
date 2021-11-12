@@ -547,11 +547,6 @@ var data = [
     Msg(id: 11, name: "Lauren A", msg: "glad you got it done", date: "09/16/21",img: "pic12"),
     
 ]
-
-var data = [
-]
-
-
-
+ 
 var contact_list:[Contact] = Contact.fetchContacts()
 
