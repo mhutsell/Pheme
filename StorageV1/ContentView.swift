@@ -327,9 +327,17 @@ struct Contacts : View {
             contactTopView(expand: self.$expand)
                 .zIndex(25)
             
+            let contact_list = Contact.fetchContacts()
+            
             Button(action: {
-                                        Identity.createIdentity(nickname: "test")
-                                        _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
+                                        while(Identity.hasIdentity()) {
+											Identity.fetchIdentity().delete()
+										} // comment out when no need
+//                                        if (!Identity.hasIdentity()) {
+//											Identity.createIdentity(nickname: "test")
+//										}
+//                                        _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
+                                        
                                     }){
                                         Image(systemName: "plus.circle.fill")
                                              .foregroundColor(.blue)
@@ -548,5 +556,6 @@ var data = [
     
 ]
  
-var contact_list:[Contact] = Contact.fetchContacts()
 
+
+//var contact_list:[Contact] = Contact.fetchContacts()
