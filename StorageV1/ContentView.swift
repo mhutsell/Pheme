@@ -314,6 +314,7 @@ Everything needed for the Contact page
 struct Contacts : View {
     
     @Binding var expand : Bool
+    @State var contact_list:[Contact] = Contact.fetchContacts()
     
 //    @FetchRequest(
 //            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
@@ -327,17 +328,17 @@ struct Contacts : View {
             contactTopView(expand: self.$expand)
                 .zIndex(25)
             
-            let contact_list = Contact.fetchContacts()
+//            let contact_list = Contact.fetchContacts()
             
             Button(action: {
-                                        while(Identity.hasIdentity()) {
-											Identity.fetchIdentity().delete()
-										} // comment out when no need
-//                                        if (!Identity.hasIdentity()) {
-//											Identity.createIdentity(nickname: "test")
-//										}
-//                                        _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
-                                        
+//                                        while(Identity.hasIdentity()) {
+//											Identity.fetchIdentity().delete()
+//										} // comment out when no need
+                                        if (!Identity.hasIdentity()) {
+											Identity.createIdentity(nickname: "test")
+										}
+                                        _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
+                                        contact_list = Contact.fetchContacts()
                                     }){
                                         Image(systemName: "plus.circle.fill")
                                              .foregroundColor(.blue)
@@ -558,4 +559,4 @@ var data = [
  
 
 
-//var contact_list:[Contact] = Contact.fetchContacts()
+
