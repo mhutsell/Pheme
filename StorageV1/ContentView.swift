@@ -150,6 +150,7 @@ Everything we need for the Messages page
 struct Messages : View {
 
     @Binding var expand : Bool
+    @State var message_list:[Message] = Contact.fetchLatests()
 
     var body : some View{
         VStack(spacing: 0){
@@ -157,12 +158,12 @@ struct Messages : View {
             chatTopView(expand: self.$expand)
                 .zIndex(25)
 
-            List(data){i in
+            List(message_list, id:\.contact!.nickname){i in
 
-                if i.id == 0{
+//                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(id: i.name)) {
+						NavigationLink(destination: ChatView(id: i.contact!.nickname!)) {
                             cellMessagesView(data : i)
                                 .onAppear{
                                     self.expand = true
@@ -174,16 +175,16 @@ struct Messages : View {
                     } else {
                         // Fallback on earlier versions
                     }
-                }
-                else{
-                    if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(id: i.name)) {
-                            cellMessagesView(data : i)
-                        }
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                }
+//                }
+//                else{
+//                    if #available(iOS 14.0, *) {
+//                        NavigationLink(destination: ChatView(id: i.name)) {
+//                            cellMessagesView(data : i)
+//                        }
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
+//                }
 
             }
             .padding(.top, 5)
@@ -276,28 +277,28 @@ struct chatTopView : View {
 
 struct cellMessagesView : View {
 
-    var data : Msg
+    var data : Message
 
     var body : some View{
 
         HStack(spacing: 12){
 
-            Image(data.img)
-            .resizable()
-            .frame(width: 55, height: 55)
+//            Image(data.img)
+//            .resizable()
+//            .frame(width: 55, height: 55)
 
             VStack(alignment: .leading, spacing: 12) {
 
-                Text(data.name)
+				Text(data.contact!.nickname!)
 
-                Text(data.msg).font(.caption)
+				Text(data.messageBody!).font(.caption)
             }
 
             Spacer(minLength: 0)
 
             VStack{
 
-                Text(data.date)
+                Text(DateFormatter().string(from: data.timeCreated!))
 
                 Spacer()
             }
@@ -316,11 +317,6 @@ struct Contacts : View {
     @Binding var expand : Bool
     @State var contact_list:[Contact] = Contact.fetchContacts()
     
-//    @FetchRequest(
-//            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
-//            animation: .default)
-//        var contact_list: FetchedResults<Contact>
-    
     var body : some View{
         
         VStack(spacing: 0) {
@@ -328,17 +324,20 @@ struct Contacts : View {
             contactTopView(expand: self.$expand)
                 .zIndex(25)
             
-//            let contact_list = Contact.fetchContacts()
-            
             Button(action: {
-//                                        while(Identity.hasIdentity()) {
-//											Identity.fetchIdentity().delete()
-//										} // comment out when no need
-                                        if (!Identity.hasIdentity()) {
+                                      if (!Identity.hasIdentity()) {
 											Identity.createIdentity(nickname: "test")
 										}
                                         _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
                                         contact_list = Contact.fetchContacts()
+                                    }){
+                                        Image(systemName: "plus.circle.fill")
+                                             .foregroundColor(.blue)
+                                             .imageScale(.large)
+                                    }
+			Button(action: {
+                                        contact_list[0].delete()
+										contact_list = Contact.fetchContacts()
                                     }){
                                         Image(systemName: "plus.circle.fill")
                                              .foregroundColor(.blue)
