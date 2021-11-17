@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Contact" representedClassName="Contact" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <attribute name="timeLatest" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="identity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="contacts" inverseEntity="Identity"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="contact" inverseEntity="Message"/>
+        <relationship name="theirKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PublicKey" inverseName="contact" inverseEntity="PublicKey"/>
+    </entity>
+    <entity name="Encrypted" representedClassName="Encrypted" syncable="YES">
+        <attribute name="encryptedBody" optional="YES" attributeType="Binary"/>
+        <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="receiverId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="senderId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="senderNickname" optional="YES" attributeType="String"/>
+        <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="identity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="notMine" inverseEntity="Identity"/>
+        <relationship name="senderKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PublicKey" inverseName="encryptedSender" inverseEntity="PublicKey"/>
+    </entity>
+    <entity name="Identity" representedClassName="Identity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="maxEncrypted" optional="YES" attributeType="Integer 16" defaultValueString="50" usesScalarValueType="YES"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Contact" inverseName="identity" inverseEntity="Contact"/>
+        <relationship name="notMine" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Encrypted" inverseName="identity" inverseEntity="Encrypted"/>
+        <relationship name="privateKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PrivateKey" inverseName="identity" inverseEntity="PrivateKey"/>
+        <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PublicKey" inverseName="identity" inverseEntity="PublicKey"/>
+    </entity>
+    <entity name="Message" representedClassName="Message" syncable="YES">
+        <attribute name="messageBody" optional="YES" attributeType="String"/>
+        <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sentByMe" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="timeCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="messages" inverseEntity="Contact"/>
+    </entity>
+    <entity name="PrivateKey" representedClassName="PrivateKey" syncable="YES">
+        <attribute name="keyBody" optional="YES" attributeType="Binary"/>
+        <relationship name="identity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="privateKey" inverseEntity="Identity"/>
+    </entity>
+    <entity name="PublicKey" representedClassName="PublicKey" syncable="YES">
+        <attribute name="keyBody" optional="YES" attributeType="Binary"/>
+        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="theirKey" inverseEntity="Contact"/>
+        <relationship name="encryptedSender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Encrypted" inverseName="senderKey" inverseEntity="Encrypted"/>
+        <relationship name="identity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Identity" inverseName="publicKey" inverseEntity="Identity"/>
+    </entity>
+    <elements>
+        <element name="Contact" positionX="-18" positionY="81" width="128" height="119"/>
+        <element name="Encrypted" positionX="9" positionY="99" width="128" height="149"/>
+        <element name="Identity" positionX="-27" positionY="54" width="128" height="134"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="PrivateKey" positionX="-36" positionY="45" width="128" height="59"/>
+        <element name="PublicKey" positionX="-54" positionY="18" width="128" height="89"/>
+    </elements>
+</model>
