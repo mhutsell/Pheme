@@ -28,10 +28,21 @@ extension Contact {
 extension Contact {
 
 	//	fetch the list of all messages of all
-	 func fetchMessages() -> [Message] {let mss = self.messages
-        return Array(_immutableCocoaArray: mss!)
+	 func fetchMessages() -> [Message] {
+//		let fr: NSFetchRequest<Message> = Message.fetchRequest()
+//		fr.predicate = NSPredicate(
+//			format: "contact LIKE %@", self
+//		)
+//		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
+//		do {
+//			let mss = try PersistenceController.shared.container.viewContext.fetch(fr)
+//			return Array(mss)
+//		} catch {let nsError = error as NSError
+//			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+//		}
+        let mss = Array<Message>(_immutableCocoaArray: self.messages!)
+        return mss
 	}
-    
 	
 	// fetch the list of all contacts, opt = 0 for sort based on timeLatest
 	static func fetchContacts(opt: Bool = true) -> [Contact] {
@@ -50,7 +61,7 @@ extension Contact {
 	}
 	
 	// search Contact based on uuid
-	static func fetchContactWithID(id: UUID) -> Contact {
+	static func fetchContacts(id: UUID) -> Contact {
 		let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
 		fr.predicate = NSPredicate(
 			format: "id LIKE %@", id as CVarArg
@@ -73,15 +84,43 @@ extension Contact {
 		return data
 	}
 	
-	//	create message
-    func createMessage(body: String) {
+	//	add new message to contact list
+    func createChatMessage(body: String) {
        let newMessage = Message(context: PersistenceController.shared.container.viewContext)
 		newMessage.timeCreated = Date()
 		newMessage.messageBody = body
 		newMessage.contact = self
 		newMessage.sentByMe = true
 		newMessage.encryptAndQueue()
+        self.timeLatest = newMessage.timeCreated
+        self.messages?.adding(newMessage)
 		PersistenceController.shared.save()
+    }
+    
+    //    create message
+    func createMessage(body: String) {
+       let newMessage = Message(context: PersistenceController.shared.container.viewContext)
+        newMessage.timeCreated = Date()
+        newMessage.messageBody = body
+        newMessage.contact = self
+        newMessage.sentByMe = true
+        newMessage.encryptAndQueue()
+        self.timeLatest = newMessage.timeCreated
+        PersistenceController.shared.save()
+    }
+    
+    func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?){
+        let newEncrypted = Encrypted(context: PersistenceController.shared.container.viewContext)
+        let identity = Identity.fetchIdentity()
+        newEncrypted.identity = identity
+        newEncrypted.receiverId = receiverId
+        newEncrypted.senderId = senderId
+        newEncrypted.messageType = messageType
+        newEncrypted.timeCreated = timeCreated
+        newEncrypted.senderKey = PublicKey.createPublicKey(key: senderKey!)
+        newEncrypted.senderNickname = senderNickname
+        newEncrypted.encryptedBody = encryptedBody
+        PersistenceController.shared.save()
     }
 	
 	//	create contact (called in checkAndSearch() and TODO: QRContact())
@@ -92,10 +131,16 @@ extension Contact {
 		newContact.theirKey = key
 		let identity = Identity.fetchIdentity()
 		newContact.identity = identity
+        newContact.timeLatest = Date()
 		PersistenceController.shared.save()
 		return newContact
 	}
 	
+    //    create contact (called when QR scanned)
+    static func createContact(nn: String, keybody: String, id: String) -> Contact {
+        return searchOrCreate(nn: nn, key: PublicKey.createPublicKey(key: keybody), id: UUID(uuidString: id)!)
+    }
+    
 	// search contact with id, if not exist, create with nn, id, key
 	static func searchOrCreate(nn: String, key: PublicKey, id: UUID) -> Contact {
 		let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
@@ -110,6 +155,16 @@ extension Contact {
 			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
 	}
+    
+    //fetch the latest message body
+    func fetchLatestMessageString() -> String {
+            var mes = Array<Message>(_immutableCocoaArray: self.messages!)
+            if (mes.count == 0) {
+                return "We are friends now!"
+            }
+            mes = Message.sortByDate(list: mes)
+            return mes[0].messageBody!
+    }
 	
 	//	delete
 	func delete() {

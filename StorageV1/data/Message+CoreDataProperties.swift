@@ -26,18 +26,6 @@ extension Message {
 
 extension Message {
 
-
-	//	create message
-    static func createMessageFor(body: String, contact: Contact) {
-       let newMessage = Message(context: PersistenceController.shared.container.viewContext)
-		newMessage.timeCreated = Date()
-		newMessage.messageBody = body
-		newMessage.contact = contact
-		newMessage.sentByMe = true
-		newMessage.encryptAndQueue()
-    }
-
-    
 	//	encrypt the message "I" create for sending to contact
 	//	TODO: only checked with encryption/decryption with my own key paris, need to test with using the contact's
 	func encryptAndQueue() {
@@ -51,6 +39,7 @@ extension Message {
 		newEncrypted.senderKey = identity.publicKey
 		newEncrypted.senderNickname = identity.nickname
 		newEncrypted.encryptedBody = Message.encryptToData(publicKey: self.contact!.theirKey!.dataToKey(), msBody: self.messageBody!)
+        BTController.shared.createPayload()
 		PersistenceController.shared.save()
 	}
 	
@@ -62,11 +51,10 @@ extension Message {
 		return encryptedBody
 	}
 	
-	// sort the list of message by date
     static func sortByDate(list: [Message]) -> [Message] {
-        return list.sorted{ $0.timeCreated! > $1.timeCreated! }
+        var returnList: [Message] = list
+        return  returnList.sorted{ $0.timeCreated! > $1.timeCreated! }
     }
-    
 	//	delete
 	func delete() {
 		PersistenceController.shared.container.viewContext.delete(self)

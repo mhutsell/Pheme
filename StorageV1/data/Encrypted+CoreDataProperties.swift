@@ -29,6 +29,45 @@ extension Encrypted {
 
 extension Encrypted {
 
+    func to_json() -> String{
+        var to_return = "{{{{{\(self.encryptedBody)"
+        to_return += "|||||\(self.messageType)"
+        to_return += "|||||\(self.receiverId)"
+        to_return += "|||||\(self.senderId)"
+        to_return += "|||||\(self.timeCreated)"
+        to_return += "|||||\(self.senderNickname)"
+        to_return += "|||||\(self.senderKey!.keyBody)" + "|||||}}}}}"
+        return to_return
+    }
+    
+    static func from_json(incomingMessage: String){
+        var str_msgs = "\(incomingMessage)"
+        str_msgs.remove(at: str_msgs.startIndex)
+        str_msgs.remove(at: str_msgs.endIndex)
+        let split_msgs:[String] = str_msgs.components(separatedBy: "{{{{{")
+        let date_formatter = DateFormatter()
+        firstFor: for json_msg in split_msgs{
+            let split_comps:[String] = json_msg.components(separatedBy: "|||||")
+            let encryptedBody: Data? = split_comps[1].data(using: .utf8)
+            let messageType: Int16? = Int16(split_comps[2])
+            let receiverId: UUID? = UUID(uuidString: split_comps[3])
+            let senderId: UUID? = UUID(uuidString: split_comps[4])
+            let timeCreated: Date? = date_formatter.date(from: split_comps[5])
+            let senderNickname: String? = split_comps[6]
+            let senderKey: String? = split_comps[7]
+            
+            let curr_s_contact = Contact.searchOrCreate(nn: senderNickname!, key: PublicKey.createPublicKey(key: senderKey!), id: senderId!)
+            let curr_msgs: [Message] = curr_s_contact.fetchMessages()
+            for curr_msg in curr_msgs{
+                if (curr_msg.timeCreated == timeCreated){
+                    continue firstFor
+                }
+            }
+            curr_s_contact.addEncrypted(encryptedBody: encryptedBody, messageType: messageType!, receiverId: receiverId!, senderId: senderId!, timeCreated: timeCreated!, senderNickname: senderNickname, senderKey: senderKey)
+        }
+        
+    }
+    
 	//	fetch the list of all encrypted
 	static func fetchEncrypted(ascending: Bool = false) -> [Encrypted] {
         let fr: NSFetchRequest<Encrypted> = Encrypted.fetchRequest()
@@ -75,6 +114,9 @@ extension Encrypted {
 		newMessage.timeCreated = self.timeCreated
 		newMessage.messageBody = Encrypted.decryptToString(privateKey: Identity.retrievePrivateKey(), body: self.encryptedBody!)
 		newMessage.sentByMe = false
+        if (contact.timeLatest! < self.timeCreated!) {
+                    contact.timeLatest = self.timeCreated
+        }
 		PersistenceController.shared.save()
 	}
 	

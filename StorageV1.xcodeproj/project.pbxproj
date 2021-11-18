@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01C4386C2744B08900BFB36C /* BTController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C4386B2744B08900BFB36C /* BTController.swift */; };
 		11082C60270E7EC40099285E /* StorageV1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C5F270E7EC40099285E /* StorageV1App.swift */; };
 		11082C62270E7EC40099285E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C61270E7EC40099285E /* ContentView.swift */; };
 		11082C64270E7EC60099285E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C63270E7EC60099285E /* Assets.xcassets */; };
@@ -26,12 +27,14 @@
 		119C624A2738D6A200116A4F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C62492738D6A200116A4F /* ChatView.swift */; };
 		11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */; };
 		11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */; };
-		B70659BB2734966C00DD72B7 /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70659BA2734966C00DD72B7 /* mainView.swift */; };
-		B70659BF2734998800DD72B7 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70659BE2734998800DD72B7 /* Contacts.swift */; };
+		AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD256987273EF70F0065A85D /* SwiftUIView.swift */; };
+		AD25698B273EF9E00065A85D /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AD25698A273EF9E00065A85D /* CodeScanner */; };
+		ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC654A62741C69A00E11CB5 /* SplashView2.swift */; };
 		B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77EBC89273CB83400D059D3 /* SplashView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01C4386B2744B08900BFB36C /* BTController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController.swift; sourceTree = "<group>"; };
 		11082C5C270E7EC40099285E /* StorageV1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorageV1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11082C5F270E7EC40099285E /* StorageV1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageV1App.swift; sourceTree = "<group>"; };
 		11082C61270E7EC40099285E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,8 +56,8 @@
 		119C62492738D6A200116A4F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
 		11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B70659BA2734966C00DD72B7 /* mainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
-		B70659BE2734998800DD72B7 /* Contacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
+		AD256987273EF70F0065A85D /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		ADC654A62741C69A00E11CB5 /* SplashView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView2.swift; sourceTree = "<group>"; };
 		B77EBC89273CB83400D059D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD25698B273EF9E00065A85D /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,16 +105,17 @@
 			isa = PBXGroup;
 			children = (
 				11082C5F270E7EC40099285E /* StorageV1App.swift */,
-				B70659BA2734966C00DD72B7 /* mainView.swift */,
 				11082C61270E7EC40099285E /* ContentView.swift */,
+				AD256987273EF70F0065A85D /* SwiftUIView.swift */,
 				B77EBC89273CB83400D059D3 /* SplashView.swift */,
-				B70659BE2734998800DD72B7 /* Contacts.swift */,
-				11082C63270E7EC60099285E /* Assets.xcassets */,
+				ADC654A62741C69A00E11CB5 /* SplashView2.swift */,
+				119C62492738D6A200116A4F /* ChatView.swift */,
 				11082C68270E7EC60099285E /* Persistence.swift */,
+				11082C63270E7EC60099285E /* Assets.xcassets */,
 				11082C6D270E7EC60099285E /* Info.plist */,
 				11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */,
 				11082C65270E7EC60099285E /* Preview Content */,
-				119C62492738D6A200116A4F /* ChatView.swift */,
+				01C4386B2744B08900BFB36C /* BTController.swift */,
 			);
 			path = StorageV1;
 			sourceTree = "<group>";
@@ -140,6 +145,7 @@
 			);
 			name = StorageV1;
 			packageProductDependencies = (
+				AD25698A273EF9E00065A85D /* CodeScanner */,
 			);
 			productName = StorageV1;
 			productReference = 11082C5C270E7EC40099285E /* StorageV1.app */;
@@ -169,6 +175,7 @@
 			);
 			mainGroup = 11082C53270E7EC40099285E;
 			packageReferences = (
+				AD256989273EF9E00065A85D /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 11082C5D270E7EC40099285E /* Products */;
 			projectDirPath = "";
@@ -198,13 +205,14 @@
 			files = (
 				111BA8192720F31F0062CF2F /* PublicKey+CoreDataProperties.swift in Sources */,
 				11082C69270E7EC60099285E /* Persistence.swift in Sources */,
-				B70659BF2734998800DD72B7 /* Contacts.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
 				1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */,
 				1156B09A272F0B92005555EF /* Contact+CoreDataProperties.swift in Sources */,
-				B70659BB2734966C00DD72B7 /* mainView.swift in Sources */,
 				1156B099272F0B92005555EF /* Contact+CoreDataClass.swift in Sources */,
+				AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */,
 				119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */,
+				01C4386C2744B08900BFB36C /* BTController.swift in Sources */,
+				ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */,
 				1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */,
 				1156B09D272F0FF6005555EF /* Identity+CoreDataClass.swift in Sources */,
 				11108AFD2726315200EF87C8 /* Message+CoreDataProperties.swift in Sources */,
@@ -353,7 +361,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = RayC.StorageV1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pheme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -367,7 +375,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StorageV1/Preview Content\"";
-				DEVELOPMENT_TEAM = 6GM54MJ567;
+				DEVELOPMENT_TEAM = 6YR78S9C9Q;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StorageV1/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -375,7 +383,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = RayC.StorageV1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pheme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -404,6 +412,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AD256989273EF9E00065A85D /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AD25698A273EF9E00065A85D /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD256989273EF9E00065A85D /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */ = {

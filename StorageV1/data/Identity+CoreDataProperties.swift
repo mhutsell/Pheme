@@ -32,6 +32,9 @@ extension Identity {
 		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
         fr.fetchLimit = 1
         do {
+            if (!Identity.hasIdentity()) {
+                Identity.createIdentity(nickname: "TEMPORARY")
+            }
 			let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
             return identity
         } catch {let nsError = error as NSError
@@ -84,11 +87,21 @@ extension Identity {
 	}
 	
 	//  return a tuple for showing publickey, nickname, UUID, for QR
-    static func myInfo() -> (key: String, nickname: String, id: String) {
+    static func myKey() -> String {
         let identity = Identity.fetchIdentity()
-		return (identity.publicKey!.keyBody!.base64EncodedString(), identity.nickname!, identity.id!.uuidString)
+        return identity.publicKey!.keyBody!.base64EncodedString()
     }
-	
+    
+    static func myName() -> String {
+        let identity = Identity.fetchIdentity()
+        return identity.nickname!
+    }
+    
+    static func myID() -> String {
+        let identity = Identity.fetchIdentity()
+        return identity.id!.uuidString
+    }
+    
 	//	update the max number of encrypte stored
 	static func updateMaxEncrypted(max: Int16) {
 		self.fetchIdentity().maxEncrypted = max

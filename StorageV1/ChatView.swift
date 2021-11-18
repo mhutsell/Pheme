@@ -9,26 +9,16 @@
 import Foundation
 import SwiftUI
 
-enum BubblePosition {
-    case left
-    case right
-}
-
-class ChatModel: ObservableObject {
-    var text = ""
-    @Published var arrayOfMessages : [String] = []
-    @Published var arrayOfPositions : [BubblePosition] = []
-    @Published var position = BubblePosition.right
-}
-
 //struct IDUser: {
 //
 //}
+
+
 struct ChatBubble<Content>: View where Content: View {
-    let position: BubblePosition
+    let position: Bool
     let color : Color
     let content: () -> Content
-    init(position: BubblePosition, color: Color, @ViewBuilder content: @escaping () -> Content) {
+    init(position: Bool, color: Color, @ViewBuilder content: @escaping () -> Content) {
         self.content = content
         self.color = color
         self.position = position
@@ -44,13 +34,13 @@ struct ChatBubble<Content>: View where Content: View {
                 .overlay(
                     Image(systemName: "arrowtriangle.left.fill")
                         .foregroundColor(color)
-                        .rotationEffect(Angle(degrees: position == .left ? -50 : -130))
-                        .offset(x: position == .left ? -5 : 5)
-                    ,alignment: position == .left ? .bottomLeading : .bottomTrailing)
+                        .rotationEffect(Angle(degrees: position == false ? -50 : -130))
+                        .offset(x: position == false ? -5 : 5)
+                    ,alignment: position == false ? .bottomLeading : .bottomTrailing)
         }
-        .padding(position == .left ? .leading : .trailing , 15)
-        .padding(position == .right ? .leading : .trailing , 60)
-        .frame(width: UIScreen.main.bounds.width, alignment: position == .left ? .leading : .trailing)
+        .padding(position == false ? .leading : .trailing , 15)
+        .padding(position == true ? .leading : .trailing , 60)
+        .frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
     }
 }
 
@@ -149,8 +139,16 @@ extension ViewHeightKey: ViewModifier {
 
 @available(iOS 14.0, *)
 struct ChatView: View {
-    var id: String
-    @ObservedObject var model = ChatModel()
+    var contact: Contact
+//
+//    @FetchRequest(
+//                sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)],
+//                predicate: NSPredicate(format: "contact LIKE %@", self.contact),
+//                animation: .default)
+//        var message_list: FetchedResults<Message>
+    
+//    @State var message_list:[Message] = contact.fetchMessages()
+    @State var messageSent: String = ""
     
     var body: some View {
         GeometryReader { geo in
@@ -159,7 +157,7 @@ struct ChatView: View {
                 VStack{
                     HStack(spacing: 12) {
                         Spacer()
-                        Text(id)
+                        Text(contact.nickname!)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -177,9 +175,9 @@ struct ChatView: View {
                 //MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                        ForEach(0..<model.arrayOfMessages.count, id:\.self) { index in
-                            ChatBubble(position: model.arrayOfPositions[index], color: model.arrayOfPositions[index] == BubblePosition.right ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-                                Text(model.arrayOfMessages[index])
+                        ForEach(0..<self.contact.fetchMessages().count, id:\.self) { index in
+                            ChatBubble(position: self.contact.fetchMessages()[index].sentByMe, color: self.contact.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+                                Text(self.contact.fetchMessages()[index].messageBody!)
                             }
                         }
                     }
@@ -187,56 +185,54 @@ struct ChatView: View {
                 //MARK:- text editor
                 HStack {
                     ZStack {
-                        TextEditor(text: $model.text)
+                        TextEditor(text: $messageSent)
                         RoundedRectangle(cornerRadius: 10)
                             .stroke()
                             .foregroundColor(.gray)
                     }.frame(height: 50)
                     
                     Button("Send") {
-                        if model.text != "" {
-                            model.position = BubblePosition.right
-                            model.arrayOfPositions.append(model.position)
-                            model.arrayOfMessages.append(model.text)
-                            model.text = ""
+                        if messageSent != "" {
+                            contact.createChatMessage(body: messageSent)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
                 }.padding()
             }.navigationBarBackButtonHidden(false)
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }
 
-@available(iOS 14.0, *)
-struct ChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatView(id: "abc")
-    }
-}
+//@available(iOS 14.0, *)
+//struct ChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatView(id: "abc")
+//    }
+//}
 
-struct chatTopBar : View {
-    var id: Int
-    
-    var body : some View{
-        VStack{
-            HStack(spacing: 12) {
-                Spacer()
-                Text(data[id].name)
-                Spacer()
-            }
-            .foregroundColor(Color("Color1"))
-            .background(Color("Color"))
-        }
-        .padding()
-        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
-        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-        .background(Color("Color"))
-        .clipShape(shape())
-        .animation(.default)
-        .edgesIgnoringSafeArea(.top)
-    }
-}
+//struct chatTopBar : View {
+//    var id: Int
+//    
+//    var body : some View{
+//        VStack{
+//            HStack(spacing: 12) {
+//                Spacer()
+//                Text(.name)
+//                Spacer()
+//            }
+//            .foregroundColor(Color("Color1"))
+//            .background(Color("Color"))
+//        }
+//        .padding()
+//        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
+//        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
+//        .background(Color("Color"))
+//        .clipShape(shape())
+//        .animation(.default)
+//        .edgesIgnoringSafeArea(.top)
+//    }
+//}
     /*
 GLOBAL stuff
  - Msg (data)

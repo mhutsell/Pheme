@@ -4,6 +4,7 @@
 import SwiftUI
 import CoreImage.CIFilterBuiltins
 import CoreData
+import CodeScanner
 
 
 // Create the base view
@@ -37,7 +38,7 @@ struct Home : View {
     var username : String
     
     @State var index = 1
-    @State var expand = false
+    @State var expand = true
     
     
     var body : some View{
@@ -54,11 +55,12 @@ struct Home : View {
                 // checks Messages, Contacts, Settings
                 ZStack{
                     
-                    Messages(expand: self.$expand).opacity(self.index == 0 ? 1 : 0)
+                    Messages(username: self.username, expand: self.$expand).opacity(self.index == 0 ? 1 : 0)
                     
                     Contacts(expand: self.$expand).opacity(self.index == 1 ? 1 : 0)
                     
                     Settings(username: self.username).opacity(self.index == 2 ? 1 : 0)
+            
                 }
                 
                 BottomView(index: self.$index)
@@ -148,21 +150,27 @@ Everything we need for the Messages page
 */
 
 struct Messages : View {
-
+    
+    var username : String
     @Binding var expand : Bool
-
+    
+    @FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
+            animation: .default)
+        var data: FetchedResults<Contact>
+        
     var body : some View{
         VStack(spacing: 0){
 
-            chatTopView(expand: self.$expand)
+            chatTopView(username: self.username, expand: self.$expand)
                 .zIndex(25)
 
-            List(data){i in
+            List(data, id:\.nickname){i in
 
-                if i.id == 0{
+//                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(id: i.name)) {
+                        NavigationLink(destination: ChatView(contact: i)) {
                             cellMessagesView(data : i)
                                 .onAppear{
                                     self.expand = true
@@ -175,15 +183,15 @@ struct Messages : View {
                         // Fallback on earlier versions
                     }
                 }
-                else{
-                    if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(id: i.name)) {
-                            cellMessagesView(data : i)
-                        }
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                }
+//                else{
+//                    if #available(iOS 14.0, *) {
+//                        NavigationLink(destination: ChatView(id: i.name)) {
+//                            cellMessagesView(data : i)
+//                        }
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
+//                }
 
             }
             .padding(.top, 5)
@@ -191,19 +199,22 @@ struct Messages : View {
             .clipShape(shape())
             .offset(y: -25)
         }
-    }
 }
+
 
 struct chatTopView : View {
 
-    @State var username: String = "abc"
+    @State var username: String
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
-
-    @State var search = ""
+    
+    var key = Identity.myKey()
+    var id = Identity.myID()
+    var name = Identity.myName()
+    
     @Binding var expand : Bool
 
-    var body : some View{
+    var body : some View{  
 
         VStack(spacing: 5){
 
@@ -229,79 +240,72 @@ struct chatTopView : View {
                     }
                 }
 
-                Image(uiImage: generateQRCode(from: "\(username)"))
-                    .interpolation(.none)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-                    .padding()
+//                Image(uiImage: generateQRCode(from: "\(self.name)\n\(self.key)\n\(self.id)"))
+//                    .interpolation(.none)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 200, height: 200)
+//                    .padding()
 
             }
 
-            HStack(spacing: 12){
-
-                Image(systemName: "magnifyingglass")
-                .resizable()
-                .frame(width: 18, height: 18)
-                .foregroundColor(Color.black.opacity(0.3))
-
-                TextField("Search Messages...", text: self.$search)
-
-            }.padding()
-            .background(Color.white)
-            .cornerRadius(8)
-            .padding(.bottom, 5)
-
-        }.padding()
+        }
+        .padding()
         .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
         .background(Color("Color1"))
-        .clipShape(shape())
         .animation(.default)
 
     }
 
-    func generateQRCode(from string: String) -> UIImage {
-        let data = Data(string.utf8)
-        filter.setValue(data, forKey: "inputMessage")
-
-        if let outputImage = filter.outputImage{
-            if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
-                return UIImage(cgImage: cgimg)
-            }
-        }
-        return UIImage(systemName: "xmark.circle") ?? UIImage()
-    }
+//    func generateQRCode(from string: String) -> UIImage {
+//        let data = Data(string.utf8)
+//        filter.setValue(data, forKey: "inputMessage")
+//
+//        if let outputImage = filter.outputImage{
+//            if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
+//                return UIImage(cgImage: cgimg)
+//            }
+//        }
+//        return UIImage(systemName: "xmark.circle") ?? UIImage()
+//    }
 }
-
 
 struct cellMessagesView : View {
 
-    var data : Msg
+    var data : Contact
 
     var body : some View{
 
         HStack(spacing: 12){
 
-            Image(data.img)
+            Image(systemName:"person.crop.circle.fill")
             .resizable()
             .frame(width: 55, height: 55)
-
+            .foregroundColor(Color("Color"))
+            
             VStack(alignment: .leading, spacing: 12) {
 
-                Text(data.name)
+                Text(data.nickname!)
 
-                Text(data.msg).font(.caption)
+                Text(data.fetchLatestMessageString()).font(.caption)
             }
 
             Spacer(minLength: 0)
 
             VStack{
-
-                Text(data.date)
+                Text(time())
 
                 Spacer()
             }
         }.padding(.vertical)
+    }
+    
+    func time () -> String {
+        let time2 = data.timeLatest!
+        let formatter1 = DateFormatter()
+        formatter1.dateStyle = .short
+        
+        return formatter1.string(from: time2)
     }
 }
 
@@ -314,11 +318,11 @@ Everything needed for the Contact page
 struct Contacts : View {
     
     @Binding var expand : Bool
-    
-//    @FetchRequest(
-//            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
-//            animation: .default)
-//        var contact_list: FetchedResults<Contact>
+//    @State var contact_list2:[Contact] = contact_list
+    @FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
+            animation: .default)
+        var contact_list: FetchedResults<Contact>
     
     var body : some View{
         
@@ -327,20 +331,11 @@ struct Contacts : View {
             contactTopView(expand: self.$expand)
                 .zIndex(25)
             
-            Button(action: {
-                                        Identity.createIdentity(nickname: "test")
-                                        _ = Contact.createContact(nn: "contactTest", key: Identity.fetchIdentity().publicKey!, id: Identity.fetchIdentity().id!)
-                                    }){
-                                        Image(systemName: "plus.circle.fill")
-                                             .foregroundColor(.blue)
-                                             .imageScale(.large)
-                                    }
-            
             List(contact_list, id:\.nickname){i in
 //                        if i.id == 0{
                             
                             if #available(iOS 14.0, *) {
-                                NavigationLink(destination: ChatView(id: i.nickname!)) {
+                                NavigationLink(destination: ChatView(contact: i)) {
                                     cellContactView(contact_list : i)
                                         .onAppear{
                                             self.expand = true
@@ -368,15 +363,10 @@ struct Contacts : View {
                     .clipShape(shape())
                     .offset(y : -25)
             }
-        
-        
     }
     
-
-
 struct contactTopView : View {
     
-    @State var search = ""
     @Binding var expand : Bool
     
     var body : some View{
@@ -407,24 +397,9 @@ struct contactTopView : View {
                 
             }
             
-            HStack(spacing: 12){
-                
-                Image(systemName: "magnifyingglass")
-                .resizable()
-                .frame(width: 18, height: 18)
-                .foregroundColor(Color.black.opacity(0.3))
-                
-                TextField("Search Contacts...", text: self.$search)
-                
-            }.padding()
-            .background(Color.white)
-            .cornerRadius(8)
-            .padding(.bottom, 5)
-            
         }.padding()
         .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
         .background(Color("Color1"))
-        .clipShape(shape())
         .animation(.default)
         
     }
@@ -439,9 +414,10 @@ struct cellContactView : View {
     var body : some View{
         HStack(spacing: 12){
             
-//            Image(contact_list.img)
-//            .resizable()
-//            .frame(width: 55, height: 55)
+            Image(systemName:"person.crop.circle.fill")
+            .resizable()
+            .frame(width: 55, height: 55)
+            .foregroundColor(Color("Color"))
 //
             VStack(alignment: .leading, spacing: 12) {
             
@@ -465,35 +441,66 @@ struct cellContactView : View {
 struct Settings : View {
     
     var username : String
-
+    
+    var key = Identity.myKey()
+    var id = Identity.myID()
+    var name = Identity.myName()
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
-    
+    @State private var isShowingScanner = false
     var body : some View{
         
-        GeometryReader{_ in
+        return VStack {
+        
+            Image(uiImage: generateQRCode2(from: "\(self.name)\n\(self.key)\n\(self.id)"))
+                .interpolation(.none)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200)
+                .padding()
             
-            VStack{
-                
-                Image(uiImage: generateQRCode(from: "\(username)"))
-                    .interpolation(.none)
-                    .resizable()
-                    .scaledToFit()
-                    .padding()
-                
-                Text(self.username)
-                    .font(.title)
-                
+            Spacer()
+            
+            Button(action: {
+                self.isShowingScanner = true
+            }) {
+                Image(systemName: "qrcode.viewfinder")
+                                    .resizable()
+                                    .frame(width: 75, height: 75)
+                                    .padding()
+                                    .foregroundColor(Color("Color"))
+            .sheet(isPresented: $isShowingScanner) {
+                CodeScannerView(codeTypes:[.qr], completion:self.handleScan)
+            
             }
-            .padding(.top)
         }
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
         .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
         .background(Color.white)
         .clipShape(shape())
+        .animation(.default)
+        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
         .padding(.bottom)
     }
     
-    func generateQRCode(from string: String) -> UIImage {
+    func handleScan(result: Result<String, CodeScannerView.ScanError>) {
+        self.isShowingScanner = false
+        
+        switch result {
+            case .success(let code):
+                let details = code.components(separatedBy: "\n")
+                guard details.count == 3 else { return }
+
+                Contact.createContact(nn: details[0], keybody: details[1], id: details[2])
+                
+            case .failure(let error):
+                print("Scanning failed")
+        }
+    }
+    
+    func generateQRCode2(from string: String) -> UIImage {
         let data = Data(string.utf8)
         filter.setValue(data, forKey: "inputMessage")
 
@@ -531,27 +538,6 @@ struct Msg : Identifiable {
 //    var img : String
 //}
 
-var data = [
-    
-    Msg(id: 0, name: "John Doe", msg: "Hey!", date: "10/30/21",img: "pic1"),
-    Msg(id: 1, name: "Sarah L", msg: "How are you doing?", date: "10/30/21",img: "pic2"),
-    Msg(id: 2, name: "Catherine C", msg: "yeah it was super fun", date: "10/29/21",img: "pic3"),
-    Msg(id: 3, name: "Chris H", msg: "Hey", date: "10/18/21",img: "pic4"),
-    Msg(id: 4, name: "Lina T", msg: "yeah I'm really enjoying the class", date: "10/17/21",img: "pic5"),
-    Msg(id: 5, name: "Kate G", msg: "we could meet at the library", date: "10/17/21",img: "pic6"),
-    Msg(id: 6, name: "Frank S", msg: "I'll take a look", date: "10/16/21",img: "pic7"),
-    Msg(id: 7, name: "James O", msg: "Hello", date: "10/12/21",img: "pic8"),
-    Msg(id: 8, name: "Becca", msg: "How are you?", date: "10/12/21",img: "pic9"),
-    Msg(id: 9, name: "Brian L", msg: "awesome stuff!", date: "10/11/21",img: "pic10"),
-    Msg(id: 10, name: "Julia U", msg: "Are you ready to go?", date: "09/24/21",img: "pic11"),
-    Msg(id: 11, name: "Lauren A", msg: "glad you got it done", date: "09/16/21",img: "pic12"),
-    
-]
+//var contact_list:[Contact] = Contact.fetchContacts()
 
-var data = [
-]
-
-
-
-var contact_list:[Contact] = Contact.fetchContacts()
 
