@@ -17,6 +17,7 @@ struct StorageV1App: App {
 //            ContentView(username: "test")
             if Identity.hasIdentity() {
                 SplashView2(username: Identity.fetchIdentity().nickname!)
+//                SplashView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             else {

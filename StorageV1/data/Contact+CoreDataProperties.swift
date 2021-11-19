@@ -21,12 +21,15 @@ extension Contact {
     @NSManaged public var timeLatest: Date?
     @NSManaged public var identity: Identity?
     @NSManaged public var messages: NSSet?
+    @NSManaged public var message_list: [Message]?
     @NSManaged public var theirKey: PublicKey?
 
 }
 
 extension Contact {
-
+    func fecthMessageList() -> [Message] {
+        return self.message_list!
+    }
 	//	fetch the list of all messages of all
 	 func fetchMessages() -> [Message] {
 //		let fr: NSFetchRequest<Message> = Message.fetchRequest()
@@ -40,8 +43,24 @@ extension Contact {
 //		} catch {let nsError = error as NSError
 //			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 //		}
-        let mss = Array<Message>(_immutableCocoaArray: self.messages!)
-        return mss
+//        let mss = Array<Message>(_immutableCocoaArray: self.messages!)
+//        var res: [Message]
+//        res = []
+//        for tmp in self.messages!.allObjects {
+//            res.append(tmp as! Message)
+//        }
+//        let msset = self.messages
+//        if (msset!.count != 0) {
+//            print(msset!.allObjects[0])
+//        }
+//        if (mss.count > 0) {
+//            print(mss[0].messageBody)
+//        }
+//        let res = Array<Message>(msset!.allObjects)
+//        return res
+        var ml = self.messages!.allObjects as! [Message]
+        
+        return Message.sortByDate(list: ml)
 	}
     
 	
@@ -91,10 +110,10 @@ extension Contact {
 		newMessage.timeCreated = Date()
 		newMessage.messageBody = body
 		newMessage.contact = self
+//        self.messages?.adding(newMessage)
 		newMessage.sentByMe = true
 		newMessage.encryptAndQueue()
         self.timeLatest = newMessage.timeCreated
-        self.messages?.adding(newMessage)
 		PersistenceController.shared.save()
     }
     
@@ -104,8 +123,10 @@ extension Contact {
         newMessage.timeCreated = Date()
         newMessage.messageBody = body
         newMessage.contact = self
+        
         newMessage.sentByMe = true
-        newMessage.encryptAndQueue()
+//        newMessage.encryptAndQueue()
+//        self.message_list?.append(newMessage)
         self.timeLatest = newMessage.timeCreated
         PersistenceController.shared.save()
     }
@@ -145,12 +166,12 @@ extension Contact {
     
     //fetch the latest message body
     func fetchLatestMessageString() -> String {
-            var mes = Array<Message>(_immutableCocoaArray: self.messages!)
+        var mes = self.fetchMessages()
             if (mes.count == 0) {
                 return "We are friends now!"
             }
             mes = Message.sortByDate(list: mes)
-            return mes[0].messageBody!
+        return mes[mes.count-1].messageBody!
     }
 	
 	//	delete

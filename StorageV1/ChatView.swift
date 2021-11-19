@@ -193,8 +193,9 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-//                            contact.createMessage(body: messageSent)
-                            contact.createChatMessage(body: messageSent)
+                            contact.createMessage(body: messageSent)
+//                            contact.createChatMessage(body: messageSent)
+//                            test(c: self.contact)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
@@ -204,6 +205,27 @@ struct ChatView: View {
         }
     }
 }
+
+func test(c: Contact) {
+    print(c.nickname)
+
+    
+    let newMessage = Message(context: PersistenceController.shared.container.viewContext)
+     newMessage.timeCreated = Date()
+     newMessage.messageBody = "HI"
+     newMessage.contact = c
+     newMessage.sentByMe = true
+//     newMessage.encryptAndQueue()
+     c.timeLatest = newMessage.timeCreated
+     PersistenceController.shared.save()
+    
+    let ml = c.fetchMessages()
+    for m in ml {
+        print(m)
+    }
+    
+}
+
 
 //@available(iOS 14.0, *)
 //struct ChatView_Previews: PreviewProvider {

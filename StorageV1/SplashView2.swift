@@ -34,7 +34,7 @@ struct SplashView2: View {
             VStack{
                 Logo3()
                     .padding()
-                NavigationLink("Login", destination: ContentView(username: "self.username"))
+                NavigationLink("Login", destination: ContentView(username: self.username))
                     .font(.headline)
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
                     .padding()

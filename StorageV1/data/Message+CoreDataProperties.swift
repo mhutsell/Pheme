@@ -52,7 +52,7 @@ extension Message {
 	
     static func sortByDate(list: [Message]) -> [Message] {
         var returnList: [Message] = list
-        return  returnList.sorted{ $0.timeCreated! > $1.timeCreated! }
+        return  returnList.sorted{ $0.timeCreated! < $1.timeCreated! }
     }
 	//	delete
 	func delete() {
