@@ -58,7 +58,7 @@ extension Contact {
 //        }
 //        let res = Array<Message>(msset!.allObjects)
 //        return res
-        var ml = self.messages!.allObjects as! [Message]
+		 let ml = self.messages!.allObjects as! [Message]
         
         return Message.sortByDate(list: ml)
 	}
