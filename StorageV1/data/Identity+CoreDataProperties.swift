@@ -83,6 +83,7 @@ extension Identity {
 		let pubKey = PublicKey(context: PersistenceController.shared.container.viewContext)
 		pubKey.keyBody = SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?
 		pubKey.identity = self
+        self.publicKey = pubKey
 		PersistenceController.shared.save()
 	}
 	

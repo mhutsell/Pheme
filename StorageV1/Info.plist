@@ -20,8 +20,17 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Allow access to the Berkanan Bluetooth Service to be able to communicate even while offline.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Allow access to the Berkanan Bluetooth Service to be able to communicate even while offline.</string>
 	<key>NSCameraUsageDescription</key>
 	<string></string>
+	<key>UI Background Modes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+		<string>bluetooth-central</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

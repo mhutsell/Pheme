@@ -22,40 +22,47 @@ extension Encrypted {
     @NSManaged public var senderId: UUID?
     @NSManaged public var timeCreated: Date?
     @NSManaged public var senderNickname: String?
-    @NSManaged public var identity: Identity?
     @NSManaged public var senderKey: PublicKey?
-
+    @NSManaged public var identity: Identity?
 }
 
 extension Encrypted {
 
     func to_json() -> String{
-        var to_return = "{{{{{\(self.encryptedBody)"
+        var to_return = "{{{{{" + self.encryptedBody!.base64EncodedString()
         to_return += "|||||\(self.messageType)"
-        to_return += "|||||\(self.receiverId)"
-        to_return += "|||||\(self.senderId)"
-        to_return += "|||||\(self.timeCreated)"
-        to_return += "|||||\(self.senderNickname)"
-        to_return += "|||||\(self.senderKey!.keyBody)" + "|||||}}}}}"
+        to_return += "|||||\(self.receiverId!)"
+        to_return += "|||||\(self.senderId!)"
+        to_return += "|||||\(self.timeCreated!)"
+        to_return += "|||||\(self.senderNickname!)"
+        var our_id = Identity.fetchIdentity()
+        //to_return += "|||||\(self.senderKey!.keyBody)" + "|||||}}}}}"
+        to_return += "|||||" + our_id.publicKey!.keyBody!.base64EncodedString() + "|||||}}}}}"
         return to_return
     }
     
     static func from_json(incomingMessage: String){
         var str_msgs = "\(incomingMessage)"
         str_msgs.remove(at: str_msgs.startIndex)
-        str_msgs.remove(at: str_msgs.endIndex)
+        str_msgs.remove(at: str_msgs.index(str_msgs.endIndex, offsetBy: -1))
         let split_msgs:[String] = str_msgs.components(separatedBy: "{{{{{")
         let date_formatter = DateFormatter()
+        date_formatter.locale = Locale(identifier: "en_US_POSIX")
+        date_formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         firstFor: for json_msg in split_msgs{
+            if (json_msg == ""){
+                continue
+            }
             let split_comps:[String] = json_msg.components(separatedBy: "|||||")
-            let encryptedBody: Data? = split_comps[1].data(using: .utf8)
-            let messageType: Int16? = Int16(split_comps[2])
-            let receiverId: UUID? = UUID(uuidString: split_comps[3])
-            let senderId: UUID? = UUID(uuidString: split_comps[4])
-            let timeCreated: Date? = date_formatter.date(from: split_comps[5])
-            let senderNickname: String? = split_comps[6]
-            let senderKey: String? = split_comps[7]
+            let encryptedBody: Data? = Data(base64Encoded: split_comps[0], options: .ignoreUnknownCharacters)
+            let messageType: Int16? = Int16(split_comps[1])
+            let receiverId: UUID? = UUID(uuidString: split_comps[2])
+            let senderId: UUID? = UUID(uuidString: split_comps[3])
+            let timeCreated: Date? = date_formatter.date(from: split_comps[4])
+            let senderNickname: String? = split_comps[5]
+            let senderKey: String? = split_comps[6]
             
+            // Use encrypted not contact fetch messages - message might not be for us.
             let curr_s_contact = Contact.searchOrCreate(nn: senderNickname!, key: PublicKey.createPublicKey(key: senderKey!), id: senderId!)
             let curr_msgs: [Message] = curr_s_contact.fetchMessages()
             for curr_msg in curr_msgs{
@@ -63,7 +70,8 @@ extension Encrypted {
                     continue firstFor
                 }
             }
-            curr_s_contact.addEncrypted(encryptedBody: encryptedBody, messageType: messageType!, receiverId: receiverId!, senderId: senderId!, timeCreated: timeCreated!, senderNickname: senderNickname, senderKey: senderKey)
+            var enc = Contact.addEncrypted(encryptedBody: encryptedBody, messageType: messageType!, receiverId: receiverId!, senderId: senderId!, timeCreated: timeCreated!, senderNickname: senderNickname, senderKey: senderKey)
+            enc.checkAndSearch()
         }
         
     }
@@ -101,7 +109,7 @@ extension Encrypted {
 			self.identity = identity
 			Encrypted.checkMaxEncrypted()
 		} else {
-			let ct = Contact.searchOrCreate(nn: self.senderNickname!, key: self.senderKey!, id: self.senderId!)
+            let ct = Contact.searchOrCreate(nn: self.senderNickname!, id: self.senderId!)
 			self.decryptTo(contact: ct)
 			self.delete()
 		}

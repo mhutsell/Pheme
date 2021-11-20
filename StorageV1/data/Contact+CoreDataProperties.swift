@@ -28,21 +28,9 @@ extension Contact {
 extension Contact {
 
 	//	fetch the list of all messages of all
-	 func fetchMessages() -> [Message] {
-//		let fr: NSFetchRequest<Message> = Message.fetchRequest()
-//		fr.predicate = NSPredicate(
-//			format: "contact LIKE %@", self
-//		)
-//		fr.sortDescriptors = [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)]
-//		do {
-//			let mss = try PersistenceController.shared.container.viewContext.fetch(fr)
-//			return Array(mss)
-//		} catch {let nsError = error as NSError
-//			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-//		}
-        let mss = Array<Message>(_immutableCocoaArray: self.messages!)
-        return mss
-	}
+    func fetchMessages() -> [Message] {
+        return self.messages!.allObjects as! [Message]
+    }
 	
 	// fetch the list of all contacts, opt = 0 for sort based on timeLatest
 	static func fetchContacts(opt: Bool = true) -> [Contact] {
@@ -109,18 +97,20 @@ extension Contact {
         PersistenceController.shared.save()
     }
     
-    func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?){
+    static func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?) -> Encrypted{
         let newEncrypted = Encrypted(context: PersistenceController.shared.container.viewContext)
-        let identity = Identity.fetchIdentity()
-        newEncrypted.identity = identity
+       // let identity = Identity.fetchIdentity()
+       // newEncrypted.identity = identity
         newEncrypted.receiverId = receiverId
         newEncrypted.senderId = senderId
         newEncrypted.messageType = messageType
         newEncrypted.timeCreated = timeCreated
-        newEncrypted.senderKey = PublicKey.createPublicKey(key: senderKey!)
+      //  var pubKey = PublicKey.createPublicKey(key: senderKey!)
+      //  newEncrypted.senderKey = pubKey
         newEncrypted.senderNickname = senderNickname
         newEncrypted.encryptedBody = encryptedBody
         PersistenceController.shared.save()
+        return newEncrypted
     }
 	
 	//	create contact (called in checkAndSearch() and TODO: QRContact())
@@ -142,19 +132,32 @@ extension Contact {
     }
     
 	// search contact with id, if not exist, create with nn, id, key
-	static func searchOrCreate(nn: String, key: PublicKey, id: UUID) -> Contact {
+	static func searchOrCreate(nn: String, id: UUID) -> Contact {
 		let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
 		fr.predicate = NSPredicate(
 			format: "id == %@", id as CVarArg
 		)
 		fr.fetchLimit = 1
 		do {
-			let ct = try PersistenceController.shared.container.viewContext.fetch(fr).first  ?? Contact.createContact(nn: nn, key: key, id: id)
+            let ct = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
 			return ct
 		} catch {let nsError = error as NSError
 			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
 	}
+    static func searchOrCreate(nn: String, key: PublicKey, id: UUID) -> Contact {
+        let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+        fr.predicate = NSPredicate(
+            format: "id == %@", id as CVarArg
+        )
+        fr.fetchLimit = 1
+        do {
+            let ct = try PersistenceController.shared.container.viewContext.fetch(fr).first  ?? Contact.createContact(nn: nn, key: key, id: id)
+            return ct
+        } catch {let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
     
     //fetch the latest message body
     func fetchLatestMessageString() -> String {

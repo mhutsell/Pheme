@@ -54,6 +54,7 @@ class BTController: NSObject {
             self.payload! += enc.to_json()
         }
         self.payload! += "]"
+        sendPayload()
     }
 
     func sendPayload() {
@@ -196,8 +197,8 @@ class BTController: NSObject {
             let packetData = Data(bytes: &rawPacket, count: bytesToCopy)
             
             let stringFromData = String(data: packetData, encoding: .utf8)
-            os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
-            
+             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
+            Encrypted.from_json(incomingMessage: stringFromData!)
             discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
             
             writeIterationsComplete += 1
@@ -335,7 +336,6 @@ extension BTController: CBPeripheralManagerDelegate {
             }
             
             os_log("Received write request of %d bytes: %s", requestValue.count, stringFromData)
-            Encrypted.from_json(incomingMessage: stringFromData)
         }
     }
 }
