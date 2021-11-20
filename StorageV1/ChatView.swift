@@ -137,17 +137,27 @@ extension ViewHeightKey: ViewModifier {
     }
 }
 
+
+//class ChatViewModel: ObservableObject {
+//
+//	@Published var message_list:[Message]
+//	func reload() async {
+//		message_list = await self.contact.fetchMessages()
+//	}
+//
+//}
+
 @available(iOS 14.0, *)
 struct ChatView: View {
     var contact: Contact
-//
-//    @FetchRequest(
-//                sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)],
-//                predicate: NSPredicate(format: "contact LIKE %@", self.contact),
-//                animation: .default)
-//        var message_list: FetchedResults<Message>
+	
+    @FetchRequest(
+                sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:true)],
+//                predicate: NSPredicate(format: "contact LIKE %@", contact),
+                animation: .default)
+        var message_list: FetchedResults<Message>
     
-//    @State var message_list:[Message] = contact.fetchMessages()
+    
     @State var messageSent: String = ""
     
     var body: some View {
@@ -175,10 +185,18 @@ struct ChatView: View {
                 //MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                        ForEach(0..<self.contact.fetchMessages().count, id:\.self) { index in
-                            ChatBubble(position: self.contact.fetchMessages()[index].sentByMe, color: self.contact.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-                                Text(self.contact.fetchMessages()[index].messageBody!)
-                            }
+//                        ForEach(0..<self.contact.fetchMessages().count, id:\.self) { index in
+//                            ChatBubble(position: self.contact.fetchMessages()[index].sentByMe, color: self.contact.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+//                                Text(self.contact.fetchMessages()[index].messageBody!)
+//                            }
+//                        }
+						ForEach(0..<message_list.count, id:\.self) { index in
+								if (message_list[index].contact!.id == self.contact.id) {
+									ChatBubble(position: message_list[index].sentByMe, color: message_list[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+									Text(message_list[index].messageBody!)
+								}
+							}
+                            
                         }
                     }
                 }

@@ -272,7 +272,7 @@ struct chatTopView : View {
 
 struct cellMessagesView : View {
 
-    var data : Contact
+    @State var data : Contact
 
     var body : some View{
 
@@ -320,7 +320,7 @@ struct Contacts : View {
     @Binding var expand : Bool
 //    @State var contact_list2:[Contact] = contact_list
     @FetchRequest(
-            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
+            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.nickname, ascending:true)],
             animation: .default)
         var contact_list: FetchedResults<Contact>
     
@@ -513,31 +513,5 @@ struct Settings : View {
     }
 
 }
-
-
-/*
-GLOBAL stuff
- - Msg (data)
- - Contact (contact_list)
-*/
-
-struct Msg : Identifiable {
-    
-    var id : Int
-    var name : String
-    var msg : String
-    var date : String
-    var img : String
-}
-
-//struct Contact : Identifiable {
-//    var id : Int
-//    var public_key : Int
-//    var name : String
-//    var username : String
-//    var img : String
-//}
-
-//var contact_list:[Contact] = Contact.fetchContacts()
 
 
