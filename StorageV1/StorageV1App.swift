@@ -11,22 +11,19 @@ import os
 
 @main
 struct StorageV1App: App {
-    let persistenceController = PersistenceController.shared
+   
     let bluetoothController = BTController2.shared
     @Environment(\.managedObjectContext) var viewContext
 
     var body: some Scene {
         WindowGroup {
             if Identity2.hasIdentity() {
-                SplashView2(username: Identity2.fetchIdentity().nickname!).environment(\.managedObjectContext, persistenceController.container.viewContext)
+                SplashView2(username: Identity2.fetchIdentity().nickname!)
             }
             else {
                 SplashView()
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }
-        .onChange(of: viewContext) {_ in
-			persistenceController.save()
-		}
+       
     }
 }

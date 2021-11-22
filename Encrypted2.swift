@@ -34,7 +34,7 @@ struct Encrypted2: Comparable{
         to_return += "|||||\(self.senderId!)"
         to_return += "|||||\(self.timeCreated!)"
         to_return += "|||||\(self.senderNickname!)"
-        var our_id = Identity.fetchIdentity()
+        var our_id = Identity2.fetchIdentity()
         //to_return += "|||||\(self.senderKey!.keyBody)" + "|||||}}}}}"
         to_return += "|||||" + our_id.publicKey!.keyBody!.base64EncodedString() + "|||||}}}}}"
         return to_return
@@ -142,8 +142,4 @@ struct Encrypted2: Comparable{
     }
 }
 
-
-extension Encrypted : Identifiable {
-
-}
 

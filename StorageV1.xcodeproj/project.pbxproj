@@ -14,26 +14,12 @@
 		010633FF274B42880045B91E /* PrivateKey2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010633FE274B42880045B91E /* PrivateKey2.swift */; };
 		01063401274B44BD0045B91E /* Message2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01063400274B44BD0045B91E /* Message2.swift */; };
 		01063403274B57900045B91E /* BTController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01063402274B57900045B91E /* BTController2.swift */; };
-		01C4386C2744B08900BFB36C /* BTController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C4386B2744B08900BFB36C /* BTController.swift */; };
 		11082C60270E7EC40099285E /* StorageV1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C5F270E7EC40099285E /* StorageV1App.swift */; };
 		11082C62270E7EC40099285E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C61270E7EC40099285E /* ContentView.swift */; };
 		11082C64270E7EC60099285E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C63270E7EC60099285E /* Assets.xcassets */; };
 		11082C67270E7EC60099285E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C66270E7EC60099285E /* Preview Assets.xcassets */; };
-		11082C69270E7EC60099285E /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C68270E7EC60099285E /* Persistence.swift */; };
-		11108AFC2726315200EF87C8 /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11108AFA2726315200EF87C8 /* Message+CoreDataClass.swift */; };
-		11108AFD2726315200EF87C8 /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11108AFB2726315200EF87C8 /* Message+CoreDataProperties.swift */; };
-		111BA8182720F31F0062CF2F /* PublicKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BA8162720F31F0062CF2F /* PublicKey+CoreDataClass.swift */; };
-		111BA8192720F31F0062CF2F /* PublicKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111BA8172720F31F0062CF2F /* PublicKey+CoreDataProperties.swift */; };
-		1156B099272F0B92005555EF /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156B097272F0B92005555EF /* Contact+CoreDataClass.swift */; };
-		1156B09A272F0B92005555EF /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156B098272F0B92005555EF /* Contact+CoreDataProperties.swift */; };
-		1156B09D272F0FF6005555EF /* Identity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156B09B272F0FF6005555EF /* Identity+CoreDataClass.swift */; };
-		1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156B09C272F0FF6005555EF /* Identity+CoreDataProperties.swift */; };
-		1176E686271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176E67A271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift */; };
-		1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */; };
 		119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */; };
 		119C624A2738D6A200116A4F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C62492738D6A200116A4F /* ChatView.swift */; };
-		11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */; };
-		11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */; };
 		AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD256987273EF70F0065A85D /* SwiftUIView.swift */; };
 		AD25698B273EF9E00065A85D /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AD25698A273EF9E00065A85D /* CodeScanner */; };
 		ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC654A62741C69A00E11CB5 /* SplashView2.swift */; };
@@ -48,28 +34,14 @@
 		010633FE274B42880045B91E /* PrivateKey2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey2.swift; sourceTree = "<group>"; };
 		01063400274B44BD0045B91E /* Message2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message2.swift; sourceTree = "<group>"; };
 		01063402274B57900045B91E /* BTController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController2.swift; sourceTree = "<group>"; };
-		01C4386B2744B08900BFB36C /* BTController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController.swift; sourceTree = "<group>"; };
 		11082C5C270E7EC40099285E /* StorageV1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorageV1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11082C5F270E7EC40099285E /* StorageV1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageV1App.swift; sourceTree = "<group>"; };
 		11082C61270E7EC40099285E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		11082C63270E7EC60099285E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11082C66270E7EC60099285E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		11082C68270E7EC60099285E /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		11082C6B270E7EC60099285E /* StorageV1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StorageV1.xcdatamodel; sourceTree = "<group>"; };
 		11082C6D270E7EC60099285E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		11108AFA2726315200EF87C8 /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataClass.swift"; path = "StorageV1/data/Message+CoreDataClass.swift"; sourceTree = "<group>"; };
-		11108AFB2726315200EF87C8 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Message+CoreDataProperties.swift"; path = "StorageV1/data/Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		111BA8162720F31F0062CF2F /* PublicKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataClass.swift"; path = "StorageV1/data/PublicKey+CoreDataClass.swift"; sourceTree = "<group>"; };
-		111BA8172720F31F0062CF2F /* PublicKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PublicKey+CoreDataProperties.swift"; path = "StorageV1/data/PublicKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1156B097272F0B92005555EF /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataClass.swift"; path = "StorageV1/data/Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
-		1156B098272F0B92005555EF /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataProperties.swift"; path = "StorageV1/data/Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1156B09B272F0FF6005555EF /* Identity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataClass.swift"; path = "StorageV1/data/Identity+CoreDataClass.swift"; sourceTree = "<group>"; };
-		1156B09C272F0FF6005555EF /* Identity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Identity+CoreDataProperties.swift"; path = "StorageV1/data/Identity+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		1176E67A271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataClass.swift"; path = "StorageV1/data/PrivateKey+CoreDataClass.swift"; sourceTree = "<group>"; };
-		1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "PrivateKey+CoreDataProperties.swift"; path = "StorageV1/data/PrivateKey+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		119C62492738D6A200116A4F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataClass.swift"; path = "StorageV1/data/Encrypted+CoreDataClass.swift"; sourceTree = "<group>"; };
-		11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Encrypted+CoreDataProperties.swift"; path = "StorageV1/data/Encrypted+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		AD256987273EF70F0065A85D /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		ADC654A62741C69A00E11CB5 /* SplashView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView2.swift; sourceTree = "<group>"; };
 		B77EBC89273CB83400D059D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -96,18 +68,6 @@
 				010633FA274B41DD0045B91E /* Contact2.swift */,
 				010633F8274B41710045B91E /* PublicKey2.swift */,
 				010633F6274B40AC0045B91E /* Encrypted2.swift */,
-				1156B09B272F0FF6005555EF /* Identity+CoreDataClass.swift */,
-				1156B09C272F0FF6005555EF /* Identity+CoreDataProperties.swift */,
-				1156B097272F0B92005555EF /* Contact+CoreDataClass.swift */,
-				1156B098272F0B92005555EF /* Contact+CoreDataProperties.swift */,
-				11108AFA2726315200EF87C8 /* Message+CoreDataClass.swift */,
-				11108AFB2726315200EF87C8 /* Message+CoreDataProperties.swift */,
-				11DD3C5D2720F531000FA2C7 /* Encrypted+CoreDataClass.swift */,
-				11DD3C5E2720F531000FA2C7 /* Encrypted+CoreDataProperties.swift */,
-				111BA8162720F31F0062CF2F /* PublicKey+CoreDataClass.swift */,
-				111BA8172720F31F0062CF2F /* PublicKey+CoreDataProperties.swift */,
-				1176E67A271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift */,
-				1176E67B271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift */,
 				11082C5E270E7EC40099285E /* StorageV1 */,
 				11082C5D270E7EC40099285E /* Products */,
 			);
@@ -130,12 +90,10 @@
 				B77EBC89273CB83400D059D3 /* SplashView.swift */,
 				ADC654A62741C69A00E11CB5 /* SplashView2.swift */,
 				119C62492738D6A200116A4F /* ChatView.swift */,
-				11082C68270E7EC60099285E /* Persistence.swift */,
 				11082C63270E7EC60099285E /* Assets.xcassets */,
 				11082C6D270E7EC60099285E /* Info.plist */,
 				11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */,
 				11082C65270E7EC60099285E /* Preview Content */,
-				01C4386B2744B08900BFB36C /* BTController.swift */,
 				01063402274B57900045B91E /* BTController2.swift */,
 			);
 			path = StorageV1;
@@ -224,33 +182,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				111BA8192720F31F0062CF2F /* PublicKey+CoreDataProperties.swift in Sources */,
-				11082C69270E7EC60099285E /* Persistence.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
 				010633FD274B424C0045B91E /* Identity2.swift in Sources */,
-				1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */,
-				1156B09A272F0B92005555EF /* Contact+CoreDataProperties.swift in Sources */,
 				010633FF274B42880045B91E /* PrivateKey2.swift in Sources */,
-				1156B099272F0B92005555EF /* Contact+CoreDataClass.swift in Sources */,
 				01063401274B44BD0045B91E /* Message2.swift in Sources */,
 				AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */,
 				119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */,
-				01C4386C2744B08900BFB36C /* BTController.swift in Sources */,
 				ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */,
-				1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */,
 				010633F7274B40AC0045B91E /* Encrypted2.swift in Sources */,
-				1156B09D272F0FF6005555EF /* Identity+CoreDataClass.swift in Sources */,
 				010633F9274B41710045B91E /* PublicKey2.swift in Sources */,
-				11108AFD2726315200EF87C8 /* Message+CoreDataProperties.swift in Sources */,
 				119C624A2738D6A200116A4F /* ChatView.swift in Sources */,
-				11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */,
-				111BA8182720F31F0062CF2F /* PublicKey+CoreDataClass.swift in Sources */,
-				11108AFC2726315200EF87C8 /* Message+CoreDataClass.swift in Sources */,
 				01063403274B57900045B91E /* BTController2.swift in Sources */,
-				1176E686271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift in Sources */,
 				B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */,
 				11082C60270E7EC40099285E /* StorageV1App.swift in Sources */,
-				11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */,
 				010633FB274B41DD0045B91E /* Contact2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

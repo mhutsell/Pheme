@@ -87,7 +87,7 @@ extension Encrypted {
                 try backgroundContext.save()
             }
             catch{
-                fatalError("Terrible wasn't able to save: \(error)")
+         //       fatalError("Terrible wasn't able to save: \(error)")
             }
         }
     }

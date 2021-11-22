@@ -200,8 +200,9 @@ class BTController2: NSObject {
             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
             
             Encrypted2.from_json(incomingMessage: stringFromData!)
+            discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
           //  discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
-            
+            return
             writeIterationsComplete += 1
             
         }
@@ -423,6 +424,8 @@ extension BTController2: CBPeripheralDelegate {
             
             // Write test data
             writeData()
+            self.centralManager.stopScan()
+            self.peripheralManager.stopAdvertising()
         } else {
             // Otherwise, just append the data to what we have previously received.
             data.append(characteristicData)
