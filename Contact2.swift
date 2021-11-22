@@ -39,6 +39,11 @@ extension Contact2 {
             return self.messages!.sorted()
         }
     }
+    mutating func initlist() {
+        if self.messages == nil{
+            self.messages = Array<Message2>()
+        }
+    }
     
     // fetch the list of all contacts, opt = 0 for sort based on timeLatest
     static func fetchContacts(opt: Bool = true) -> [Contact2] {
@@ -135,6 +140,7 @@ extension Contact2 {
         var identity = Identity2.fetchIdentity()
         newContact.identity = identity
         newContact.timeLatest = Date()
+        newContact.initlist()
         if Contact2.contacts == nil{
             Contact2.contacts = Array<Contact2>()
         }

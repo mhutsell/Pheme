@@ -25,6 +25,7 @@ struct SplashView_Previews: PreviewProvider {
 
 struct SplashView: View {
     @State var username: String = ""
+    var data = Contact2.fetchContacts()
     var body: some View {
         NavigationView {
         ZStack {

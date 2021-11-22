@@ -139,7 +139,8 @@ extension ViewHeightKey: ViewModifier {
 
 @available(iOS 14.0, *)
 struct ChatView: View {
-    @State var contact: Contact2
+    @State var contactlist: Binding<[Contact2]>
+    var i: Int
 //
 //    @FetchRequest(
 //                sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)],
@@ -157,7 +158,7 @@ struct ChatView: View {
                 VStack{
                     HStack(spacing: 12) {
                         Spacer()
-                        Text(contact.nickname!)
+                        Text(contactlist[i].nickname!)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -175,9 +176,9 @@ struct ChatView: View {
                 //MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                        ForEach(0..<self.contact.fetchMessages().count, id:\.self) { index in
-                            ChatBubble(position: self.contact.fetchMessages()[index].sentByMe, color: self.contact.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-                                Text(self.contact.fetchMessages()[index].messageBody!)
+                        ForEach(0..<self.contactlist[i].fetchMessages().count, id:\.self) { index in
+                            ChatBubble(position: self.contactlist[i].fetchMessages()[index].sentByMe, color: self.contactlist[i].fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+                                Text(self.contactlist[i].fetchMessages()[index].messageBody!)
                             }
                         }
                     }
@@ -193,7 +194,7 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            contact.createChatMessage(body: messageSent)
+                            contactlist[i].createChatMessage(body: messageSent)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))

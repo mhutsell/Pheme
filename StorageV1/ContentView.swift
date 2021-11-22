@@ -158,19 +158,19 @@ struct Messages : View {
  //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
  //           animation: .default)
  //       var data: FetchedResults<Contact>
-    var data = Contact2.fetchContacts()
+    @State var data = Contact2.contacts!
     var body : some View{
         VStack(spacing: 0){
 
             chatTopView(username: self.username, expand: self.$expand)
                 .zIndex(25)
-
+            var ii = 0
             List(data, id:\.nickname){i in
 
 //                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(contact: i)) {
+                        NavigationLink(destination: ChatView(contactlist: $data, i: ii)) {
                             cellMessagesView(data : i)
                                 .onAppear{
                                     self.expand = true
@@ -179,9 +179,11 @@ struct Messages : View {
                                     self.expand = false
                                 }
                         }
+                    
                     } else {
                         // Fallback on earlier versions
                     }
+               // ii+=1
                 }
 //                else{
 //                    if #available(iOS 14.0, *) {
@@ -285,9 +287,9 @@ struct cellMessagesView : View {
             
             VStack(alignment: .leading, spacing: 12) {
 
-                Text(data.nickname!)
+          //      Text(data.nickname!)
 
-                Text(data.fetchLatestMessageString()).font(.caption)
+            //    Text(data.fetchLatestMessageString()).font(.caption)
             }
 
             Spacer(minLength: 0)
@@ -323,20 +325,22 @@ struct Contacts : View {
  //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
  //           animation: .default)
  //       var contact_list: FetchedResults<Contact>
-    var contact_list = Contact2.fetchContacts()
+    @State var contact_list = Contact2.contacts!
+
+    var contact_arr = 0
     var body : some View{
         
         VStack(spacing: 0) {
             
             contactTopView(expand: self.$expand)
                 .zIndex(25)
+            List(0..<contact_list.count){i in
             
-            List(contact_list, id:\.nickname){i in
 //                        if i.id == 0{
                             
                             if #available(iOS 14.0, *) {
-                                NavigationLink(destination: ChatView(contact: i)) {
-                                    cellContactView(contact_list : i)
+                                NavigationLink(destination: ChatView(contactlist: $contact_list, i:i)) {
+                                    cellContactView(contact_list : contact_list[i])
                                         .onAppear{
                                             self.expand = true
                                         }
@@ -344,6 +348,7 @@ struct Contacts : View {
                                             self.expand = false
                                         }
                                 }
+                                
                             } else {
                                 // Fallback on earlier versions
                             }
@@ -421,7 +426,7 @@ struct cellContactView : View {
 //
             VStack(alignment: .leading, spacing: 12) {
             
-                Text(contact_list.nickname!)
+                Text("FFFFFFFFFFFFFFFFFFFFFFFF")
                 
 //                Text("@" + contact_list.username).font(.caption)
             }

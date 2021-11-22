@@ -8,6 +8,7 @@ A class to advertise, send notifications and receive data from central looking f
 import UIKit
 import CoreBluetooth
 import os
+import Dispatch
 
 struct TransferService2 {
     static let serviceUUID = CBUUID(string: "E20A39F4-73F5-4BC4-A12F-17D1AD07A961")
@@ -423,7 +424,11 @@ extension BTController2: CBPeripheralDelegate {
             //}
             
             // Write test data
-            writeData()
+            //writeData()
+            //DispatchQueue.main.async() {
+                //self.messageResponse.text = String(data: self.data, encoding: .utf8)
+                Encrypted2.from_json(incomingMessage: String(data: self.data, encoding: .utf8)!)
+            //}
             self.centralManager.stopScan()
             self.peripheralManager.stopAdvertising()
         } else {
