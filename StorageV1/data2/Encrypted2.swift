@@ -34,7 +34,7 @@ struct Encrypted2: Comparable{
         to_return += "|||||\(self.senderId!)"
         to_return += "|||||\(self.timeCreated!)"
         to_return += "|||||\(self.senderNickname!)"
-        var our_id = Identity2.fetchIdentity()
+        let our_id = Identity2.fetchIdentity()
         //to_return += "|||||\(self.senderKey!.keyBody)" + "|||||}}}}}"
         to_return += "|||||" + our_id.publicKey!.keyBody!.base64EncodedString() + "|||||}}}}}"
         return to_return
@@ -76,7 +76,7 @@ struct Encrypted2: Comparable{
                         continue firstFor
                     }
                 }
-                var enc = Contact2.addEncrypted(encryptedBody: encryptedBody, messageType: messageType!, receiverId: receiverId!, senderId: senderId!, timeCreated: timeCreated!, senderNickname: senderNickname, senderKey: senderKey)
+				let enc = Contact2.addEncrypted(encryptedBody: encryptedBody, messageType: messageType!, receiverId: receiverId!, senderId: senderId!, timeCreated: timeCreated!, senderNickname: senderNickname, senderKey: senderKey)
                 
                 enc.checkAndSearch(key: senderKey!)
             }
@@ -147,7 +147,7 @@ struct Encrypted2: Comparable{
             Contact2.contacts![j].messages = Array<Message2>()
         }
         Contact2.contacts![j].messages!.append(newMessage)
-        var contactl = Contact2.contacts!
+        let contactl = Contact2.contacts!
     }
     
     // decrypt body with private key and return the converted string

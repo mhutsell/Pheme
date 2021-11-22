@@ -47,9 +47,10 @@ struct Message2: Comparable{
     }
     
     static func sortByDate(list: [Message2]) -> [Message2] {
-        var returnList: [Message2] = list
+        let returnList: [Message2] = list
         return  returnList.sorted{ $0.timeCreated! > $1.timeCreated! }
     }
+    
     //    delete
     func delete() {
         //TODO

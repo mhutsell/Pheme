@@ -497,9 +497,9 @@ struct Settings : View {
                 let details = code.components(separatedBy: "\n")
                 guard details.count == 3 else { return }
 
-                Contact2.createContact(nn: details[0], keybody: details[1], id: details[2])
+                _ = Contact2.createContact(nn: details[0], keybody: details[1], id: details[2])
                 
-            case .failure(let error):
+		case .failure(_):
                 print("Scanning failed")
         }
     }

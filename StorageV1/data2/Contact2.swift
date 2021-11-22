@@ -55,7 +55,7 @@ extension Contact2 {
     
     // search Contact based on uuid
     static func fetchContacts(id: UUID) -> Contact2? {
-        var c = contacts!
+        let c = contacts!
         for i in c{
             if i.id == id{
                 return i
@@ -118,7 +118,7 @@ extension Contact2 {
         newEncrypted.senderId = senderId
         newEncrypted.messageType = messageType
         newEncrypted.timeCreated = timeCreated
-        var pubKey = PublicKey2.createPublicKey(key: senderKey!)
+        let pubKey = PublicKey2.createPublicKey(key: senderKey!)
        
         newEncrypted.senderKey = pubKey.keyBody!.base64EncodedString()
         newEncrypted.senderNickname = senderNickname
@@ -137,7 +137,7 @@ extension Contact2 {
         newContact.nickname = nn
         newContact.id = id
         newContact.theirKey = key
-        var identity = Identity2.fetchIdentity()
+		let identity = Identity2.fetchIdentity()
         newContact.identity = identity
         newContact.timeLatest = Date()
         newContact.initlist()
@@ -145,7 +145,7 @@ extension Contact2 {
             Contact2.contacts = Array<Contact2>()
         }
         Contact2.contacts!.append(newContact)
-        var l = Contact2.contacts
+        _ = Contact2.contacts
         return newContact
     }
     
@@ -157,7 +157,7 @@ extension Contact2 {
     
     // search contact with id, if not exist, create with nn, id, key
     static func searchOrCreate(nn: String, id: UUID) -> Contact2 {
-        var c = Contact2.fetchContacts()
+        let c = Contact2.fetchContacts()
         for i in c{
             if i.id!.uuidString == id.uuidString{return i}
         }
@@ -166,7 +166,7 @@ extension Contact2 {
     
     
     static func searchOrCreate(nn: String, key: PublicKey2, id: UUID) -> Contact2 {
-        var c = Contact2.fetchContacts()
+        let c = Contact2.fetchContacts()
         for i in c{
             if i.id!.uuidString == id.uuidString{return i}
         }

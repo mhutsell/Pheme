@@ -7,18 +7,34 @@
 
 import Foundation
 
-struct Identity2: Identifiable{
-    static func == (lhs: Identity2, rhs: Identity2) -> Bool {
+struct Identity2: Identifiable, Hashable, Codable{
+	
+	static func == (lhs: Identity2, rhs: Identity2) -> Bool {
         return lhs.id == rhs.id
     }
+    
     static public var me: Identity2?
     public var id: UUID?
     public var nickname: String?
     public var maxEncrypted: Int16
-    public var contacts: NSSet?
-    public var notMine: NSSet?
+//    public var contacts: NSSet?
+//    public var notMine: NSSet?
     public var privateKey: PrivateKey2?
     public var publicKey: PublicKey2?
+    
+    public init (
+		id: UUID = UUID(),
+		nickname: String? = nil,
+		maxEncrypted: Int16 = 50
+     ) {
+		self.id = id
+		self.maxEncrypted = maxEncrypted
+		self.nickname = nickname
+	 }
+	 
+	 public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 
     static func fetchIdentity() -> Identity2 {
         // Read in identity and return it
@@ -100,9 +116,9 @@ struct Identity2: Identifiable{
         return self.fetchIdentity().privateKey!.dataToKey()
     }
 
-    //    delete
+    // delete
     func delete() {
         //TODO
     }
 
-    }
+}

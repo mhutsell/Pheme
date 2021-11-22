@@ -18,6 +18,8 @@
 		11082C62270E7EC40099285E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C61270E7EC40099285E /* ContentView.swift */; };
 		11082C64270E7EC60099285E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C63270E7EC60099285E /* Assets.xcassets */; };
 		11082C67270E7EC60099285E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11082C66270E7EC60099285E /* Preview Assets.xcassets */; };
+		11456794274C5F09008394EF /* Utils in Resources */ = {isa = PBXBuildFile; fileRef = 11456793274C5F09008394EF /* Utils */; };
+		11456796274C5FBE008394EF /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11456795274C5FBE008394EF /* Profile.swift */; };
 		119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */; };
 		119C624A2738D6A200116A4F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C62492738D6A200116A4F /* ChatView.swift */; };
 		AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD256987273EF70F0065A85D /* SwiftUIView.swift */; };
@@ -41,6 +43,8 @@
 		11082C66270E7EC60099285E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		11082C6B270E7EC60099285E /* StorageV1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StorageV1.xcdatamodel; sourceTree = "<group>"; };
 		11082C6D270E7EC60099285E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11456793274C5F09008394EF /* Utils */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Utils; sourceTree = SOURCE_ROOT; };
+		11456795274C5FBE008394EF /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		119C62492738D6A200116A4F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		AD256987273EF70F0065A85D /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		ADC654A62741C69A00E11CB5 /* SplashView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView2.swift; sourceTree = "<group>"; };
@@ -62,12 +66,6 @@
 		11082C53270E7EC40099285E = {
 			isa = PBXGroup;
 			children = (
-				01063400274B44BD0045B91E /* Message2.swift */,
-				010633FE274B42880045B91E /* PrivateKey2.swift */,
-				010633FC274B424C0045B91E /* Identity2.swift */,
-				010633FA274B41DD0045B91E /* Contact2.swift */,
-				010633F8274B41710045B91E /* PublicKey2.swift */,
-				010633F6274B40AC0045B91E /* Encrypted2.swift */,
 				11082C5E270E7EC40099285E /* StorageV1 */,
 				11082C5D270E7EC40099285E /* Products */,
 			);
@@ -84,11 +82,13 @@
 		11082C5E270E7EC40099285E /* StorageV1 */ = {
 			isa = PBXGroup;
 			children = (
+				11456797274C61E2008394EF /* data2 */,
 				11082C5F270E7EC40099285E /* StorageV1App.swift */,
 				11082C61270E7EC40099285E /* ContentView.swift */,
 				AD256987273EF70F0065A85D /* SwiftUIView.swift */,
 				B77EBC89273CB83400D059D3 /* SplashView.swift */,
 				ADC654A62741C69A00E11CB5 /* SplashView2.swift */,
+				11456793274C5F09008394EF /* Utils */,
 				119C62492738D6A200116A4F /* ChatView.swift */,
 				11082C63270E7EC60099285E /* Assets.xcassets */,
 				11082C6D270E7EC60099285E /* Info.plist */,
@@ -105,6 +105,20 @@
 				11082C66270E7EC60099285E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		11456797274C61E2008394EF /* data2 */ = {
+			isa = PBXGroup;
+			children = (
+				11456795274C5FBE008394EF /* Profile.swift */,
+				01063400274B44BD0045B91E /* Message2.swift */,
+				010633FE274B42880045B91E /* PrivateKey2.swift */,
+				010633FC274B424C0045B91E /* Identity2.swift */,
+				010633FA274B41DD0045B91E /* Contact2.swift */,
+				010633F8274B41710045B91E /* PublicKey2.swift */,
+				010633F6274B40AC0045B91E /* Encrypted2.swift */,
+			);
+			path = data2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,6 +184,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11456794274C5F09008394EF /* Utils in Resources */,
 				11082C67270E7EC60099285E /* Preview Assets.xcassets in Resources */,
 				11082C64270E7EC60099285E /* Assets.xcassets in Resources */,
 			);
@@ -183,6 +198,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
+				11456796274C5FBE008394EF /* Profile.swift in Sources */,
 				010633FD274B424C0045B91E /* Identity2.swift in Sources */,
 				010633FF274B42880045B91E /* PrivateKey2.swift in Sources */,
 				01063401274B44BD0045B91E /* Message2.swift in Sources */,
@@ -325,7 +341,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StorageV1/Preview Content\"";
-				DEVELOPMENT_TEAM = 6GM54MJ567;
+				DEVELOPMENT_TEAM = 98M6MD3KYB;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StorageV1/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -333,7 +349,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pheme2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pheme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -347,7 +363,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StorageV1/Preview Content\"";
-				DEVELOPMENT_TEAM = 6GM54MJ567;
+				DEVELOPMENT_TEAM = 98M6MD3KYB;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StorageV1/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -355,7 +371,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pheme2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pheme;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

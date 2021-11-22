@@ -7,15 +7,26 @@
 
 import Foundation
 
-struct PublicKey2{
-
-    
-    static func == (lhs: PublicKey2, rhs: PublicKey2) -> Bool {
+struct PublicKey2: Identifiable, Hashable, Codable{
+	
+	static func == (lhs: PublicKey2, rhs: PublicKey2) -> Bool {
         return lhs.keyBody == rhs.keyBody
     }
     
+    public var id: UUID?
     public var keyBody: Data?
-    public var encryptedSender: Encrypted2?
+    
+    public init (
+		id: UUID = UUID(),
+		keyBody: Data? = nil
+     ) {
+		self.id = id
+		self.keyBody = keyBody
+	 }
+	 
+	  public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
     
     func dataToKey() -> SecKey {
         let attribute = [
