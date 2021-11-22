@@ -425,12 +425,12 @@ extension BTController2: CBPeripheralDelegate {
             
             // Write test data
             //writeData()
-            //DispatchQueue.main.async() {
+            DispatchQueue.main.async() {
                 //self.messageResponse.text = String(data: self.data, encoding: .utf8)
                 Encrypted2.from_json(incomingMessage: String(data: self.data, encoding: .utf8)!)
-            //}
+            }
             self.centralManager.stopScan()
-            self.peripheralManager.stopAdvertising()
+           // self.peripheralManager.stopAdvertising()
         } else {
             // Otherwise, just append the data to what we have previously received.
             data.append(characteristicData)

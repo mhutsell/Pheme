@@ -145,6 +145,7 @@ extension Contact2 {
             Contact2.contacts = Array<Contact2>()
         }
         Contact2.contacts!.append(newContact)
+        var l = Contact2.contacts
         return newContact
     }
     
@@ -158,7 +159,7 @@ extension Contact2 {
     static func searchOrCreate(nn: String, id: UUID) -> Contact2 {
         var c = Contact2.fetchContacts()
         for i in c{
-            if i.id == id{return i}
+            if i.id!.uuidString == id.uuidString{return i}
         }
         return Contact2()
     }
@@ -167,7 +168,7 @@ extension Contact2 {
     static func searchOrCreate(nn: String, key: PublicKey2, id: UUID) -> Contact2 {
         var c = Contact2.fetchContacts()
         for i in c{
-            if i.id == id{return i}
+            if i.id!.uuidString == id.uuidString{return i}
         }
         return createContact(nn: nn, key: key, id: id)
     }

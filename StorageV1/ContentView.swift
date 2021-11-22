@@ -158,19 +158,18 @@ struct Messages : View {
  //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
  //           animation: .default)
  //       var data: FetchedResults<Contact>
-    @State var data = Contact2.contacts!
+    var data = Contact2.contacts!
     var body : some View{
         VStack(spacing: 0){
 
             chatTopView(username: self.username, expand: self.$expand)
                 .zIndex(25)
-            var ii = 0
             List(data, id:\.nickname){i in
 
 //                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(contactlist: $data, i: ii)) {
+                        NavigationLink(destination: ChatView(contact: i)) {
                             cellMessagesView(data : i)
                                 .onAppear{
                                     self.expand = true
@@ -325,7 +324,7 @@ struct Contacts : View {
  //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
  //           animation: .default)
  //       var contact_list: FetchedResults<Contact>
-    @State var contact_list = Contact2.contacts!
+    var contact_list = Contact2.contacts!
 
     var contact_arr = 0
     var body : some View{
@@ -334,13 +333,13 @@ struct Contacts : View {
             
             contactTopView(expand: self.$expand)
                 .zIndex(25)
-            List(0..<contact_list.count){i in
+            List(contact_list, id:\.nickname){i in
             
 //                        if i.id == 0{
                             
                             if #available(iOS 14.0, *) {
-                                NavigationLink(destination: ChatView(contactlist: $contact_list, i:i)) {
-                                    cellContactView(contact_list : contact_list[i])
+                                NavigationLink(destination: ChatView(contact: i)) {
+                                    cellContactView(contact_list : i)
                                         .onAppear{
                                             self.expand = true
                                         }

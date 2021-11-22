@@ -77,7 +77,8 @@ struct Encrypted2: Comparable{
                     }
                 }
                 var enc = Contact2.addEncrypted(encryptedBody: encryptedBody, messageType: messageType!, receiverId: receiverId!, senderId: senderId!, timeCreated: timeCreated!, senderNickname: senderNickname, senderKey: senderKey)
-                enc.checkAndSearch()
+                
+                enc.checkAndSearch(key: senderKey!)
             }
         
     }
@@ -113,19 +114,40 @@ struct Encrypted2: Comparable{
             self.delete()
         }
     }
+    func checkAndSearch(key: String) {
+        let identity = Identity2.fetchIdentity()
+        if (self.receiverId != identity.id) {
+            // Read in stored identity
+            Encrypted2.checkMaxEncrypted()
+        } else {
+            var ct = Contact2.searchOrCreate(nn: self.senderNickname!,key: PublicKey2.createPublicKey(key: key), id: self.senderId!)
+          //  ct = ct.fetchcontactid(objectid: ct)
+            self.decryptTo(contact: &ct)
+            self.delete()
+        }
+    }
     
     //    decrypt the encrypt with my key
     func decryptTo(contact: inout Contact2) {
         var newMessage = Message2(messageType: self.messageType, sentByMe: false)
-        newMessage.contact = contact
+        var j=0
+        for i in Contact2.contacts!{
+            
+            if i.id!.uuidString == contact.id?.uuidString{
+                break
+            }
+            j+=1
+        }
+        newMessage.contact = Contact2.contacts![j]
         newMessage.timeCreated = self.timeCreated
         newMessage.messageBody = Encrypted2.decryptToString(privateKey: Identity2.retrievePrivateKey(), body: self.encryptedBody!)
         newMessage.sentByMe = false
-        contact.updateLatest(timeCreated: newMessage.timeCreated)
-        if contact.messages == nil{
-            contact.messages = Array<Message2>()
+        Contact2.contacts![j].updateLatest(timeCreated: newMessage.timeCreated)
+        if Contact2.contacts![j].messages == nil{
+            Contact2.contacts![j].messages = Array<Message2>()
         }
-        contact.messages!.append(newMessage)
+        Contact2.contacts![j].messages!.append(newMessage)
+        var contactl = Contact2.contacts!
     }
     
     // decrypt body with private key and return the converted string

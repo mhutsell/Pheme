@@ -139,8 +139,7 @@ extension ViewHeightKey: ViewModifier {
 
 @available(iOS 14.0, *)
 struct ChatView: View {
-    @State var contactlist: Binding<[Contact2]>
-    var i: Int
+    @State var contact: Contact2
 //
 //    @FetchRequest(
 //                sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)],
@@ -158,7 +157,7 @@ struct ChatView: View {
                 VStack{
                     HStack(spacing: 12) {
                         Spacer()
-                        Text(contactlist[i].nickname!)
+                        Text(contact.nickname!)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -176,10 +175,13 @@ struct ChatView: View {
                 //MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                        ForEach(0..<self.contactlist[i].fetchMessages().count, id:\.self) { index in
-                            ChatBubble(position: self.contactlist[i].fetchMessages()[index].sentByMe, color: self.contactlist[i].fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-                                Text(self.contactlist[i].fetchMessages()[index].messageBody!)
+                        ForEach(0..<(Contact2.fetchContacts(id: self.contact.id!)?.fetchMessages().count)!, id:\.self) { index in
+                            ChatBubble(position: (Contact2.fetchContacts(id: self.contact.id!)?.fetchMessages()[index].sentByMe)!, color: Contact2.fetchContacts(id: self.contact.id!)?.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+                                Text((Contact2.fetchContacts(id: self.contact.id!)?.fetchMessages()[index].messageBody!)!)
+                                
                             }
+                            
+                           // print("aaa")
                         }
                     }
                 }
@@ -194,7 +196,7 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            contactlist[i].createChatMessage(body: messageSent)
+                            contact.createChatMessage(body: messageSent)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
