@@ -41,7 +41,7 @@ extension Contact {
 			fr.sortDescriptors = [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)]
 		}
 		do {
-			let cts = try PersistenceController.shared.container.viewContext.fetch(fr)
+            let cts = try PersistenceController.shared.container.viewContext.fetch(fr)
 			return cts
 		} catch {let nsError = error as NSError
 			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
@@ -55,7 +55,7 @@ extension Contact {
 			format: "id LIKE %@", id as CVarArg
 		)
 		do {
-			let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
+            let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
             return identity
         } catch {let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
@@ -97,34 +97,75 @@ extension Contact {
         PersistenceController.shared.save()
     }
     
-    static func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?) -> Encrypted{
-        let newEncrypted = Encrypted(context: PersistenceController.shared.container.viewContext)
-       // let identity = Identity.fetchIdentity()
-       // newEncrypted.identity = identity
+    public static func createRecordForEntity(_ entity: String, inManagedObjectContext managedObjectContext: NSManagedObjectContext) -> NSManagedObject? {
+        // Helpers
+        var result: NSManagedObject?
+
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entity(forEntityName: entity, in: managedObjectContext)
+
+        if let entityDescription = entityDescription {
+            // Create Managed Object
+            result = NSManagedObject(entity: entityDescription, insertInto: managedObjectContext)
+        }
+
+        return result
+    }
+    
+    static func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?, backgroundContext: NSManagedObjectContext) -> Encrypted{
+        let newEncrypted = Encrypted(context: backgroundContext)
+   //     let identity = Identity.fetchIdentity()
+    //    newEncrypted.identity = identity
         newEncrypted.receiverId = receiverId
         newEncrypted.senderId = senderId
         newEncrypted.messageType = messageType
         newEncrypted.timeCreated = timeCreated
-      //  var pubKey = PublicKey.createPublicKey(key: senderKey!)
-      //  newEncrypted.senderKey = pubKey
+        var pubKey = PublicKey.createPublicKey(key: senderKey!, backgroundContext: backgroundContext)
+        do{
+            try backgroundContext.save()
+        }
+        catch{
+            fatalError("Unable to save background context: \(error)")
+        }
+        newEncrypted.senderKey = pubKey
         newEncrypted.senderNickname = senderNickname
         newEncrypted.encryptedBody = encryptedBody
-        PersistenceController.shared.save()
+        backgroundContext.save()
         return newEncrypted
     }
 	
 	//	create contact (called in checkAndSearch() and TODO: QRContact())
     static func createContact(nn: String, key: PublicKey, id: UUID) -> Contact {
-		let newContact = Contact(context: PersistenceController.shared.container.viewContext)
+        
+        let newContact = Contact(context: PersistenceController.shared.container.viewContext)
 		newContact.nickname = nn
 		newContact.id = id
 		newContact.theirKey = key
 		let identity = Identity.fetchIdentity()
 		newContact.identity = identity
         newContact.timeLatest = Date()
-		PersistenceController.shared.save()
+		//PersistenceController.shared.save()
 		return newContact
 	}
+    
+    static func createContact(nn: String, key: PublicKey, id: UUID, backgroundContext: NSManagedObjectContext) -> Contact {
+        
+        let newContact = Contact(context: backgroundContext)
+        newContact.nickname = nn
+        newContact.id = id
+        newContact.theirKey = key
+        let identity = Identity.fetchIdentity(backgroundContext: backgroundContext)
+        newContact.identity = identity
+        newContact.timeLatest = Date()
+        do{
+            try backgroundContext.save()
+        }
+        catch{
+            fatalError("Daniil dumb")
+        }
+        //PersistenceController.shared.save()
+        return newContact
+    }
 	
     //    create contact (called when QR scanned)
     static func createContact(nn: String, keybody: String, id: String) -> Contact {
@@ -138,6 +179,7 @@ extension Contact {
 			format: "id == %@", id as CVarArg
 		)
 		fr.fetchLimit = 1
+        
 		do {
             let ct = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
 			return ct
@@ -145,12 +187,30 @@ extension Contact {
 			fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
 	}
+    
+    static func searchOrCreate(nn: String, id: UUID, backgroundContext: NSManagedObjectContext) -> Contact {
+        let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+        fr.predicate = NSPredicate(
+            format: "id == %@", id as CVarArg
+        )
+        fr.fetchLimit = 1
+        
+        do {
+            var ct = (try backgroundContext.fetch(fr).first)!
+           // ct = backgroundContext.existingObject(with: ct) as! Contact
+            return ct
+        } catch {let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
     static func searchOrCreate(nn: String, key: PublicKey, id: UUID) -> Contact {
         let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
         fr.predicate = NSPredicate(
             format: "id == %@", id as CVarArg
         )
         fr.fetchLimit = 1
+
         do {
             let ct = try PersistenceController.shared.container.viewContext.fetch(fr).first  ?? Contact.createContact(nn: nn, key: key, id: id)
             return ct
@@ -158,6 +218,21 @@ extension Contact {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }
     }
+    static func searchOrCreate(nn: String, key: PublicKey, id: UUID,  backgroundContext: NSManagedObjectContext) -> Contact {
+        let fr: NSFetchRequest<Contact> = Contact.fetchRequest()
+        fr.predicate = NSPredicate(
+            format: "id == %@", id as CVarArg
+        )
+        fr.fetchLimit = 1
+
+        do {
+            let ct = try backgroundContext.fetch(fr).first  ?? Contact.createContact(nn: nn, key: key, id: id, backgroundContext: backgroundContext)
+            return ct
+        } catch {let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
     
     //fetch the latest message body
     func fetchLatestMessageString() -> String {

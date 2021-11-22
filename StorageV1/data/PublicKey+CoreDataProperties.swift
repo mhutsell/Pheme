@@ -38,11 +38,18 @@ extension PublicKey {
 
     // create public key called by createContact()
         static func createPublicKey(key: String) -> PublicKey {
+
             let newKey = PublicKey(context: PersistenceController.shared.container.viewContext)
             newKey.keyBody = Data(base64Encoded: key, options: .ignoreUnknownCharacters)
             PersistenceController.shared.save()
             return newKey
         }
+    
+    static func createPublicKey(key: String, backgroundContext: NSManagedObjectContext) -> PublicKey {
+        let newKey = PublicKey(context: backgroundContext)
+        newKey.keyBody = Data(base64Encoded: key, options: .ignoreUnknownCharacters)
+        return newKey
+    }
 }
 
 extension PublicKey : Identifiable {

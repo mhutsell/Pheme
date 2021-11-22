@@ -23,6 +23,7 @@ func json(from object:Any) -> Data? {
 
 class BTController: NSObject {
     static let shared = BTController()
+    static var hasReceived = false
     var centralManager: CBCentralManager!
 
     var discoveredPeripheral: CBPeripheral?
@@ -73,7 +74,6 @@ class BTController: NSObject {
         guard let transferCharacteristic = transferCharacteristic else {
             return
         }
-        
         // First up, check if we're meant to be sending an EOM
         if BTController.sendingEOM {
             // send it
@@ -197,7 +197,7 @@ class BTController: NSObject {
             let packetData = Data(bytes: &rawPacket, count: bytesToCopy)
             
             let stringFromData = String(data: packetData, encoding: .utf8)
-             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
+            os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
             Encrypted.from_json(incomingMessage: stringFromData!)
             discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
             

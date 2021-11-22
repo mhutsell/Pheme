@@ -35,12 +35,27 @@ extension Identity {
             if (!Identity.hasIdentity()) {
                 Identity.createIdentity(nickname: "TEMPORARY")
             }
-			let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
+            let identity = (try PersistenceController.shared.container.viewContext.fetch(fr).first)!
             return identity
         } catch {let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
 		}
 	}
+    
+    static func fetchIdentity(backgroundContext: NSManagedObjectContext) -> Identity{
+        let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
+        fr.fetchLimit = 1
+        do {
+            if (!Identity.hasIdentity()) {
+                Identity.createIdentity(nickname: "TEMPORARY")
+            }
+            let identity = (try backgroundContext.fetch(fr).first)!
+            return identity
+        } catch {let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+
+    }
     
 	
 	//	return if there is an identity
@@ -49,7 +64,7 @@ extension Identity {
 		let fr: NSFetchRequest<Identity> = Identity.fetchRequest()
         fr.fetchLimit = 1
         do {
-			let count = try PersistenceController.shared.container.viewContext.count(for: fr)
+            let count = try PersistenceController.shared.container.viewContext.count(for: fr)
             return count == 1
         } catch {let nsError = error as NSError
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
