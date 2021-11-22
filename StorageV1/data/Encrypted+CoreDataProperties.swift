@@ -175,8 +175,3 @@ extension Encrypted {
 		PersistenceController.shared.container.viewContext.delete(self)
 	}
 }
-
-
-extension Encrypted : Identifiable {
-
-}

@@ -113,9 +113,10 @@ extension Contact {
     }
     
     static func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?, backgroundContext: NSManagedObjectContext) -> Encrypted{
-        let newEncrypted = Encrypted(context: backgroundContext)
+       // let newEncrypted = Encrypted(context: backgroundContext)
    //     let identity = Identity.fetchIdentity()
     //    newEncrypted.identity = identity
+        var newEncrypted = Encrypted(context: backgroundContext)
         newEncrypted.receiverId = receiverId
         newEncrypted.senderId = senderId
         newEncrypted.messageType = messageType
@@ -130,7 +131,6 @@ extension Contact {
         newEncrypted.senderKey = pubKey
         newEncrypted.senderNickname = senderNickname
         newEncrypted.encryptedBody = encryptedBody
-        backgroundContext.save()
         return newEncrypted
     }
 	
@@ -161,7 +161,7 @@ extension Contact {
             try backgroundContext.save()
         }
         catch{
-            fatalError("Daniil dumb")
+            fatalError("Daniil smort")
         }
         //PersistenceController.shared.save()
         return newContact

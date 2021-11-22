@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010633F7274B40AC0045B91E /* Encrypted2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010633F6274B40AC0045B91E /* Encrypted2.swift */; };
+		010633F9274B41710045B91E /* PublicKey2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010633F8274B41710045B91E /* PublicKey2.swift */; };
+		010633FB274B41DD0045B91E /* Contact2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010633FA274B41DD0045B91E /* Contact2.swift */; };
+		010633FD274B424C0045B91E /* Identity2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010633FC274B424C0045B91E /* Identity2.swift */; };
+		010633FF274B42880045B91E /* PrivateKey2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010633FE274B42880045B91E /* PrivateKey2.swift */; };
+		01063401274B44BD0045B91E /* Message2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01063400274B44BD0045B91E /* Message2.swift */; };
+		01063403274B57900045B91E /* BTController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01063402274B57900045B91E /* BTController2.swift */; };
 		01C4386C2744B08900BFB36C /* BTController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C4386B2744B08900BFB36C /* BTController.swift */; };
 		11082C60270E7EC40099285E /* StorageV1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C5F270E7EC40099285E /* StorageV1App.swift */; };
 		11082C62270E7EC40099285E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11082C61270E7EC40099285E /* ContentView.swift */; };
@@ -34,6 +41,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		010633F6274B40AC0045B91E /* Encrypted2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encrypted2.swift; sourceTree = "<group>"; };
+		010633F8274B41710045B91E /* PublicKey2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKey2.swift; sourceTree = "<group>"; };
+		010633FA274B41DD0045B91E /* Contact2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact2.swift; sourceTree = "<group>"; };
+		010633FC274B424C0045B91E /* Identity2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identity2.swift; sourceTree = "<group>"; };
+		010633FE274B42880045B91E /* PrivateKey2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKey2.swift; sourceTree = "<group>"; };
+		01063400274B44BD0045B91E /* Message2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message2.swift; sourceTree = "<group>"; };
+		01063402274B57900045B91E /* BTController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController2.swift; sourceTree = "<group>"; };
 		01C4386B2744B08900BFB36C /* BTController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTController.swift; sourceTree = "<group>"; };
 		11082C5C270E7EC40099285E /* StorageV1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StorageV1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11082C5F270E7EC40099285E /* StorageV1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageV1App.swift; sourceTree = "<group>"; };
@@ -76,6 +90,12 @@
 		11082C53270E7EC40099285E = {
 			isa = PBXGroup;
 			children = (
+				01063400274B44BD0045B91E /* Message2.swift */,
+				010633FE274B42880045B91E /* PrivateKey2.swift */,
+				010633FC274B424C0045B91E /* Identity2.swift */,
+				010633FA274B41DD0045B91E /* Contact2.swift */,
+				010633F8274B41710045B91E /* PublicKey2.swift */,
+				010633F6274B40AC0045B91E /* Encrypted2.swift */,
 				1156B09B272F0FF6005555EF /* Identity+CoreDataClass.swift */,
 				1156B09C272F0FF6005555EF /* Identity+CoreDataProperties.swift */,
 				1156B097272F0B92005555EF /* Contact+CoreDataClass.swift */,
@@ -116,6 +136,7 @@
 				11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */,
 				11082C65270E7EC60099285E /* Preview Content */,
 				01C4386B2744B08900BFB36C /* BTController.swift */,
+				01063402274B57900045B91E /* BTController2.swift */,
 			);
 			path = StorageV1;
 			sourceTree = "<group>";
@@ -206,24 +227,31 @@
 				111BA8192720F31F0062CF2F /* PublicKey+CoreDataProperties.swift in Sources */,
 				11082C69270E7EC60099285E /* Persistence.swift in Sources */,
 				11082C62270E7EC40099285E /* ContentView.swift in Sources */,
+				010633FD274B424C0045B91E /* Identity2.swift in Sources */,
 				1156B09E272F0FF6005555EF /* Identity+CoreDataProperties.swift in Sources */,
 				1156B09A272F0B92005555EF /* Contact+CoreDataProperties.swift in Sources */,
+				010633FF274B42880045B91E /* PrivateKey2.swift in Sources */,
 				1156B099272F0B92005555EF /* Contact+CoreDataClass.swift in Sources */,
+				01063401274B44BD0045B91E /* Message2.swift in Sources */,
 				AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */,
 				119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */,
 				01C4386C2744B08900BFB36C /* BTController.swift in Sources */,
 				ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */,
 				1176E687271B67DB00CD02AD /* PrivateKey+CoreDataProperties.swift in Sources */,
+				010633F7274B40AC0045B91E /* Encrypted2.swift in Sources */,
 				1156B09D272F0FF6005555EF /* Identity+CoreDataClass.swift in Sources */,
+				010633F9274B41710045B91E /* PublicKey2.swift in Sources */,
 				11108AFD2726315200EF87C8 /* Message+CoreDataProperties.swift in Sources */,
 				119C624A2738D6A200116A4F /* ChatView.swift in Sources */,
 				11DD3C5F2720F531000FA2C7 /* Encrypted+CoreDataClass.swift in Sources */,
 				111BA8182720F31F0062CF2F /* PublicKey+CoreDataClass.swift in Sources */,
 				11108AFC2726315200EF87C8 /* Message+CoreDataClass.swift in Sources */,
+				01063403274B57900045B91E /* BTController2.swift in Sources */,
 				1176E686271B67DB00CD02AD /* PrivateKey+CoreDataClass.swift in Sources */,
 				B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */,
 				11082C60270E7EC40099285E /* StorageV1App.swift in Sources */,
 				11DD3C602720F531000FA2C7 /* Encrypted+CoreDataProperties.swift in Sources */,
+				010633FB274B41DD0045B91E /* Contact2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

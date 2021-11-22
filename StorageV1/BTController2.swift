@@ -9,20 +9,20 @@ import UIKit
 import CoreBluetooth
 import os
 
-struct TransferService {
-    static let serviceUUID = CBUUID(string: "E20A39F4-73F5-4BC4-A12F-17D1AD07A900")
-    static let characteristicUUID = CBUUID(string: "08590F7E-DB05-467E-8757-72F6FAEB1300")
+struct TransferService2 {
+    static let serviceUUID = CBUUID(string: "E20A39F4-73F5-4BC4-A12F-17D1AD07A961")
+    static let characteristicUUID = CBUUID(string: "08590F7E-DB05-467E-8757-72F6FAEB13D4")
 }
 
-func json(from object:Any) -> Data? {
+func json2(from object:Any) -> Data? {
     guard let data = try? JSONSerialization.data(withJSONObject: object, options: []) else {
         return nil
     }
     return String(data: data, encoding: String.Encoding.utf8)?.data(using: .utf8)
 }
 
-class BTController: NSObject {
-    static let shared = BTController()
+class BTController2: NSObject {
+    static let shared = BTController2()
     static var hasReceived = false
     var centralManager: CBCentralManager!
 
@@ -49,7 +49,7 @@ class BTController: NSObject {
     }
     
     func createPayload(){
-        let encrypteds: [Encrypted] = Encrypted.fetchEncrypted()
+        let encrypteds: [Encrypted2] = Encrypted2.fetchEncrypted()
         self.payload = "["
         for enc in encrypteds{
             self.payload! += enc.to_json()
@@ -59,7 +59,7 @@ class BTController: NSObject {
     }
 
     func sendPayload() {
-        peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: [TransferService.serviceUUID]])
+        peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: [TransferService2.serviceUUID]])
     }
     
     // MARK: - Helper Methods
@@ -75,13 +75,13 @@ class BTController: NSObject {
             return
         }
         // First up, check if we're meant to be sending an EOM
-        if BTController.sendingEOM {
+        if BTController2.sendingEOM {
             // send it
             let didSend = peripheralManager.updateValue("EOM".data(using: .utf8)!, for: transferCharacteristic, onSubscribedCentrals: nil)
             // Did it send?
             if didSend {
                 // It did, so mark it as sent
-                BTController.sendingEOM = false
+                BTController2.sendingEOM = false
                 os_log("Sent: EOM")
             }
             // It didn't send, so we'll exit and wait for peripheralManagerIsReadyToUpdateSubscribers to call sendData again
@@ -121,14 +121,14 @@ class BTController: NSObject {
             if sendDataIndex >= dataToSend.count {
                 // It was - send an EOM
                 // Set this so if the send fails, we'll send it next time
-                BTController.sendingEOM = true
+                BTController2.sendingEOM = true
                 //Send it
                 let eomSent = peripheralManager.updateValue("EOM".data(using: .utf8)!,
                                                              for: transferCharacteristic, onSubscribedCentrals: nil)
                 
                 if eomSent {
                     // It sent; we're all done
-                    BTController.sendingEOM = false
+                    BTController2.sendingEOM = false
                     os_log("Sent: EOM")
                 }
                 return
@@ -138,7 +138,7 @@ class BTController: NSObject {
     
     private func retrievePeripheral() {
         
-        let connectedPeripherals: [CBPeripheral] = (centralManager.retrieveConnectedPeripherals(withServices: [TransferService.serviceUUID]))
+        let connectedPeripherals: [CBPeripheral] = (centralManager.retrieveConnectedPeripherals(withServices: [TransferService2.serviceUUID]))
         
         os_log("Found connected Peripherals with transfer service: %@", connectedPeripherals)
         
@@ -148,7 +148,7 @@ class BTController: NSObject {
             centralManager.connect(connectedPeripheral, options: nil)
         } else {
             // We were not connected to our counterpart, so start scanning
-            centralManager.scanForPeripherals(withServices: [TransferService.serviceUUID],
+            centralManager.scanForPeripherals(withServices: [TransferService2.serviceUUID],
                                                options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         }
     }
@@ -158,13 +158,13 @@ class BTController: NSObject {
         // Build our service.
         
         // Start with the CBMutableCharacteristic.
-        let transferCharacteristic = CBMutableCharacteristic(type: TransferService.characteristicUUID,
-                                                         properties: [.notify, .writeWithoutResponse],
+        let transferCharacteristic = CBMutableCharacteristic(type: TransferService2.characteristicUUID,
+                                                             properties: [.notify, .writeWithoutResponse],
                                                          value: nil,
                                                          permissions: [.readable, .writeable])
         
         // Create a service from the characteristic.
-        let transferService = CBMutableService(type: TransferService.serviceUUID, primary: true)
+        let transferService = CBMutableService(type: TransferService2.serviceUUID, primary: true)
         
         // Add the characteristic to the service.
         transferService.characteristics = [transferCharacteristic]
@@ -187,7 +187,7 @@ class BTController: NSObject {
             else { return }
         
         // check to see if number of iterations completed and peripheral can accept more data
-        while writeIterationsComplete < defaultIterations && discoveredPeripheral.canSendWriteWithoutResponse {
+        while writeIterationsComplete < 1 && discoveredPeripheral.canSendWriteWithoutResponse {
                     
             let mtu = discoveredPeripheral.maximumWriteValueLength (for: .withoutResponse)
             var rawPacket = [UInt8]()
@@ -198,8 +198,9 @@ class BTController: NSObject {
             
             let stringFromData = String(data: packetData, encoding: .utf8)
             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
-            Encrypted.from_json(incomingMessage: stringFromData!)
-            discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
+            
+            Encrypted2.from_json(incomingMessage: stringFromData!)
+          //  discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
             
             writeIterationsComplete += 1
             
@@ -218,7 +219,7 @@ class BTController: NSObject {
         
         for service in (discoveredPeripheral.services ?? [] as [CBService]) {
             for characteristic in (service.characteristics ?? [] as [CBCharacteristic]) {
-                if characteristic.uuid == TransferService.characteristicUUID && characteristic.isNotifying {
+                if characteristic.uuid == TransferService2.characteristicUUID && characteristic.isNotifying {
                     // It is notifying, so unsubscribe
                     self.discoveredPeripheral?.setNotifyValue(false, for: characteristic)
                 }
@@ -230,7 +231,7 @@ class BTController: NSObject {
     }
 }
 
-extension BTController: CBPeripheralManagerDelegate {
+extension BTController2: CBPeripheralManagerDelegate {
     // implementations of the CBPeripheralManagerDelegate methods
 
     /*
@@ -339,7 +340,7 @@ extension BTController: CBPeripheralManagerDelegate {
         }
     }
 }
-extension BTController: CBPeripheralDelegate {
+extension BTController2: CBPeripheralDelegate {
     // implementations of the CBPeripheralDelegate methods
 
     /*
@@ -347,9 +348,9 @@ extension BTController: CBPeripheralDelegate {
      */
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         
-        for service in invalidatedServices where service.uuid == TransferService.serviceUUID {
+        for service in invalidatedServices where service.uuid == TransferService2.serviceUUID {
             os_log("Transfer service is invalidated - rediscover services")
-            peripheral.discoverServices([TransferService.serviceUUID])
+            peripheral.discoverServices([TransferService2.serviceUUID])
         }
     }
 
@@ -368,7 +369,7 @@ extension BTController: CBPeripheralDelegate {
         // Loop through the newly filled peripheral.services array, just in case there's more than one.
         guard let peripheralServices = peripheral.services else { return }
         for service in peripheralServices {
-            peripheral.discoverCharacteristics([TransferService.characteristicUUID], for: service)
+            peripheral.discoverCharacteristics([TransferService2.characteristicUUID], for: service)
         }
     }
     
@@ -386,7 +387,7 @@ extension BTController: CBPeripheralDelegate {
         
         // Again, we loop through the array, just in case and check if it's the right one
         guard let serviceCharacteristics = service.characteristics else { return }
-        for characteristic in serviceCharacteristics where characteristic.uuid == TransferService.characteristicUUID {
+        for characteristic in serviceCharacteristics where characteristic.uuid == TransferService2.characteristicUUID {
             // If it is, subscribe to it
             transferCharacteristicNotMutable = characteristic
             peripheral.setNotifyValue(true, for: characteristic)
@@ -439,7 +440,7 @@ extension BTController: CBPeripheralDelegate {
         }
         
         // Exit if it's not the transfer characteristic
-        guard characteristic.uuid == TransferService.characteristicUUID else { return }
+        guard characteristic.uuid == TransferService2.characteristicUUID else { return }
         
         if characteristic.isNotifying {
             // Notification has started
@@ -461,7 +462,7 @@ extension BTController: CBPeripheralDelegate {
     }
 }
 
-extension BTController: CBCentralManagerDelegate {
+extension BTController2: CBCentralManagerDelegate {
     // implementations of the CBCentralManagerDelegate methods
 
     /*
@@ -574,7 +575,7 @@ extension BTController: CBCentralManagerDelegate {
         peripheral.delegate = self
         
         // Search only for services that match our UUID
-        peripheral.discoverServices([TransferService.serviceUUID])
+        peripheral.discoverServices([TransferService2.serviceUUID])
     }
     
     /*
@@ -593,3 +594,4 @@ extension BTController: CBCentralManagerDelegate {
     }
 
 }
+

@@ -154,11 +154,11 @@ struct Messages : View {
     var username : String
     @Binding var expand : Bool
     
-    @FetchRequest(
-            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
-            animation: .default)
-        var data: FetchedResults<Contact>
-        
+ //   @FetchRequest(
+ //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
+ //           animation: .default)
+ //       var data: FetchedResults<Contact>
+    var data = Contact2.fetchContacts()
     var body : some View{
         VStack(spacing: 0){
 
@@ -208,9 +208,9 @@ struct chatTopView : View {
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     
-    var key = Identity.myKey()
-    var id = Identity.myID()
-    var name = Identity.myName()
+    var key = Identity2.myKey()
+    var id = Identity2.myID()
+    var name = Identity2.myName()
     
     @Binding var expand : Bool
 
@@ -272,7 +272,7 @@ struct chatTopView : View {
 
 struct cellMessagesView : View {
 
-    var data : Contact
+    var data : Contact2
 
     var body : some View{
 
@@ -319,11 +319,11 @@ struct Contacts : View {
     
     @Binding var expand : Bool
 //    @State var contact_list2:[Contact] = contact_list
-    @FetchRequest(
-            sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
-            animation: .default)
-        var contact_list: FetchedResults<Contact>
-    
+ //   @FetchRequest(
+ //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
+ //           animation: .default)
+ //       var contact_list: FetchedResults<Contact>
+    var contact_list = Contact2.fetchContacts()
     var body : some View{
         
         VStack(spacing: 0) {
@@ -408,7 +408,7 @@ struct contactTopView : View {
 
 struct cellContactView : View {
     
-    var contact_list : Contact
+    var contact_list : Contact2
     @State var next: Bool = false
     
     var body : some View{
@@ -442,9 +442,9 @@ struct Settings : View {
     
     var username : String
     
-    var key = Identity.myKey()
-    var id = Identity.myID()
-    var name = Identity.myName()
+    var key = Identity2.myKey()
+    var id = Identity2.myID()
+    var name = Identity2.myName()
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     @State private var isShowingScanner = false
@@ -493,7 +493,7 @@ struct Settings : View {
                 let details = code.components(separatedBy: "\n")
                 guard details.count == 3 else { return }
 
-                Contact.createContact(nn: details[0], keybody: details[1], id: details[2])
+                Contact2.createContact(nn: details[0], keybody: details[1], id: details[2])
                 
             case .failure(let error):
                 print("Scanning failed")

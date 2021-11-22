@@ -139,7 +139,7 @@ extension ViewHeightKey: ViewModifier {
 
 @available(iOS 14.0, *)
 struct ChatView: View {
-    var contact: Contact
+    @State var contact: Contact2
 //
 //    @FetchRequest(
 //                sortDescriptors: [NSSortDescriptor(keyPath: \Message.timeCreated, ascending:false)],

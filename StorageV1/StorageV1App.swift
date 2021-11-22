@@ -12,14 +12,13 @@ import os
 @main
 struct StorageV1App: App {
     let persistenceController = PersistenceController.shared
-    let bluetoothController = BTController.shared
+    let bluetoothController = BTController2.shared
     @Environment(\.managedObjectContext) var viewContext
 
     var body: some Scene {
         WindowGroup {
-            if Identity.hasIdentity() {
-                SplashView2(username: Identity.fetchIdentity().nickname!)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            if Identity2.hasIdentity() {
+                SplashView2(username: Identity2.fetchIdentity().nickname!).environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             else {
                 SplashView()

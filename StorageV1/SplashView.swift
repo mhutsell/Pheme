@@ -39,7 +39,7 @@ struct SplashView: View {
                     .border(Color.init(red: 0.765, green: 0.783, blue: 0.858))
                     .frame(width: 350)
                 NavigationLink("Login", destination: ContentView(username: self.username)).simultaneousGesture(TapGesture().onEnded{
-                    Identity.createIdentity(nickname: self.username)})
+                    Identity2.createIdentity(nickname: self.username)})
                     .font(.headline)
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
                     .padding()
