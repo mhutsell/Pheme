@@ -32,6 +32,7 @@
 		AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD256987273EF70F0065A85D /* SwiftUIView.swift */; };
 		AD25698B273EF9E00065A85D /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AD25698A273EF9E00065A85D /* CodeScanner */; };
 		ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC654A62741C69A00E11CB5 /* SplashView2.swift */; };
+		B748AA69274C90C8003B76D2 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA68274C90C8003B76D2 /* Identity.swift */; };
 		B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77EBC89273CB83400D059D3 /* SplashView.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		119C62492738D6A200116A4F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		AD256987273EF70F0065A85D /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		ADC654A62741C69A00E11CB5 /* SplashView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView2.swift; sourceTree = "<group>"; };
+		B748AA68274C90C8003B76D2 /* Identity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
 		B77EBC89273CB83400D059D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +133,7 @@
 				010633FA274B41DD0045B91E /* Contact2.swift */,
 				010633F8274B41710045B91E /* PublicKey2.swift */,
 				010633F6274B40AC0045B91E /* Encrypted2.swift */,
+				B748AA68274C90C8003B76D2 /* Identity.swift */,
 			);
 			path = data2;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */,
 				114567A0274C6417008394EF /* CollectionUtils.swift in Sources */,
 				11082C60270E7EC40099285E /* StorageV1App.swift in Sources */,
+				B748AA69274C90C8003B76D2 /* Identity.swift in Sources */,
 				010633FB274B41DD0045B91E /* Contact2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,7 +381,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StorageV1/Preview Content\"";
-				DEVELOPMENT_TEAM = 98M6MD3KYB;
+				DEVELOPMENT_TEAM = 6YR78S9C9Q;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StorageV1/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -399,7 +403,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"StorageV1/Preview Content\"";
-				DEVELOPMENT_TEAM = 98M6MD3KYB;
+				DEVELOPMENT_TEAM = 6YR78S9C9Q;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = StorageV1/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

@@ -11,7 +11,7 @@ import Logging
 
 private let encoder = JSONEncoder()
 private let decoder = JSONDecoder()
-private let log = Logger(label: "DistributedChatApp.PersistenceUtils")
+private let log = Logger(label: "PhemeApp.PersistenceUtils")
 private let persistenceEnabled = !isRunningInSwiftUIPreview()
 private var subscriptions = [String: AnyCancellable]()
 

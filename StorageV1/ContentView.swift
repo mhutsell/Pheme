@@ -11,6 +11,7 @@ import CodeScanner
 //@available(iOS 14.0, *)
 struct ContentView: View {
     
+    @EnvironmentObject private var identity: Identity
     var username : String
     
     var body: some View {
@@ -35,6 +36,8 @@ struct ContentView_Previews: PreviewProvider {
 
 // This determines which part of homepage is displayed
 struct Home : View {
+    
+    @EnvironmentObject private var identity: Identity
     var username : String
     
     @State var index = 1
@@ -55,9 +58,9 @@ struct Home : View {
                 // checks Messages, Contacts, Settings
                 ZStack{
                     
-                    Messages(username: self.username, expand: self.$expand).opacity(self.index == 0 ? 1 : 0)
-                    
-                    Contacts(expand: self.$expand).opacity(self.index == 1 ? 1 : 0)
+//                    Messages(username: self.username, expand: self.$expand).opacity(self.index == 0 ? 1 : 0)
+//
+//                    Contacts(expand: self.$expand).opacity(self.index == 1 ? 1 : 0)
                     
                     Settings(username: self.username).opacity(self.index == 2 ? 1 : 0)
             
@@ -74,6 +77,7 @@ struct Home : View {
 
 struct BottomView : View {
     
+    @EnvironmentObject private var identity: Identity
     @Binding var index : Int
     
     var body : some View{
@@ -151,6 +155,7 @@ Everything we need for the Messages page
 
 struct Messages : View {
     
+    @EnvironmentObject private var identity: Identity
     var username : String
     @Binding var expand : Bool
     
@@ -205,13 +210,14 @@ struct Messages : View {
 
 struct chatTopView : View {
 
+    @EnvironmentObject private var identity: Identity
     @State var username: String
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     
-    var key = Identity2.myKey()
-    var id = Identity2.myID()
-    var name = Identity2.myName()
+//    var key = Identity2.myKey()
+//    var id = Identity2.myID()
+//    var name = Identity2.myName()
     
     @Binding var expand : Bool
 
@@ -273,6 +279,7 @@ struct chatTopView : View {
 
 struct cellMessagesView : View {
 
+    @EnvironmentObject private var identity: Identity
     var data : Contact2
 
     var body : some View{
@@ -318,6 +325,7 @@ Everything needed for the Contact page
 
 struct Contacts : View {
     
+    @EnvironmentObject private var identity: Identity
     @Binding var expand : Bool
 //    @State var contact_list2:[Contact] = contact_list
  //   @FetchRequest(
@@ -371,6 +379,7 @@ struct Contacts : View {
     
 struct contactTopView : View {
     
+    @EnvironmentObject private var identity: Identity
     @Binding var expand : Bool
     
     var body : some View{
@@ -412,6 +421,7 @@ struct contactTopView : View {
 
 struct cellContactView : View {
     
+    @EnvironmentObject private var identity: Identity
     var contact_list : Contact2
     @State var next: Bool = false
     
@@ -444,22 +454,23 @@ struct cellContactView : View {
 
 
 struct Settings : View {
-    @EnvironmentObject private var profile: Profile
     
+    @EnvironmentObject private var identity: Identity
     var username : String
     
     
-    var key = Identity2.myKey()
-    var id = Identity2.myID()
-    var name = Identity2.myName()
+    
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     @State private var isShowingScanner = false
     var body : some View{
+        let key = identity.myKey()
+        let id = identity.myID()
+        let name = identity.myName()
         
         return VStack {
         
-            Image(uiImage: generateQRCode2(from: "\(self.name)\n\(self.key)\n\(self.id)"))
+            Image(uiImage: generateQRCode2(from: "\(name)\n\(key)\n\(id)"))
                 .interpolation(.none)
                 .resizable()
                 .scaledToFit()

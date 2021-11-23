@@ -28,7 +28,7 @@ struct Message2: Comparable{
         newEncrypted.senderId = identity.id
         newEncrypted.messageType = self.messageType
         newEncrypted.timeCreated = self.timeCreated
-        newEncrypted.senderKey = identity.publicKey?.keyBody!.base64EncodedString()
+        newEncrypted.senderKey = identity.publicKey.base64EncodedString()
         newEncrypted.senderNickname = identity.nickname
         newEncrypted.encryptedBody = Message2.encryptToData(publicKey: self.contact!.theirKey!.dataToKey(), msBody: self.messageBody!)
         if Encrypted2.encrypteds == nil{

@@ -36,7 +36,7 @@ struct Encrypted2: Comparable{
         to_return += "|||||\(self.senderNickname!)"
         let our_id = Identity2.fetchIdentity()
         //to_return += "|||||\(self.senderKey!.keyBody)" + "|||||}}}}}"
-        to_return += "|||||" + our_id.publicKey!.keyBody!.base64EncodedString() + "|||||}}}}}"
+        to_return += "|||||" + our_id.publicKey.base64EncodedString() + "|||||}}}}}"
         return to_return
     }
 
@@ -140,7 +140,7 @@ struct Encrypted2: Comparable{
         }
         newMessage.contact = Contact2.contacts![j]
         newMessage.timeCreated = self.timeCreated
-        newMessage.messageBody = Encrypted2.decryptToString(privateKey: Identity2.retrievePrivateKey(), body: self.encryptedBody!)
+//        newMessage.messageBody = Encrypted2.decryptToString(privateKey: Identity2.retrievePrivateKey(), body: self.encryptedBody!)
         newMessage.sentByMe = false
         Contact2.contacts![j].updateLatest(timeCreated: newMessage.timeCreated)
         if Contact2.contacts![j].messages == nil{

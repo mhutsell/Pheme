@@ -18,13 +18,16 @@ struct Logo2 : View {
 }
 
 struct SplashView_Previews: PreviewProvider {
+    @StateObject static var profile = Profile()
     static var previews: some View {
         SplashView()
+            .environmentObject(profile)
     }
 }
 
 struct SplashView: View {
     @State var username: String = ""
+    @EnvironmentObject private var identity: Identity
     var data = Contact2.fetchContacts()
     var body: some View {
         NavigationView {
@@ -40,7 +43,8 @@ struct SplashView: View {
                     .border(Color.init(red: 0.765, green: 0.783, blue: 0.858))
                     .frame(width: 350)
                 NavigationLink("Login", destination: ContentView(username: self.username)).simultaneousGesture(TapGesture().onEnded{
-                    Identity2.createIdentity(nickname: self.username)})
+                                                                                                                identity.idtt.nickname = username})
+                    .environmentObject(identity)
                     .font(.headline)
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
                     .padding()

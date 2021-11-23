@@ -8,5 +8,9 @@
 import Foundation
 
 class Profile: ObservableObject {
-    @Published(persistingTo: "Profile/identity.json") var idtt: Identity2 = Identity2()
+    @Published(persistingTo: "Profile/idtt.json") var idtt: Identity2 = Identity2()
+
+//    var me: Identity2{
+//        idtt
+//    }
 }

@@ -25,8 +25,7 @@ struct Logo3 : View {
 //}
 
 struct SplashView2: View {
-    var username : String
-    
+    @EnvironmentObject private var identity: Identity
     var body: some View {
         NavigationView {
         ZStack {
@@ -35,6 +34,7 @@ struct SplashView2: View {
                 Logo3()
                     .padding()
                 NavigationLink("Login", destination: ContentView(username: "self.username"))
+                    .environmentObject(identity)
                     .font(.headline)
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
                     .padding()
