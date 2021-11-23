@@ -17,18 +17,18 @@ struct Logo2 : View {
     }
 }
 
-struct SplashView_Previews: PreviewProvider {
-    @StateObject static var profile = Profile()
-    static var previews: some View {
-        SplashView()
-            .environmentObject(profile)
-    }
-}
+//struct SplashView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SplashView()
+////            .environmentObject(profile)
+//    }
+//}
 
 struct SplashView: View {
     @State var username: String = ""
     @EnvironmentObject private var identity: Identity
-    var data = Contact2.fetchContacts()
+    @EnvironmentObject private var contacts: Contacts
+//    var data = Contact2.fetchContacts()
     var body: some View {
         NavigationView {
         ZStack {

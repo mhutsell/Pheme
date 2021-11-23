@@ -50,9 +50,9 @@ class BTController2: NSObject {
     }
     
     func createPayload(){
-        let encrypteds: [Encrypted2] = Encrypted2.fetchEncrypted()
+        let encrypteds = Encrypted()
         self.payload = "["
-        for enc in encrypteds{
+        for enc in encrypteds.encrypteds.values{
             self.payload! += enc.to_json()
         }
         self.payload! += "]"
@@ -200,7 +200,7 @@ class BTController2: NSObject {
             let stringFromData = String(data: packetData, encoding: .utf8)
             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
             
-            Encrypted2.from_json(incomingMessage: stringFromData!)
+			Encrypted2.from_json(incomingMessage: stringFromData!)
             discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
           //  discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
             return
