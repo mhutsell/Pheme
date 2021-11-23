@@ -5,7 +5,7 @@
 //  Created by Fredrik on 2/2/21.
 //
 
-import DistributedChat
+
 import Foundation
 import Logging
 
@@ -15,38 +15,38 @@ enum ChatAttachmentExtractionError: Error {
     case cannotExtractEncryptedData
 }
 
-extension ChatAttachment {
-    func extractedData() throws -> Data {
-        var extracted: Data
-        switch content {
-        case .url(let url):
-            extracted = try Data.smartContents(of: url)
-        case .encrypted(_):
-            throw ChatAttachmentExtractionError.cannotExtractEncryptedData
-        case .data(let data):
-            extracted = data
-        }
-        if let compression = compression {
-            extracted = try extracted.decompressed(with: compression)
-        }
-        return extracted
-    }
-}
-
-extension ChatAttachment.Compression {
-    var algorithm: NSData.CompressionAlgorithm {
-        switch self {
-        case .lz4:
-            return .lz4
-        case .lzma:
-            return .lzma
-        case .lzfse:
-            return .lzfse
-        case .zlib:
-            return .zlib
-        }
-    }
-}
+//extension ChatAttachment {
+//    func extractedData() throws -> Data {
+//        var extracted: Data
+//        switch content {
+//        case .url(let url):
+//            extracted = try Data.smartContents(of: url)
+//        case .encrypted(_):
+//            throw ChatAttachmentExtractionError.cannotExtractEncryptedData
+//        case .data(let data):
+//            extracted = data
+//        }
+//        if let compression = compression {
+//            extracted = try extracted.decompressed(with: compression)
+//        }
+//        return extracted
+//    }
+//}
+//
+//extension ChatAttachment.Compression {
+//    var algorithm: NSData.CompressionAlgorithm {
+//        switch self {
+//        case .lz4:
+//            return .lz4
+//        case .lzma:
+//            return .lzma
+//        case .lzfse:
+//            return .lzfse
+//        case .zlib:
+//            return .zlib
+//        }
+//    }
+//}
 
 extension Data {
     /// Reads a potentially security-scoped or distributedchat-schemed resource.
@@ -88,12 +88,12 @@ extension Data {
     }
     
     /// Compresses the data with the given algorithm.
-    func compressed(with compression: ChatAttachment.Compression) throws -> Data {
-        try (self as NSData).compressed(using: compression.algorithm) as Data
-    }
-    
-    /// Decompresses the data with the given algorithm.
-    func decompressed(with compression: ChatAttachment.Compression) throws -> Data {
-        try (self as NSData).decompressed(using: compression.algorithm) as Data
-    }
+//    func compressed(with compression: ChatAttachment.Compression) throws -> Data {
+//        try (self as NSData).compressed(using: compression.algorithm) as Data
+//    }
+//    
+//    /// Decompresses the data with the given algorithm.
+//    func decompressed(with compression: ChatAttachment.Compression) throws -> Data {
+//        try (self as NSData).decompressed(using: compression.algorithm) as Data
+//    }
 }

@@ -442,9 +442,12 @@ struct cellContactView : View {
     }
 }
 
+
 struct Settings : View {
+    @EnvironmentObject private var profile: Profile
     
     var username : String
+    
     
     var key = Identity2.myKey()
     var id = Identity2.myID()
