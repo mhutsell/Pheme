@@ -13,7 +13,6 @@ struct Identity2: Identifiable, Hashable, Codable{
         return lhs.id == rhs.id
     }
     
-    static public var me: Identity2?
     public var id: UUID
     public var nickname: String
     public var maxEncrypted: Int16
@@ -38,7 +37,6 @@ struct Identity2: Identifiable, Hashable, Codable{
         var error: Unmanaged<CFError>?
         self.publicKey = (SecKeyCopyExternalRepresentation(publicKeySec!, &error) as Data?)!
         self.privateKey = (SecKeyCopyExternalRepresentation(privateKeySec!, &error) as Data?)!
-        Identity2.me = self
 	 }
 	 
 	func hash(into hasher: inout Hasher) {
@@ -46,7 +44,7 @@ struct Identity2: Identifiable, Hashable, Codable{
     }
 
     static func fetchIdentity() -> Identity2 {
-        return Identity2.me!
+        return Identity().idtt
     }
 
     // delete
