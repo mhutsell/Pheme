@@ -175,7 +175,10 @@ struct cellMessagesView : View {
 
                 Text(contact!.nickname)
 
-                Text(contacts.LatestMessageString(id: contactId)).font(.caption)
+                // TODO: need improvement for notification
+                Text(contacts.LatestMessageString(id: contactId))
+                .font(.caption)
+                .foregroundColor(contact?.newMessage == true ? .red : .black)
             }
 
             Spacer(minLength: 0)

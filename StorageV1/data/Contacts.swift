@@ -46,6 +46,10 @@ class Contacts: ObservableObject {
         contacts[contactId]!.newMessage = true
 	}
 	
+	func sawNewMessage(contactId: UUID) {
+        contacts[contactId]!.newMessage = false
+	}
+	
 	func fetchMessages(id: UUID) -> [Message2] {
 		return contacts[id]!.fetchMessages()
 	}
