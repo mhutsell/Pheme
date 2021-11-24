@@ -114,7 +114,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     //    search if this encrypted is for me and search the contact who send this message
     //    if no existing contact exists, create contact
     func checkAndSearch() {
-        if (self.receiverId != identity = Identity2.fetchIdentity().id) {
+        if (self.receiverId != Identity2.fetchIdentity().id) {
             // Read in stored identity
             let encrypteds = Encrypteds()
             encrypteds.addEncrypted(encrypted: self)
