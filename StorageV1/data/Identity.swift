@@ -43,7 +43,7 @@ class Identity: ObservableObject {
     func updateHelpOthers() {
 		idtt.helpOthers = !idtt.helpOthers
 		if !idtt.helpOthers {
-			let encrypteds = Encrypted()
+			let encrypteds = Encrypteds()
 			encrypteds.clearAllOthers()
 		}
 	}

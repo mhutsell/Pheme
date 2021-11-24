@@ -33,10 +33,10 @@
 		B748AAA2274DB29E003B76D2 /* Contact2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA9B274DB29E003B76D2 /* Contact2.swift */; };
 		B748AAA3274DB29E003B76D2 /* Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA9C274DB29E003B76D2 /* Identity.swift */; };
 		B748AAA4274DB29E003B76D2 /* Message2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA9D274DB29E003B76D2 /* Message2.swift */; };
-		B748AAA5274DB29E003B76D2 /* Encrypted.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA9E274DB29E003B76D2 /* Encrypted.swift */; };
+		B748AAA5274DB29E003B76D2 /* Encrypteds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA9E274DB29E003B76D2 /* Encrypteds.swift */; };
 		B748AAA6274DB29E003B76D2 /* Encrypted2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AA9F274DB29E003B76D2 /* Encrypted2.swift */; };
 		B748AAA7274DB29E003B76D2 /* Identity2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAA0274DB29E003B76D2 /* Identity2.swift */; };
-		B748AAA8274DB29E003B76D2 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAA1274DB29E003B76D2 /* Contact.swift */; };
+		B748AAA8274DB29E003B76D2 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAA1274DB29E003B76D2 /* Contacts.swift */; };
 		B748AAAB274DB2BD003B76D2 /* BTController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAAA274DB2BD003B76D2 /* BTController2.swift */; };
 		B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77EBC89273CB83400D059D3 /* SplashView.swift */; };
 /* End PBXBuildFile section */
@@ -68,10 +68,10 @@
 		B748AA9B274DB29E003B76D2 /* Contact2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact2.swift; sourceTree = "<group>"; };
 		B748AA9C274DB29E003B76D2 /* Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity.swift; sourceTree = "<group>"; };
 		B748AA9D274DB29E003B76D2 /* Message2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message2.swift; sourceTree = "<group>"; };
-		B748AA9E274DB29E003B76D2 /* Encrypted.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encrypted.swift; sourceTree = "<group>"; };
+		B748AA9E274DB29E003B76D2 /* Encrypteds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encrypteds.swift; sourceTree = "<group>"; };
 		B748AA9F274DB29E003B76D2 /* Encrypted2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Encrypted2.swift; sourceTree = "<group>"; };
 		B748AAA0274DB29E003B76D2 /* Identity2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity2.swift; sourceTree = "<group>"; };
-		B748AAA1274DB29E003B76D2 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		B748AAA1274DB29E003B76D2 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		B748AAAA274DB2BD003B76D2 /* BTController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTController2.swift; sourceTree = "<group>"; };
 		B77EBC89273CB83400D059D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -167,10 +167,10 @@
 				B748AA9B274DB29E003B76D2 /* Contact2.swift */,
 				B748AA9C274DB29E003B76D2 /* Identity.swift */,
 				B748AA9D274DB29E003B76D2 /* Message2.swift */,
-				B748AA9E274DB29E003B76D2 /* Encrypted.swift */,
+				B748AA9E274DB29E003B76D2 /* Encrypteds.swift */,
 				B748AA9F274DB29E003B76D2 /* Encrypted2.swift */,
 				B748AAA0274DB29E003B76D2 /* Identity2.swift */,
-				B748AAA1274DB29E003B76D2 /* Contact.swift */,
+				B748AAA1274DB29E003B76D2 /* Contacts.swift */,
 			);
 			path = data;
 			sourceTree = "<group>";
@@ -273,9 +273,9 @@
 				119C624A2738D6A200116A4F /* ChatView.swift in Sources */,
 				B748AA78274D83B7003B76D2 /* SettingsView.swift in Sources */,
 				B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */,
-				B748AAA5274DB29E003B76D2 /* Encrypted.swift in Sources */,
+				B748AAA5274DB29E003B76D2 /* Encrypteds.swift in Sources */,
 				B748AAAB274DB2BD003B76D2 /* BTController2.swift in Sources */,
-				B748AAA8274DB29E003B76D2 /* Contact.swift in Sources */,
+				B748AAA8274DB29E003B76D2 /* Contacts.swift in Sources */,
 				B748AAA2274DB29E003B76D2 /* Contact2.swift in Sources */,
 				114567A0274C6417008394EF /* CollectionUtils.swift in Sources */,
 				11082C60270E7EC40099285E /* StorageV1App.swift in Sources */,

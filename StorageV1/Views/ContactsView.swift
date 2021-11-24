@@ -27,7 +27,7 @@ struct ContactsView : View {
 
     var contact_arr = 0
     var body : some View{
-        var contact_list = Array(contacts.contacts.values)
+		let contact_list = Array(contacts.contacts.values)
         VStack(spacing: 0) {
             
             contactTopView(expand: self.$expand)

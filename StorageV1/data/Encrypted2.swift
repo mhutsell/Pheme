@@ -105,7 +105,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 			let contacts = Contacts()
 			return contacts[senderID] != nil && contacts[senderID]?.messages[id] != nil
 		} else {
-			let encrypteds = Encrypted()
+			let encrypteds = Encrypteds()
 			return encrypteds.encrypteds[id] != nil
 		}
 	}
@@ -117,7 +117,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         let identity = Identity2.fetchIdentity()
         if (self.receiverId != identity.id) {
             // Read in stored identity
-            let encrypteds = Encrypted()
+            let encrypteds = Encrypteds()
             encrypteds.addEncrypted(encrypted: self)
         } else {
             let contacts = Contacts()

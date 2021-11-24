@@ -42,7 +42,7 @@ struct MessageView : View {
  //       var data: FetchedResults<Contact>
     
     var body : some View{
-        var data = Array(contacts.contacts.values)
+		let data = Array(contacts.contacts.values)
         VStack(spacing: 0){
 
             chatTopView(username: self.username, expand: self.$expand)
@@ -163,7 +163,7 @@ struct cellMessagesView : View {
     var contactId : UUID
 
     var body : some View{
-        var contact = contacts.contacts[contactId]
+		let contact = contacts.contacts[contactId]
         HStack(spacing: 12){
 
             Image(systemName:"person.crop.circle.fill")

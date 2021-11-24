@@ -8,7 +8,7 @@
 import Foundation
 
 
-class Encrypted: ObservableObject {
+class Encrypteds: ObservableObject {
     @Published(persistingTo: "Encrypted/encrypted.json") var encrypteds: [UUID: Encrypted2] = [:]
 
 	init() {}

@@ -64,7 +64,7 @@ extension Contact2 {
 	func encryptAndQueue(message: Message2) {
         let identity = Identity2.fetchIdentity()
 		let newEncrypted = Encrypted2(id: message.id, messageType: message.messageType, timeCreated: message.timeCreated, receiverId: self.id, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: self.publicKey), msBody: message.messageBody))
-		let encrypteds = Encrypted()
+		let encrypteds = Encrypteds()
 		encrypteds.addEncrypted(encrypted: newEncrypted)
         BTController2.shared.createPayload()
     }

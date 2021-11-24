@@ -55,7 +55,6 @@ struct ChatView: View {
     
     var body: some View {
         let message_list = contacts.fetchMessages(id: contactId)
-        let contact = contacts.contacts[contactId]
         GeometryReader { geo in
             VStack {
 //                chatTopBar(id: self.id)
