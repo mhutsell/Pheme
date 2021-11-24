@@ -17,10 +17,6 @@ class Identity: ObservableObject {
         return idtt.nickname != ""
     }
     
-    func fetchIdentity() -> Identity2 {
-		return idtt
-	}
-    
     //  return a tuple for showing publickey, nickname, UUID, for QR
     func myKey() -> String {
         return idtt.publicKey.base64EncodedString()
