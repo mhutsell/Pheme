@@ -90,6 +90,9 @@ struct ChatView: View {
                         }
                     }
                 }
+                .onAppear {
+					contacts.sawNewMessage(contactId: contactId)
+				}
                 //MARK:- text editor
                 HStack {
                     ZStack {

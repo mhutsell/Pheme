@@ -42,8 +42,7 @@ struct SplashView: View {
                     .cornerRadius(15.0)
                     .border(Color.init(red: 0.765, green: 0.783, blue: 0.858))
                     .frame(width: 350)
-                NavigationLink("Login", destination: ContentView(username: self.username)).simultaneousGesture(TapGesture().onEnded{
-                                                                                                                identity.idtt.nickname = username})
+                NavigationLink("Login", destination: ContentView(username: self.username)).simultaneousGesture(TapGesture().onEnded{identity.idtt.nickname = username})
                     .environmentObject(identity)
                     .font(.headline)
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
