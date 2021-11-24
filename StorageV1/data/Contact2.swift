@@ -24,6 +24,7 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
     public var timeLatest: Date
     public var messages: [UUID: Message2]
     public var publicKey: Data
+    public var newMessage: Bool
     
     public init (
 		id: UUID = UUID(),
@@ -36,10 +37,7 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
 		self.publicKey = publicKey!
 		self.timeLatest = timeLatest
 		self.messages = [:]
-//		if Contact2.contacts == nil{
-//            Contact2.contacts = Array<Contact2>()
-//        }
-//        Contact2.contacts!.append(self)
+		self.newMessage = false
 	}
 }
 

@@ -43,6 +43,7 @@ class Contacts: ObservableObject {
 	func addDecrypted(message: Message2, contactId: UUID) {
         contacts[contactId]!.messages[message.id] = message
         contacts[contactId]!.updateLatest(timeCreated: message.timeCreated)
+        contacts[contactId]!.newMessage = true
 	}
 	
 	func fetchMessages(id: UUID) -> [Message2] {

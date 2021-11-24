@@ -55,6 +55,9 @@ struct ChatView: View {
     
     var body: some View {
         let message_list = contacts.fetchMessages(id: contactId)
+        
+		//   TODO: need check, notification related attempt
+        contacts[contactId]!.newMessage = false
         GeometryReader { geo in
             VStack {
 //                chatTopBar(id: self.id)
