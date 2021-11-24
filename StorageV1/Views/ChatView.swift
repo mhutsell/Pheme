@@ -76,6 +76,12 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
+//                        ForEach(0..<(Contact2.fetchContacts(id: contactId)?.fetchMessages().count)!, id:\.self) { index in ChatBubble(position: (Contact2.fetchContacts(id: contactId)?.fetchMessages()[index].sentByMe)!, color: Contact2.fetchContacts(id: contactId)?.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+//                               Text((Contact2.fetchContacts(id: contactId)?.fetchMessages()[index].messageBody!)!)
+//                        ForEach(0..<(contacts[contactId]!.fetchMessages().count), id:\.self) { index in ChatBubble(position: (contacts[contactId]!.fetchMessages()[index].sentByMe), color: contacts[contactId]!.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+//                            Text((contacts[contactId]!.fetchMessages()[index].messageBody))
+                            
+                        
                         ForEach(message_list, id:\.id)
                         {message in
                             ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
@@ -96,7 +102,6 @@ struct ChatView: View {
                     Button("Send") {
                         if messageSent != "" {
                             contacts.createMessage(body: messageSent, contactId: contactId)
-                            
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))

@@ -30,7 +30,7 @@ private let state = AppState()
 @main
 struct StorageV1App: App {
    
-//    let bluetoothController = BTController2.shared
+    let bluetoothController = BTController2.shared
     @Environment(\.managedObjectContext) var viewContext
 //    private let logger = Logger(label: "Pheme.App")
 //    var p = Profile()
