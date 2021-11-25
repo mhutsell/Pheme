@@ -33,6 +33,7 @@ class Contacts: ObservableObject {
 	
 	func creatContact(nn: String, id: UUID, keyBody: Data) {
 		contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
+        
 	}
 	
 	func createMessage(body: String, contactId: UUID) {

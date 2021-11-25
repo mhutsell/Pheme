@@ -22,19 +22,22 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
      public var messageType: Int16
      public var timeCreated: Date
      public var sentByMe: Bool
+     public var contactId: UUID
      
      public init (
 		id: UUID = UUID(),
 		messageBody: String? = nil,
 		messageType: Int16 = 0,
 		timeCreated: Date = Date(),
-		sentByMe: Bool? = nil
+		sentByMe: Bool? = nil,
+        contactId: UUID
      ) {
 		self.id = id
 		self.messageBody = messageBody!
 		self.messageType = messageType
-		 self.timeCreated = timeCreated
+        self.timeCreated = timeCreated
 		self.sentByMe = sentByMe!
+        self.contactId = contactId
 	 }
 	 
 	 public func hash(into hasher: inout Hasher) {

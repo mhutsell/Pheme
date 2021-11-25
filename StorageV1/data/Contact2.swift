@@ -18,7 +18,7 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
         return lhs.id == rhs.id
     }
     
-//    static var contacts: [Contact2]?
+	static public var all:  [UUID: Contact2]?
     public var id: UUID
     public var nickname: String
     public var timeLatest: Date
@@ -38,6 +38,12 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
 		self.timeLatest = timeLatest
 		self.messages = [:]
 		self.newMessage = false
+		if Contact2.all == nil {
+//			Contact2.all = [id: self]
+            Contact2.all = Contacts().contacts
+		} else {
+			Contact2.all![id] = self
+		}
 	}
 }
 
@@ -52,18 +58,21 @@ extension Contact2 {
     
     //	create message
 	mutating func createMessage(messageBody: String, sentByMe: Bool) {
-		let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe)
+        let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: self.id)
 		self.messages[newMessage.id] = newMessage
 		self.updateLatest(timeCreated: newMessage.timeCreated)
+		Contact2.all![self.id]! = self
 		self.encryptAndQueue(message: newMessage)
+		Contacts().contacts[self.id]!.messages[newMessage.id] = newMessage
 	}
 	
 	//	encrypted the message and add to the queue
 	func encryptAndQueue(message: Message2) {
         let identity = Identity2.fetchIdentity()
 		let newEncrypted = Encrypted2(id: message.id, messageType: message.messageType, timeCreated: message.timeCreated, receiverId: self.id, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: self.publicKey), msBody: message.messageBody))
-		let encrypteds = Encrypteds()
-		encrypteds.addEncrypted(encrypted: newEncrypted)
+        let encrypteds = Encrypteds()
+        encrypteds.addEncrypted(encrypted: newEncrypted)
+//		Encrypteds.addEncrypted(encrypted: newEncrypted)
         BTController2.shared.createPayload()
     }
     
@@ -71,132 +80,65 @@ extension Contact2 {
     mutating func updateLatest(timeCreated: Date){
         if self.timeLatest < timeCreated {
             self.timeLatest = timeCreated
+            Contacts().contacts[self.id]!.timeLatest = timeCreated
         }
     }
 
+    static func searchOrCreate(nn: String, id: String, keyString: String) {
+		Contact2.searchOrCreate(nn: nn, id: UUID(uuidString: id)!, keyBody: stringToKeyBody(key: keyString))
+	}
+	
+	static func searchOrCreate(nn: String, id: UUID, keyBody: Data) {
+//		if Contact2.all == nil || Contact2.all![id] == nil {
+//			Contact2.creatContact(nn: nn, id: id, keyBody: keyBody)
+//		}
+        let contacts = Contacts()
+        if contacts.contacts.count == 0 || contacts.contacts[id] == nil {
+            Contact2.creatContact(nn: nn, id: id, keyBody: keyBody)
+        }
+	}
+	
+	static func creatContact(nn: String, id: UUID, keyBody: Data) {
+//		Contacts().contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
+	}
+	
     
-    // fetch the list of all contacts, opt = 0 for sort based on timeLatest
-//    static func fetchContacts(opt: Bool = true) -> [Contact2] {
-//        if Contact2.contacts == nil{
-//            Contact2.contacts = Array<Contact2>()
-//        }
-//        return Contact2.contacts!.sorted()
-//    }
+    mutating func createMessage(body: String, contactId: UUID) {
+        self.createMessage(messageBody: body, sentByMe: true)
+	}
+	
+	static func addDecrypted(message: Message2, contactId: UUID) {
+        Contact2.all?[contactId]!.messages[message.id] = message
+        Contact2.all?[contactId]!.updateLatest(timeCreated: message.timeCreated)
+        Contact2.all?[contactId]!.newMessage = true
+	}
+	
+	func sawNewMessage(contactId: UUID) {
+        Contact2.all?[contactId]!.newMessage = false
+	}
+	
+	func fetchMessages(id: UUID) -> [Message2] {
+        return (Contact2.all?[id]!.fetchMessages())!
+	}
+	
+	func LatestMessageString(id: UUID) -> String {
+		let messages = self.fetchMessages(id: id)
+		if messages.count == 0 {
+			return "We are friends now."
+		} else {
+			return messages[messages.count-1].messageBody
+		}
+	}
+	
     
-    // search Contact based on uuid
-//    static func fetchContacts(id: UUID) -> Contact2? {
-//        let c = contacts!
-//        for i in c{
-//            if i.id == id{
-//                return i
-//            }
-//        }
-//        return Contact2()
-//    }
     
-    
-    
-    //    retrive the latest message of all contacts
-//    func fetchLatests() -> [Message2] {
-//        let contacts = Contact2.fetchContacts(opt: false)
-//        var data = [Message2]()
-//        for ct in contacts {
-//                data.append(ct.fetchMessages()[-1])
-//        }
-//        return data
-//    }
-    
-    //    add new message to contact list
-//    mutating func createChatMessage(body: String,identity: Identity2) {
-//        var newMessage = Message2(messageType: 0, sentByMe: true)
-//        newMessage.timeCreated = Date()
-//        newMessage.messageBody = body
-//        newMessage.contact = self
-//        newMessage.sentByMe = true
-//        newMessage.encryptAndQueue(identity: identity)
-//        self.timeLatest = newMessage.timeCreated!
-//        if self.messages == nil{
-//            self.messages = Array<Message2>()
-//        }
-//        self.messages.append(newMessage)
-//    }
-//
-//
-//
-//    static func addEncrypted(encryptedBody: Data?, messageType: Int16, receiverId: UUID, senderId: UUID, timeCreated: Date, senderNickname: String?, senderKey: String?) -> Encrypted2{
-//        var newEncrypted = Encrypted2(messageType: messageType)
-//        newEncrypted.receiverId = receiverId
-//        newEncrypted.senderId = senderId
-//        newEncrypted.messageType = messageType
-//        newEncrypted.timeCreated = timeCreated
-//        let pubKey = KeyUtils.stringToKeyBody(key: senderKey!)
-//
-//        newEncrypted.senderKey = pubKey.base64EncodedString()
-//        newEncrypted.senderNickname = senderNickname
-//        newEncrypted.encryptedBody = encryptedBody
-//        if Encrypted2.encrypteds == nil{
-//            Encrypted2.encrypteds = Array<Encrypted2>()
-//        }
-//        Encrypted2.encrypteds!.append(newEncrypted)
-//        return newEncrypted
-//    }
-//
-//    //    create contact (called in checkAndSearch() and TODO: QRContact())
-//    static func createContact(nn: String, key: Data, id: UUID) -> Contact2 {
-//
-//        var newContact = Contact2()
-//        newContact.nickname = nn
-//        newContact.id = id
-//        newContact.publicKey = key
-////		let identity = Identity2.fetchIdentity()
-////        newContact.identity = identity
-//        newContact.timeLatest = Date()
-//        newContact.initlist()
-//        if Contact2.contacts == nil{
-//            Contact2.contacts = Array<Contact2>()
-//        }
-//        Contact2.contacts!.append(newContact)
-//        _ = Contact2.contacts
-//        return newContact
-//    }
-//
-//
-//    //    create contact (called when QR scanned)
-//    static func createContact(nn: String, keybody: String, id: String) -> Contact2 {
-//        return searchOrCreate(nn: nn, key: KeyUtils.stringToKeyBody(key: keybody), id: UUID(uuidString: id)!)
-//    }
-//
-//    // search contact with id, if not exist, create with nn, id, key
-//    static func searchOrCreate(nn: String, id: UUID) -> Contact2 {
-//        let c = Contact2.fetchContacts()
-//        for i in c{
-//            if i.id!.uuidString == id.uuidString{return i}
-//        }
-//        return Contact2()
-//    }
-//
-//
-//    static func searchOrCreate(nn: String, key: Data, id: UUID) -> Contact2 {
-//        let c = Contact2.fetchContacts()
-//        for i in c{
-//            if i.id!.uuidString == id.uuidString{return i}
-//        }
-//        return createContact(nn: nn, key: key, id: id)
-//    }
-//
-//
-//    //fetch the latest message body
-//    func fetchLatestMessageString() -> String {
-//        if self.messages == nil || self.messages.isEmpty{
-//            return ""
-//        }
-//        return self.fetchMessages()[-1].messageBody!
-//    }
-//
-//    //    delete
-//    func delete() {
-//        //TODO
-//    }
+	func deleteContact(id: UUID) {
+        Contact2.all?[id] = nil
+	}
+	
+	func deleteMessage(id: UUID, contactID: UUID) {
+        Contact2.all?[id]!.messages[id] = nil
+	}
 
 }
 

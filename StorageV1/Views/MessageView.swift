@@ -52,7 +52,7 @@ struct MessageView : View {
 //                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(contactId: i.id)) {
+                        NavigationLink(destination: ChatView(contactId: i.id, contact: i)) {
                             cellMessagesView(contactId : i.id)
                                 .onAppear{
                                     self.expand = true

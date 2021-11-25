@@ -51,10 +51,12 @@ struct ChatView: View {
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
     @State var contactId: UUID
+    @State var contact: Contact2
     @State var messageSent: String = ""
     
     var body: some View {
-        let message_list = contacts.fetchMessages(id: contactId)
+//        let message_list = contacts.fetchMessages(id: contactId)
+//        let message_list = contact.fetchMessages()
         
 		//   TODO: need check, notification related attempt
 //        contacts[contactId]!.newMessage = false
@@ -65,6 +67,7 @@ struct ChatView: View {
                     HStack(spacing: 12) {
                         Spacer()
                         Text(contacts.contacts[contactId]!.nickname)
+//                        Text(contact.nickname)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -82,7 +85,13 @@ struct ChatView: View {
 //                            Text((contacts[contactId]!.fetchMessages()[index].messageBody))
                             
                         
-                        ForEach(message_list, id:\.id)
+//                        ForEach(message_list, id:\.id)
+//                        {message in
+//                            ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+//                                Text(message.messageBody)
+//                            }
+//                        }
+                        ForEach(contact.fetchMessages(), id:\.id)
                         {message in
                             ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
                                 Text(message.messageBody)
@@ -104,7 +113,8 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            contacts.createMessage(body: messageSent, contactId: contactId)
+//                            contacts.createMessage(body: messageSent, contactId: contactId)
+                            contact.createMessage(body: messageSent, contactId: contact.id)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))

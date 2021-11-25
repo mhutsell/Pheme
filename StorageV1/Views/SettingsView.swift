@@ -67,7 +67,8 @@ struct SettingsView : View {
                 let details = code.components(separatedBy: "\n")
                 guard details.count == 3 else { return }
 
-			contacts.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
+//			contacts.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
+                Contact2.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
                 
         case .failure(_):
                 print("Scanning failed")

@@ -127,7 +127,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     
     //    decrypt the encrypt with my key
     func decryptTo(contactId: UUID) {
-        let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false)
+        let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
         let contacts = Contacts()
         contacts.addDecrypted(message: newMessage, contactId: contactId)
     }
