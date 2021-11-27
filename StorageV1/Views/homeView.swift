@@ -11,8 +11,8 @@ import SwiftUI
 // This determines which part of homepage is displayed
 struct Home : View {
     
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
+//    @EnvironmentObject private var identity: Identity
+//    @EnvironmentObject private var contacts: Contacts
     var username : String
     
     @State var index = 1
@@ -35,18 +35,18 @@ struct Home : View {
                     
                     MessageView(username: self.username, expand: self.$expand)
                         .opacity(self.index == 0 ? 1 : 0)
-                        .environmentObject(identity)
-                        .environmentObject(contacts)
+//                        .environmentObject(identity)
+//                        .environmentObject(contacts)
 //
                     ContactsView(expand: self.$expand)
                         .opacity(self.index == 1 ? 1 : 0)
-                        .environmentObject(identity)
-                        .environmentObject(contacts)
+//                        .environmentObject(identity)
+//                        .environmentObject(contacts)
                     
                     SettingsView(username: self.username)
                         .opacity(self.index == 2 ? 1 : 0)
-                        .environmentObject(identity)
-                        .environmentObject(contacts)
+//                        .environmentObject(identity)
+//                        .environmentObject(contacts)
             
                 }
                 
@@ -61,7 +61,7 @@ struct Home : View {
 
 struct BottomView : View {
     
-    @EnvironmentObject private var identity: Identity
+//    @EnvironmentObject private var identity: Identity
     @Binding var index : Int
     
     var body : some View{

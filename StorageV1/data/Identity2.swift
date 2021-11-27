@@ -44,7 +44,20 @@ struct Identity2: Identifiable, Hashable, Codable{
     }
 
     static func fetchIdentity() -> Identity2 {
-        return Identity().idtt
+        return Identity.sharedInstance.idtt
+    }
+    
+    //  return a tuple for showing publickey, nickname, UUID, for QR
+    func myKey() -> String {
+        return self.publicKey.base64EncodedString()
+    }
+
+    func myName() -> String {
+        return self.nickname
+    }
+
+    func myID() -> String {
+        return self.id.uuidString
     }
 
     // delete

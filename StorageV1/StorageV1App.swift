@@ -12,23 +12,23 @@ import os
 import Logging
 
 
-private class AppState {
-    let identity: Identity
-    let contacts: Contacts
-    let messages: Messages
-    
-    init() {
-        let identity = Identity()
-        let contacts = Contacts()
-        let messages = Messages()
-        self.identity = identity
-        self.contacts = contacts
-        self.messages = messages
-    }
-    
-}
-
-private let state = AppState()
+//private class AppState {
+//    let identity: Identity
+//    let contacts: Contacts
+////    let messages: Messages
+//
+//    init() {
+//        let identity = Identity()
+//        let contacts = Contacts()
+////        let messages = Messages()
+//        self.identity = identity
+//        self.contacts = contacts
+////        self.messages = messages
+//    }
+//
+//}
+//
+//private let state = AppState()
 
 @main
 struct StorageV1App: App {
@@ -39,17 +39,17 @@ struct StorageV1App: App {
 
     var body: some Scene {
         WindowGroup {
-            if state.identity.hasIdentity() {
+            if Identity.sharedInstance.hasIdentity() {
                 SplashView2()
-                    .environmentObject(state.identity)
-                    .environmentObject(state.contacts)
-                    .environmentObject(state.messages)
+//                    .environmentObject(state.identity)
+//                    .environmentObject(state.contacts)
+//                    .environmentObject(state.messages)
             }
             else {
                 SplashView()
-                    .environmentObject(state.identity)
-                    .environmentObject(state.contacts)
-                    .environmentObject(state.messages)
+//                    .environmentObject(state.identity)
+//                    .environmentObject(state.contacts)
+//                    .environmentObject(state.messages)
             }
         }
        

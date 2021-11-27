@@ -38,7 +38,7 @@ struct MessageView : View {
 	@ObservedObject private var contacts = Contacts.sharedInstance
     var username : String
     @Binding var expand : Bool
-    var contact = Contact2.all
+//    var contact = Contact2.all
     
  //   @FetchRequest(
  //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
@@ -129,7 +129,7 @@ struct cellMessagesView : View {
 
     @ObservedObject private var contacts = Contacts.sharedInstance
     var contactId : UUID
-    var contact = Contact2.all
+//    var contact = Contact2.all
 
     var body : some View{
 		HStack(spacing: 12){

@@ -10,7 +10,7 @@ import CodeScanner
 
 struct SettingsView : View {
     
-    @EnvironmentObject private var identity: Identity
+//    @EnvironmentObject private var identity: Identity
 //    @EnvironmentObject private var contacts: Contacts
     var username : String
     
@@ -20,6 +20,7 @@ struct SettingsView : View {
     private let filter = CIFilter.qrCodeGenerator()
     @State private var isShowingScanner = false
     var body : some View{
+        let identity = Identity2.fetchIdentity()
         let key = identity.myKey()
         let id = identity.myID()
         let name = identity.myName()
@@ -68,7 +69,7 @@ struct SettingsView : View {
                 guard details.count == 3 else { return }
 
 //			contacts.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
-                Contact2.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
+                Contacts.sharedInstance.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
                 
         case .failure(_):
                 print("Scanning failed")

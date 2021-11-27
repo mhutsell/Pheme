@@ -37,15 +37,21 @@ class Contacts: ObservableObject {
 		contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
 	}
 	
-	func createMessage(contactId: UUID, message: Message2) {
+	func addMessage(contactId: UUID, message: Message2, newMessage: Bool) {
         contacts[contactId]!.messages[message.id] = message
+        if contacts[contactId]!.timeLatest < message.timeCreated {
+            contacts[contactId]!.timeLatest =  message.timeCreated
+        }
+        if newMessage {
+			contacts[contactId]!.newMessage = true
+		}
 	}
 	
-	//	TODO: push notification?
-	func addDecrypted(contactId: UUID, message: Message2) {
-        contacts[contactId]!.messages[message.id] = message
-        Contact2.updateLatest(timeCreated: message.timeCreated, contactId: contactId)
-        contacts[contactId]!.newMessage = true
+	//	create message
+	func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) {
+        let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
+        self.addMessage(contactId: contactId, message: newMessage, newMessage: false)
+		newMessage.encryptAndQueue(contactId: contactId)
 	}
 	
 	func sawNewMessage(contactId: UUID) {

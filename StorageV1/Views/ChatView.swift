@@ -62,7 +62,7 @@ struct ChatView: View {
 
     
     var body: some View {
-//        var ml:[Message2] = messages[contactId]
+    
 //		   TODO: need check, notification related attempt
         GeometryReader { geo in
             VStack {
@@ -90,7 +90,7 @@ struct ChatView: View {
                     }
                 }
                 .onAppear {
-                    Contact2.sawNewMessage(contactId: contactId)
+                    contacts.sawNewMessage(contactId: contactId)
 				}
 				
                 //MARK:- text editor
@@ -104,7 +104,7 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            Contact2.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
+                            contacts.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
 //                            print(messages)
 //                            messages.append(m)
 //                            contact = Contact2.all

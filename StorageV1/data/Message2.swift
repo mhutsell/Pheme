@@ -48,6 +48,14 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
         hasher.combine(timeCreated)
     }
     
+    //	encrypted the message and add to the queue
+	func encryptAndQueue(contactId: UUID) {
+        let identity = Identity2.fetchIdentity()
+		_ = Encrypted2(id: self.id, messageType: self.messageType, timeCreated: self.timeCreated, receiverId: contactId, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: Contacts.sharedInstance.contacts[contactId]!.publicKey), msBody: self.messageBody), add: true)
+        BTController2.shared.createPayload()
+    }
+    
+    
 
     
 }

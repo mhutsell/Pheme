@@ -8,6 +8,7 @@
 import Foundation
 
 struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
+
     static func < (lhs: Encrypted2, rhs: Encrypted2) -> Bool {
 		return lhs.timeCreated < rhs.timeCreated
     }
@@ -16,7 +17,6 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         return lhs.timeCreated == rhs.timeCreated
     }
     
-    static public var all: [UUID: Encrypted2] = Encrypteds.sharedInstance.encrypteds
     public var id: UUID
     public var encryptedBody: Data
     public var messageType: Int16
@@ -46,7 +46,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 		self.senderKey = senderKey!
 		self.encryptedBody = encryptedBody!
 		if add {
-			Encrypted2.addEncrypted(encrypted: self)
+			Encrypteds.sharedInstance.addEncrypted(encrypted: self)
 		}
 	 }
 	 
@@ -107,9 +107,9 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     
     static func hasId(id: UUID, receiverId: UUID, senderID: UUID) -> Bool {
 		if receiverId == Identity2.fetchIdentity().id {
-			return Contact2.all[senderID] != nil && Contact2.all[senderID]?.messages[id] != nil
+			return Contacts.sharedInstance.contacts[senderID] != nil && Contacts.sharedInstance.contacts[senderID]?.messages[id] != nil
 		} else {
-			return Encrypted2.all[id] != nil
+			return Encrypteds.sharedInstance.encrypteds[id] != nil
 		}
 	}
 
@@ -119,9 +119,9 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     func checkAndSearch() {
         if (self.receiverId != Identity2.fetchIdentity().id) {
             // Read in stored identity
-            Encrypted2.addEncrypted(encrypted: self)
+            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
         } else {
-            Contact2.searchOrCreate(nn: self.senderNickname, id: self.senderId, keyBody: stringToKeyBody(key: self.senderKey))
+            Contacts.sharedInstance.searchOrCreate(nn: self.senderNickname, id: self.senderId, keyBody: stringToKeyBody(key: self.senderKey))
 			self.decryptTo(contactId: self.senderId)
         }
     }
@@ -129,30 +129,8 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     //    decrypt the encrypt with my key
     func decryptTo(contactId: UUID) {
         let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
-		Contact2.addDecrypted(message: newMessage, contactId: contactId)
+		Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
     }
-    
-    static func addEncrypted(encrypted: Encrypted2) {
-		Encrypted2.all[encrypted.id] = encrypted
-		Encrypted2.checkMaxEncrypted()
-		Encrypteds.sharedInstance.addEncrypted(encrypted: encrypted)
-	}
-	
-	static func checkMaxEncrypted() {
-		while (Contact2.all.keys.count > Identity2.fetchIdentity().maxEncrypted) {
-			Encrypted2.all[Encrypted2.all.values.sorted()[0].id] = nil
-		}
-	}
-	
-	static func clearEncrypted() {
-		Encrypted2.all = [:]
-		Encrypteds.sharedInstance.clearEncrypted()
-	}
-	
-	static func clearAllOthers() {
-		Encrypted2.all = Encrypted2.all.filter { $0.value.senderId == Identity2.fetchIdentity().id }
-		Encrypteds.sharedInstance.clearAllOthers()
-	}
     
 }
 

@@ -9,6 +9,9 @@ import Foundation
 
 
 class Identity: ObservableObject {
+
+	static let sharedInstance = Identity()
+	
     @Published(persistingTo: "Identity/idtt.json") var idtt: Identity2 = Identity2(nickname: "")
 
 	init() {}
@@ -16,19 +19,7 @@ class Identity: ObservableObject {
     func hasIdentity() -> Bool {
         return idtt.nickname != ""
     }
-    
-    //  return a tuple for showing publickey, nickname, UUID, for QR
-    func myKey() -> String {
-        return idtt.publicKey.base64EncodedString()
-    }
 
-    func myName() -> String {
-        return idtt.nickname
-    }
-
-    func myID() -> String {
-        return idtt.id.uuidString
-    }
     
     //  update the max number of encrypte stored
     func updateMaxEncrypted(max: Int16) {
