@@ -34,8 +34,8 @@ struct ContactsView : View {
 //                        if i.id == 0{
                             
                             if #available(iOS 14.0, *) {
-                                NavigationLink(destination: ChatView(contact: i)) {
-                                    cellContactView(contact: i)
+                                NavigationLink(destination: ChatView(contactId: i.id)) {
+                                    cellContactView(contactId: i.id)
                                         .onAppear{
                                             self.expand = true
                                         }
@@ -72,7 +72,9 @@ struct cellContactView : View {
     
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
-    var contact: Contact2
+    
+    var contact = Contact2.all
+    var contactId: UUID
 
     @State var next: Bool = false
     
@@ -86,7 +88,7 @@ struct cellContactView : View {
 //
             VStack(alignment: .leading, spacing: 12) {
             
-                Text(contact.nickname)
+                Text(contact[contactId]!.nickname)
                 
 //                Text("@" + contact_list.username).font(.caption)
             }

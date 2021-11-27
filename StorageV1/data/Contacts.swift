@@ -42,7 +42,7 @@ class Contacts: ObservableObject {
 	//	TODO: push notification?
 	func addDecrypted(contactId: UUID, message: Message2) {
         contacts[contactId]!.messages[message.id] = message
-        contacts[contactId]!.updateLatest(timeCreated: message.timeCreated)
+        Contact2.updateLatest(timeCreated: message.timeCreated, contactId: contactId)
         contacts[contactId]!.newMessage = true
 	}
 	

@@ -11,13 +11,14 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
     
     
     static func < (lhs: Contact2, rhs: Contact2) -> Bool {
-        return lhs.timeLatest < rhs.timeLatest
+        return lhs.timeLatest > rhs.timeLatest
     }
     
     static func == (lhs: Contact2, rhs: Contact2) -> Bool {
         return lhs.id == rhs.id
     }
     
+	
 	static public var all:  [UUID: Contact2] = Contacts().contacts
     public var id: UUID
     public var nickname: String
@@ -52,27 +53,26 @@ extension Contact2 {
     }
     
     //	create message
-	mutating func createMessage(messageBody: String, sentByMe: Bool) {
-        let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: self.id)
-		self.messages[newMessage.id] = newMessage
-		self.updateLatest(timeCreated: newMessage.timeCreated)
-		Contact2.all[self.id]! = self
-		self.encryptAndQueue(message: newMessage)
-		Contacts().createMessage(contactId: self.id, message: newMessage)
+	static func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) {
+        let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
+		Contact2.all[contactId]!.messages[newMessage.id] = newMessage
+		Contact2.updateLatest(timeCreated: newMessage.timeCreated, contactId: contactId)
+		Contact2.encryptAndQueue(message: newMessage, contactId: contactId)
+		Contacts().createMessage(contactId: contactId, message: newMessage)
 	}
 	
 	//	encrypted the message and add to the queue
-	func encryptAndQueue(message: Message2) {
+	static func encryptAndQueue(message: Message2, contactId: UUID) {
         let identity = Identity2.fetchIdentity()
-		_ = Encrypted2(id: message.id, messageType: message.messageType, timeCreated: message.timeCreated, receiverId: self.id, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: self.publicKey), msBody: message.messageBody), add: true)
+		_ = Encrypted2(id: message.id, messageType: message.messageType, timeCreated: message.timeCreated, receiverId: contactId, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: Contact2.all[contactId]!.publicKey), msBody: message.messageBody), add: true)
         BTController2.shared.createPayload()
     }
     
     //	update the latest messaging time
-    mutating func updateLatest(timeCreated: Date){
-        if self.timeLatest < timeCreated {
-            self.timeLatest = timeCreated
-            Contacts().contacts[self.id]!.timeLatest = timeCreated
+    static func updateLatest(timeCreated: Date, contactId: UUID){
+        if Contact2.all[contactId]!.timeLatest < timeCreated {
+            Contact2.all[contactId]!.timeLatest = timeCreated
+            Contacts().contacts[contactId]!.timeLatest = timeCreated
         }
     }
 
@@ -94,11 +94,11 @@ extension Contact2 {
 		Contacts().contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
 	}
 	
-	mutating func addDecrypted(message: Message2) {
-		self.messages[message.id] = message
-        self.updateLatest(timeCreated: message.timeCreated)
-        self.newMessage = true
-        Contacts().addDecrypted(contactId: self.id, message: message)
+	static func addDecrypted(message: Message2, contactId: UUID) {
+		Contact2.all[contactId]!.messages[message.id] = message
+        Contact2.updateLatest(timeCreated: message.timeCreated, contactId: contactId)
+        Contact2.all[contactId]!.newMessage = true
+        Contacts().addDecrypted(contactId: contactId, message: message)
 	}
 	
 	static func sawNewMessage(contactId: UUID) {

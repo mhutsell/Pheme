@@ -51,8 +51,9 @@ struct ChatView: View {
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
     
-    @State var contact: Contact2
+    @State var contactId: UUID
     @State var messageSent: String = ""
+    @State var contact = Contact2.all
     
     var body: some View {
         
@@ -62,7 +63,7 @@ struct ChatView: View {
                 VStack{
                     HStack(spacing: 12) {
                         Spacer()
-                        Text(contact.nickname)
+                        Text(contact[contactId]!.nickname)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -74,7 +75,7 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                      ForEach(contact.fetchMessages(), id:\.id)
+                      ForEach(contact[contactId]!.messages.values.sorted(), id:\.id)
                         {message in
                             ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
                                 Text(message.messageBody)
@@ -83,7 +84,7 @@ struct ChatView: View {
                     }
                 }
                 .onAppear {
-                    Contact2.sawNewMessage(contactId: contact.id)
+                    Contact2.sawNewMessage(contactId: contactId)
 				}
 				
                 //MARK:- text editor
@@ -97,7 +98,7 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            contact.createMessage(messageBody: messageSent, sentByMe: true)
+                            Contact2.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))

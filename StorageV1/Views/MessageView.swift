@@ -53,8 +53,8 @@ struct MessageView : View {
 //                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(contact: i)) {
-                            cellMessagesView(contact : i)
+                        NavigationLink(destination: ChatView(contactId: i.id)) {
+                            cellMessagesView(contactId : i.id)
                                 .onAppear{
                                     self.expand = true
                                 }
@@ -95,10 +95,7 @@ struct chatTopView : View {
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     
-//    var key = Identity2.myKey()
-//    var id = Identity2.myID()
-//    var name = Identity2.myName()
-    
+	
     @Binding var expand : Bool
 
     var body : some View{
@@ -127,13 +124,6 @@ struct chatTopView : View {
                     }
                 }
 
-//                Image(uiImage: generateQRCode(from: "\(self.name)\n\(self.key)\n\(self.id)"))
-//                    .interpolation(.none)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .frame(width: 200, height: 200)
-//                    .padding()
-
             }
 
         }
@@ -144,24 +134,14 @@ struct chatTopView : View {
 
     }
 
-//    func generateQRCode(from string: String) -> UIImage {
-//        let data = Data(string.utf8)
-//        filter.setValue(data, forKey: "inputMessage")
-//
-//        if let outputImage = filter.outputImage{
-//            if let cgimg = context.createCGImage(outputImage, from: outputImage.extent){
-//                return UIImage(cgImage: cgimg)
-//            }
-//        }
-//        return UIImage(systemName: "xmark.circle") ?? UIImage()
-//    }
 }
 
 struct cellMessagesView : View {
 
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
-    var contact : Contact2
+    var contactId : UUID
+    var contact = Contact2.all
 
     var body : some View{
 		HStack(spacing: 12){
@@ -173,12 +153,12 @@ struct cellMessagesView : View {
             
             VStack(alignment: .leading, spacing: 12) {
 
-                Text(contact.nickname)
+                Text(contact[contactId]!.nickname)
 
                 // TODO: need improvement for notification
-                Text(contact.LatestMessageString())
+                Text(contact[contactId]!.LatestMessageString())
                 .font(.caption)
-                .foregroundColor(contact.newMessage == true ? .red : .black)
+                .foregroundColor(contact[contactId]!.newMessage == true ? .red : .black)
             }
 
             Spacer(minLength: 0)
@@ -192,7 +172,7 @@ struct cellMessagesView : View {
     }
     
     func time () -> String {
-        let time2 = contact.timeLatest
+        let time2 = contact[contactId]!.timeLatest
         let formatter1 = DateFormatter()
         formatter1.dateStyle = .short
         
