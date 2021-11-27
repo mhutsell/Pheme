@@ -51,7 +51,7 @@ struct ChatView: View {
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
     
-    var contact: Contact2
+    @State var contact: Contact2
     @State var messageSent: String = ""
     
     var body: some View {
@@ -83,7 +83,7 @@ struct ChatView: View {
                     }
                 }
                 .onAppear {
-					Contact2.sawNewMessage(contactid: contact.id)
+                    Contact2.sawNewMessage(contactId: contact.id)
 				}
 				
                 //MARK:- text editor
