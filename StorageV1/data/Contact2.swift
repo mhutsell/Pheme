@@ -18,7 +18,7 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
         return lhs.id == rhs.id
     }
     
-	static public var all:  [UUID: Contact2]?
+	static public var all:  [UUID: Contact2] = Contacts().contacts
     public var id: UUID
     public var nickname: String
     public var timeLatest: Date
@@ -38,12 +38,7 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
 		self.timeLatest = timeLatest
 		self.messages = [:]
 		self.newMessage = false
-		if Contact2.all == nil {
-//			Contact2.all = [id: self]
-            Contact2.all = Contacts().contacts
-		} else {
-			Contact2.all![id] = self
-		}
+		Contact2.all[id] = self
 	}
 }
 
@@ -61,18 +56,15 @@ extension Contact2 {
         let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: self.id)
 		self.messages[newMessage.id] = newMessage
 		self.updateLatest(timeCreated: newMessage.timeCreated)
-		Contact2.all![self.id]! = self
+		Contact2.all[self.id]! = self
 		self.encryptAndQueue(message: newMessage)
-		Contacts().contacts[self.id]!.messages[newMessage.id] = newMessage
+		Contacts().createMessage(contactId: self.id, message: newMessage)
 	}
 	
 	//	encrypted the message and add to the queue
 	func encryptAndQueue(message: Message2) {
         let identity = Identity2.fetchIdentity()
-		let newEncrypted = Encrypted2(id: message.id, messageType: message.messageType, timeCreated: message.timeCreated, receiverId: self.id, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: self.publicKey), msBody: message.messageBody))
-        let encrypteds = Encrypteds()
-        encrypteds.addEncrypted(encrypted: newEncrypted)
-//		Encrypteds.addEncrypted(encrypted: newEncrypted)
+		_ = Encrypted2(id: message.id, messageType: message.messageType, timeCreated: message.timeCreated, receiverId: self.id, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: self.publicKey), msBody: message.messageBody), add: true)
         BTController2.shared.createPayload()
     }
     
@@ -92,37 +84,31 @@ extension Contact2 {
 //		if Contact2.all == nil || Contact2.all![id] == nil {
 //			Contact2.creatContact(nn: nn, id: id, keyBody: keyBody)
 //		}
-        let contacts = Contacts()
-        if contacts.contacts.count == 0 || contacts.contacts[id] == nil {
+//        let contacts = Contacts()
+        if Contact2.all[id] == nil {
             Contact2.creatContact(nn: nn, id: id, keyBody: keyBody)
         }
 	}
 	
 	static func creatContact(nn: String, id: UUID, keyBody: Data) {
-//		Contacts().contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
+		Contacts().contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
 	}
 	
-    
-    mutating func createMessage(body: String, contactId: UUID) {
-        self.createMessage(messageBody: body, sentByMe: true)
+	mutating func addDecrypted(message: Message2) {
+		self.messages[message.id] = message
+        self.updateLatest(timeCreated: message.timeCreated)
+        self.newMessage = true
+        Contacts().addDecrypted(contactId: self.id, message: message)
 	}
 	
-	static func addDecrypted(message: Message2, contactId: UUID) {
-        Contact2.all?[contactId]!.messages[message.id] = message
-        Contact2.all?[contactId]!.updateLatest(timeCreated: message.timeCreated)
-        Contact2.all?[contactId]!.newMessage = true
+	static func sawNewMessage(contactId: UUID) {
+		Contact2.all[contactId]!.newMessage = false
+        Contacts().sawNewMessage(contactId: contactId)
 	}
 	
-	func sawNewMessage(contactId: UUID) {
-        Contact2.all?[contactId]!.newMessage = false
-	}
 	
-	func fetchMessages(id: UUID) -> [Message2] {
-        return (Contact2.all?[id]!.fetchMessages())!
-	}
-	
-	func LatestMessageString(id: UUID) -> String {
-		let messages = self.fetchMessages(id: id)
+	func LatestMessageString() -> String {
+		let messages = self.fetchMessages()
 		if messages.count == 0 {
 			return "We are friends now."
 		} else {
@@ -131,13 +117,14 @@ extension Contact2 {
 	}
 	
     
-    
-	func deleteContact(id: UUID) {
-        Contact2.all?[id] = nil
+	static func deleteContact(id: UUID) {
+		Contact2.all[id] = nil
+		Contacts().deleteContact(id: id)
 	}
 	
-	func deleteMessage(id: UUID, contactID: UUID) {
-        Contact2.all?[id]!.messages[id] = nil
+	static func deleteMessage(id: UUID, contactId: UUID) {
+		Contact2.all[contactId]!.messages[id] = nil
+		Contacts().deleteMessage(id: id, contactId: contactId)
 	}
 
 }

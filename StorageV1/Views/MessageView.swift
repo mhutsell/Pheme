@@ -35,6 +35,7 @@ struct MessageView : View {
     @EnvironmentObject private var contacts: Contacts
     var username : String
     @Binding var expand : Bool
+    var contact = Contact2.all
     
  //   @FetchRequest(
  //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
@@ -42,18 +43,18 @@ struct MessageView : View {
  //       var data: FetchedResults<Contact>
     
     var body : some View{
-		let data = Array(contacts.contacts.values)
+//		let data = Array(contacts.contacts.values)
         VStack(spacing: 0){
 
             chatTopView(username: self.username, expand: self.$expand)
                 .zIndex(25)
-            List(data, id:\.id){i in
+            List(Array(contact.values), id:\.id){i in
 
 //                if i.id == 0{
 
                     if #available(iOS 14.0, *) {
-                        NavigationLink(destination: ChatView(contactId: i.id, contact: i)) {
-                            cellMessagesView(contactId : i.id)
+                        NavigationLink(destination: ChatView(contact: i)) {
+                            cellMessagesView(contact : i)
                                 .onAppear{
                                     self.expand = true
                                 }
@@ -160,11 +161,10 @@ struct cellMessagesView : View {
 
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
-    var contactId : UUID
+    var contact : Contact2
 
     var body : some View{
-		let contact = contacts.contacts[contactId]
-        HStack(spacing: 12){
+		HStack(spacing: 12){
 
             Image(systemName:"person.crop.circle.fill")
             .resizable()
@@ -173,12 +173,12 @@ struct cellMessagesView : View {
             
             VStack(alignment: .leading, spacing: 12) {
 
-                Text(contact!.nickname)
+                Text(contact.nickname)
 
                 // TODO: need improvement for notification
-                Text(contacts.LatestMessageString(id: contactId))
+                Text(contact.LatestMessageString())
                 .font(.caption)
-                .foregroundColor(contact?.newMessage == true ? .red : .black)
+                .foregroundColor(contact.newMessage == true ? .red : .black)
             }
 
             Spacer(minLength: 0)
@@ -192,11 +192,11 @@ struct cellMessagesView : View {
     }
     
     func time () -> String {
-        let time2 = contacts[contactId]?.timeLatest
+        let time2 = contact.timeLatest
         let formatter1 = DateFormatter()
         formatter1.dateStyle = .short
         
-        return formatter1.string(from: time2!)
+        return formatter1.string(from: time2)
     }
 }
 
@@ -242,36 +242,6 @@ struct contactTopView : View {
         
     }
 }
-
-
-
-
-
-/*
-GLOBAL stuff
- - Msg (data)
- - Contact (contact_list)
-*/
-
-struct Msg : Identifiable {
-    
-    var id : Int
-    var name : String
-    var msg : String
-    var date : String
-    var img : String
-}
-
-//struct Contact : Identifiable {
-//    var id : Int
-//    var public_key : Int
-//    var name : String
-//    var username : String
-//    var img : String
-//}
-
-//var contact_list:[Contact] = Contact.fetchContacts()
-
 
 
 

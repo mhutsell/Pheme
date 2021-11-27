@@ -50,24 +50,19 @@ struct ChatBubble<Content>: View where Content: View {
 struct ChatView: View {
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
-    @State var contactId: UUID
-    @State var contact: Contact2
+    
+    var contact: Contact2
     @State var messageSent: String = ""
     
     var body: some View {
-//        let message_list = contacts.fetchMessages(id: contactId)
-//        let message_list = contact.fetchMessages()
         
 		//   TODO: need check, notification related attempt
-//        contacts[contactId]!.newMessage = false
         GeometryReader { geo in
             VStack {
-//                chatTopBar(id: self.id)
                 VStack{
                     HStack(spacing: 12) {
                         Spacer()
-                        Text(contacts.contacts[contactId]!.nickname)
-//                        Text(contact.nickname)
+                        Text(contact.nickname)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -79,19 +74,7 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-//                        ForEach(0..<(Contact2.fetchContacts(id: contactId)?.fetchMessages().count)!, id:\.self) { index in ChatBubble(position: (Contact2.fetchContacts(id: contactId)?.fetchMessages()[index].sentByMe)!, color: Contact2.fetchContacts(id: contactId)?.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-//                               Text((Contact2.fetchContacts(id: contactId)?.fetchMessages()[index].messageBody!)!)
-//                        ForEach(0..<(contacts[contactId]!.fetchMessages().count), id:\.self) { index in ChatBubble(position: (contacts[contactId]!.fetchMessages()[index].sentByMe), color: contacts[contactId]!.fetchMessages()[index].sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-//                            Text((contacts[contactId]!.fetchMessages()[index].messageBody))
-                            
-                        
-//                        ForEach(message_list, id:\.id)
-//                        {message in
-//                            ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-//                                Text(message.messageBody)
-//                            }
-//                        }
-                        ForEach(contact.fetchMessages(), id:\.id)
+                      ForEach(contact.fetchMessages(), id:\.id)
                         {message in
                             ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
                                 Text(message.messageBody)
@@ -100,8 +83,9 @@ struct ChatView: View {
                     }
                 }
                 .onAppear {
-					contacts.sawNewMessage(contactId: contactId)
+					Contact2.sawNewMessage(contactid: contact.id)
 				}
+				
                 //MARK:- text editor
                 HStack {
                     ZStack {
@@ -113,8 +97,7 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-//                            contacts.createMessage(body: messageSent, contactId: contactId)
-                            contact.createMessage(body: messageSent, contactId: contact.id)
+                            contact.createMessage(messageBody: messageSent, sentByMe: true)
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
@@ -123,50 +106,4 @@ struct ChatView: View {
             .navigationViewStyle(StackNavigationViewStyle())
         }
 	}
-//	.onAppear(perform:
-//		let contacts = Contacts()
-//		contacts.sawNewMessage(contactId: contactId)
-//	)
 }
-                    
-
-
-//@available(iOS 14.0, *)
-//struct ChatView_Previews: PreviewProvider {
-//    @StateObject static var contacts = Contacts()
-//
-//    static var previews: some View {
-//        ChatView(id: UUID())
-//    }
-//}
-
-//struct chatTopBar : View {
-//    var id: Int
-//    
-//    var body : some View{
-//        VStack{
-//            HStack(spacing: 12) {
-//                Spacer()
-//                Text(.name)
-//                Spacer()
-//            }
-//            .foregroundColor(Color("Color1"))
-//            .background(Color("Color"))
-//        }
-//        .padding()
-//        .padding(.top, UIApplication.shared.windows.first?.safeAreaInsets.top)
-//        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-//        .background(Color("Color"))
-//        .clipShape(shape())
-//        .animation(.default)
-//        .edgesIgnoringSafeArea(.top)
-//    }
-//}
-    /*
-GLOBAL stuff
- - Msg (data)
- - Contact (contact_list)
-*/
-
-
-

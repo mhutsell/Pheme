@@ -33,15 +33,14 @@ class Contacts: ObservableObject {
 	
 	func creatContact(nn: String, id: UUID, keyBody: Data) {
 		contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
-        
 	}
 	
-	func createMessage(body: String, contactId: UUID) {
-        contacts[contactId]!.createMessage(messageBody: body, sentByMe: true)
+	func createMessage(contactId: UUID, message: Message2) {
+        contacts[contactId]!.messages[message.id] = message
 	}
 	
 	//	TODO: push notification?
-	func addDecrypted(message: Message2, contactId: UUID) {
+	func addDecrypted(contactId: UUID, message: Message2) {
         contacts[contactId]!.messages[message.id] = message
         contacts[contactId]!.updateLatest(timeCreated: message.timeCreated)
         contacts[contactId]!.newMessage = true
@@ -68,8 +67,8 @@ class Contacts: ObservableObject {
 		contacts[id] = nil
 	}
 	
-	func deleteMessage(id: UUID, contactID: UUID) {
-		contacts[id]!.messages[id] = nil
+	func deleteMessage(id: UUID, contactId: UUID) {
+		contacts[contactId]!.messages[id] = nil
 	}
 	
 	

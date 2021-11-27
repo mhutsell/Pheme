@@ -50,9 +50,8 @@ class BTController2: NSObject {
     }
     
     func createPayload(){
-        let encrypteds = Encrypteds()
         self.payload = "["
-        for enc in encrypteds.encrypteds.values{
+        for enc in Encrypted2.all.values{
             self.payload! += enc.to_json()
         }
         self.payload! += "]"

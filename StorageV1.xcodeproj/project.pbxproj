@@ -37,7 +37,6 @@
 		B748AAA7274DB29E003B76D2 /* Identity2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAA0274DB29E003B76D2 /* Identity2.swift */; };
 		B748AAA8274DB29E003B76D2 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAA1274DB29E003B76D2 /* Contacts.swift */; };
 		B748AAAB274DB2BD003B76D2 /* BTController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAAA274DB2BD003B76D2 /* BTController2.swift */; };
-		B748AAB2274F18B1003B76D2 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAB1274F18B0003B76D2 /* Messages.swift */; };
 		B748AAB8274F3847003B76D2 /* Contact2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748AAB7274F3847003B76D2 /* Contact2.swift */; };
 		B77EBC8A273CB83400D059D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77EBC89273CB83400D059D3 /* SplashView.swift */; };
 /* End PBXBuildFile section */
@@ -73,7 +72,6 @@
 		B748AAA0274DB29E003B76D2 /* Identity2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identity2.swift; sourceTree = "<group>"; };
 		B748AAA1274DB29E003B76D2 /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		B748AAAA274DB2BD003B76D2 /* BTController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTController2.swift; sourceTree = "<group>"; };
-		B748AAB1274F18B0003B76D2 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		B748AAB7274F3847003B76D2 /* Contact2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact2.swift; sourceTree = "<group>"; };
 		B77EBC89273CB83400D059D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,7 +169,6 @@
 				B748AAA0274DB29E003B76D2 /* Identity2.swift */,
 				B748AA9C274DB29E003B76D2 /* Identity.swift */,
 				B748AA9D274DB29E003B76D2 /* Message2.swift */,
-				B748AAB1274F18B0003B76D2 /* Messages.swift */,
 				B748AA9E274DB29E003B76D2 /* Encrypteds.swift */,
 				B748AA9F274DB29E003B76D2 /* Encrypted2.swift */,
 			);
@@ -259,7 +256,6 @@
 				B748AA97274DAAB3003B76D2 /* CustomScrollView.swift in Sources */,
 				B748AA73274D7BA1003B76D2 /* HomeView.swift in Sources */,
 				B748AA8F274DA4BF003B76D2 /* KeyUtils.swift in Sources */,
-				B748AAB2274F18B1003B76D2 /* Messages.swift in Sources */,
 				B748AAA3274DB29E003B76D2 /* Identity.swift in Sources */,
 				AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */,
 				114567A1274C6417008394EF /* PersistenceUtils.swift in Sources */,

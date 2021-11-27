@@ -18,28 +18,24 @@ struct ContactsView : View {
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
     @Binding var expand : Bool
-//    @State var contact_list2:[Contact] = contact_list
- //   @FetchRequest(
- //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
- //           animation: .default)
- //       var contact_list: FetchedResults<Contact>
-    
 
+
+    var contact_list = Contact2.all
+    
     var contact_arr = 0
     var body : some View{
-		let contact_list = Array(contacts.contacts.values)
         VStack(spacing: 0) {
             
             contactTopView(expand: self.$expand)
                 .zIndex(25)
             
-            List(contact_list, id:\.id){i in
+			List(Array(contact_list.values), id:\.id){i in
             
 //                        if i.id == 0{
                             
                             if #available(iOS 14.0, *) {
-                                NavigationLink(destination: ChatView(contactId: i.id, contact: i)) {
-                                    cellContactView(contactId: i.id)
+                                NavigationLink(destination: ChatView(contact: i)) {
+                                    cellContactView(contact: i)
                                         .onAppear{
                                             self.expand = true
                                         }
@@ -76,7 +72,7 @@ struct cellContactView : View {
     
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
-    var contactId: UUID
+    var contact: Contact2
 
     @State var next: Bool = false
     
@@ -90,7 +86,7 @@ struct cellContactView : View {
 //
             VStack(alignment: .leading, spacing: 12) {
             
-                Text(contacts.contacts[contactId]!.nickname)
+                Text(contact.nickname)
                 
 //                Text("@" + contact_list.username).font(.caption)
             }
