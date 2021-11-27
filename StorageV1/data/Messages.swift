@@ -8,6 +8,8 @@
 import Foundation
 
 class Messages: ObservableObject {
+    static let sharedInstance = Messages()
+    
     @Published(persistingTo: "Message/messages.json") var messages: [UUID: Message2] = [:]
     
     init() {}

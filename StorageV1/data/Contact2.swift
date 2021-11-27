@@ -56,6 +56,8 @@ extension Contact2 {
 	static func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) -> Message2 {
         let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
         Message2.all.append(newMessage)
+        Messages.sharedInstance.messages[newMessage.id] = newMessage
+//        var testml = Messages().messages
         var contactsCopy = Contact2.all
         contactsCopy[contactId]!.messages[newMessage.id] = newMessage
         Contact2.all = contactsCopy
