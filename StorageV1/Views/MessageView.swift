@@ -33,6 +33,7 @@ struct MessageView : View {
     
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
+    @EnvironmentObject private var messages: Messages
     var username : String
     @Binding var expand : Bool
     var contact = Contact2.all
@@ -61,7 +62,9 @@ struct MessageView : View {
                                 .onDisappear{
                                     self.expand = false
                                 }
+                                .environmentObject(messages)
                         }.environmentObject(contacts)
+                        .environmentObject(messages)
 
                     } else {
                         // Fallback on earlier versions

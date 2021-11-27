@@ -54,9 +54,9 @@ struct ChatView: View {
     @State var contactId: UUID
     @State var messageSent: String = ""
     @State var contact = Contact2.all
+    @State var messages = Message2.all
     
     var body: some View {
-        
 		//   TODO: need check, notification related attempt
         GeometryReader { geo in
             VStack {
@@ -75,12 +75,20 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                      ForEach(contact[contactId]!.messages.values.sorted(), id:\.id)
-                        {message in
-                            ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-                                Text(message.messageBody)
-                            }
-                        }
+//                      ForEach(contact[contactId]!.messages.values.sorted(), id:\.id)
+//                        {message in
+//                            ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+//                                Text(message.messageBody)
+//                            }
+//                        }
+                        ForEach(messages
+                            .filter { $0.contactId == contactId }
+                            .sorted { $0.timeCreated < $1.timeCreated }, id:\.id)
+                          {message in
+                              ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+                                  Text(message.messageBody)
+                              }
+                          }
                     }
                 }
                 .onAppear {
@@ -98,7 +106,10 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            Contact2.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
+                            let m = Contact2.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
+//                            print(messages)
+//                            messages.append(m)
+//                            contact = Contact2.all
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))

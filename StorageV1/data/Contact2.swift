@@ -53,12 +53,18 @@ extension Contact2 {
     }
     
     //	create message
-	static func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) {
+	static func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) -> Message2 {
         let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
-		Contact2.all[contactId]!.messages[newMessage.id] = newMessage
+        Message2.all.append(newMessage)
+        var contactsCopy = Contact2.all
+        contactsCopy[contactId]!.messages[newMessage.id] = newMessage
+        Contact2.all = contactsCopy
+//		Contact2.all[contactId]!.messages[newMessage.id] = newMessage
 		Contact2.updateLatest(timeCreated: newMessage.timeCreated, contactId: contactId)
 		Contact2.encryptAndQueue(message: newMessage, contactId: contactId)
 		Contacts().createMessage(contactId: contactId, message: newMessage)
+        
+        return newMessage
 	}
 	
 	//	encrypted the message and add to the queue

@@ -18,6 +18,7 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
         return lhs.timeCreated == rhs.timeCreated
     }
     
+    static public var all: [Message2] = Array(Messages().messages.values)
      public var messageBody: String
      public var messageType: Int16
      public var timeCreated: Date
@@ -38,11 +39,15 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
         self.timeCreated = timeCreated
 		self.sentByMe = sentByMe!
         self.contactId = contactId
+        Message2.all.append(self)
+        Messages().messages[id] = self
 	 }
 	 
 	 public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(timeCreated)
     }
+    
+
     
 }

@@ -15,12 +15,15 @@ import Logging
 private class AppState {
     let identity: Identity
     let contacts: Contacts
+    let messages: Messages
     
     init() {
         let identity = Identity()
         let contacts = Contacts()
+        let messages = Messages()
         self.identity = identity
         self.contacts = contacts
+        self.messages = messages
     }
     
 }
@@ -40,11 +43,13 @@ struct StorageV1App: App {
                 SplashView2()
                     .environmentObject(state.identity)
                     .environmentObject(state.contacts)
+                    .environmentObject(state.messages)
             }
             else {
                 SplashView()
                     .environmentObject(state.identity)
                     .environmentObject(state.contacts)
+                    .environmentObject(state.messages)
             }
         }
        

@@ -13,6 +13,7 @@ struct ContentView: View {
     
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
+    @EnvironmentObject private var messages: Messages
     var username : String
     
     @State var index = 1
@@ -24,6 +25,7 @@ struct ContentView: View {
             Home(username: self.username)
                 .environmentObject(identity)
                 .environmentObject(contacts)
+                .environmentObject(messages)
                 .navigationBarBackButtonHidden(true)
         } else {
             // Fallback on earlier versions
