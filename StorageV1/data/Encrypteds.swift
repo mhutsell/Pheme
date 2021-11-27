@@ -9,6 +9,8 @@ import Foundation
 
 
 class Encrypteds: ObservableObject {
+	static let sharedInstance = Encrypteds()
+
     @Published(persistingTo: "Encrypted/encrypted.json") var encrypteds: [UUID: Encrypted2] = [:]
 
 	init() {}

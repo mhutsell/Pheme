@@ -16,7 +16,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         return lhs.timeCreated == rhs.timeCreated
     }
     
-    static public var all: [UUID: Encrypted2] = Encrypteds().encrypteds
+    static public var all: [UUID: Encrypted2] = Encrypteds.sharedInstance.encrypteds
     public var id: UUID
     public var encryptedBody: Data
     public var messageType: Int16
@@ -135,7 +135,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     static func addEncrypted(encrypted: Encrypted2) {
 		Encrypted2.all[encrypted.id] = encrypted
 		Encrypted2.checkMaxEncrypted()
-		Encrypteds().addEncrypted(encrypted: encrypted)
+		Encrypteds.sharedInstance.addEncrypted(encrypted: encrypted)
 	}
 	
 	static func checkMaxEncrypted() {
@@ -146,12 +146,12 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 	
 	static func clearEncrypted() {
 		Encrypted2.all = [:]
-		Encrypteds().clearEncrypted()
+		Encrypteds.sharedInstance.clearEncrypted()
 	}
 	
 	static func clearAllOthers() {
 		Encrypted2.all = Encrypted2.all.filter { $0.value.senderId == Identity2.fetchIdentity().id }
-		Encrypteds().clearAllOthers()
+		Encrypteds.sharedInstance.clearAllOthers()
 	}
     
 }

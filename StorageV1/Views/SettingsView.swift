@@ -11,7 +11,7 @@ import CodeScanner
 struct SettingsView : View {
     
     @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
+//    @EnvironmentObject private var contacts: Contacts
     var username : String
     
     

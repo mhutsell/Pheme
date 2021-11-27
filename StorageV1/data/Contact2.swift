@@ -19,7 +19,7 @@ struct Contact2: Identifiable, Hashable, Codable, Comparable{
     }
     
 	
-	static public var all:  [UUID: Contact2] = Contacts().contacts
+	static public var all:  [UUID: Contact2] = Contacts.sharedInstance.contacts
     public var id: UUID
     public var nickname: String
     public var timeLatest: Date
@@ -53,20 +53,18 @@ extension Contact2 {
     }
     
     //	create message
-	static func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) -> Message2 {
+	static func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) {
         let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
-        Message2.all.append(newMessage)
-        Messages.sharedInstance.messages[newMessage.id] = newMessage
+//        Message2.all.append(newMessage)
+//        Messages.sharedInstance.messages[newMessage.id] = newMessage
 //        var testml = Messages().messages
-        var contactsCopy = Contact2.all
-        contactsCopy[contactId]!.messages[newMessage.id] = newMessage
-        Contact2.all = contactsCopy
+//        var contactsCopy = Contact2.all
+//        contactsCopy[contactId]!.messages[newMessage.id] = newMessage
+//        Contact2.all = contactsCopy
 //		Contact2.all[contactId]!.messages[newMessage.id] = newMessage
 		Contact2.updateLatest(timeCreated: newMessage.timeCreated, contactId: contactId)
 		Contact2.encryptAndQueue(message: newMessage, contactId: contactId)
-		Contacts().createMessage(contactId: contactId, message: newMessage)
-        
-        return newMessage
+		Contacts.sharedInstance.createMessage(contactId: contactId, message: newMessage)
 	}
 	
 	//	encrypted the message and add to the queue
@@ -80,7 +78,7 @@ extension Contact2 {
     static func updateLatest(timeCreated: Date, contactId: UUID){
         if Contact2.all[contactId]!.timeLatest < timeCreated {
             Contact2.all[contactId]!.timeLatest = timeCreated
-            Contacts().contacts[contactId]!.timeLatest = timeCreated
+            Contacts.sharedInstance.contacts[contactId]!.timeLatest = timeCreated
         }
     }
 
@@ -92,26 +90,26 @@ extension Contact2 {
 //		if Contact2.all == nil || Contact2.all![id] == nil {
 //			Contact2.creatContact(nn: nn, id: id, keyBody: keyBody)
 //		}
-//        let contacts = Contacts()
+//        let contacts = Contacts.sharedInstance
         if Contact2.all[id] == nil {
             Contact2.creatContact(nn: nn, id: id, keyBody: keyBody)
         }
 	}
 	
 	static func creatContact(nn: String, id: UUID, keyBody: Data) {
-		Contacts().contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
+		Contacts.sharedInstance.contacts[id] = Contact2(id: id, nickname: nn, publicKey: keyBody)
 	}
 	
 	static func addDecrypted(message: Message2, contactId: UUID) {
 		Contact2.all[contactId]!.messages[message.id] = message
         Contact2.updateLatest(timeCreated: message.timeCreated, contactId: contactId)
         Contact2.all[contactId]!.newMessage = true
-        Contacts().addDecrypted(contactId: contactId, message: message)
+        Contacts.sharedInstance.addDecrypted(contactId: contactId, message: message)
 	}
 	
 	static func sawNewMessage(contactId: UUID) {
 		Contact2.all[contactId]!.newMessage = false
-        Contacts().sawNewMessage(contactId: contactId)
+        Contacts.sharedInstance.sawNewMessage(contactId: contactId)
 	}
 	
 	
@@ -127,12 +125,12 @@ extension Contact2 {
     
 	static func deleteContact(id: UUID) {
 		Contact2.all[id] = nil
-		Contacts().deleteContact(id: id)
+		Contacts.sharedInstance.deleteContact(id: id)
 	}
 	
 	static func deleteMessage(id: UUID, contactId: UUID) {
 		Contact2.all[contactId]!.messages[id] = nil
-		Contacts().deleteMessage(id: id, contactId: contactId)
+		Contacts.sharedInstance.deleteMessage(id: id, contactId: contactId)
 	}
 
 }

@@ -48,14 +48,14 @@ struct ChatBubble<Content>: View where Content: View {
 
 @available(iOS 14.0, *)
 struct ChatView: View {
-    @EnvironmentObject private var identity: Identity
+//    @EnvironmentObject private var identity: Identity
 //    @EnvironmentObject private var contacts: Contacts
 //    @EnvironmentObject private var messages: Messages
-    @ObservedObject private var messages = Messages.sharedInstance
+    @ObservedObject private var contacts = Contacts.sharedInstance
     
     @State var contactId: UUID
     @State var messageSent: String = ""
-    @State var contact = Contact2.all
+//    @State var contact = Contact2.all
 //    @State var messages = Message2.all
 //    @State var messages: [Message2]
     
@@ -69,7 +69,7 @@ struct ChatView: View {
                 VStack{
                     HStack(spacing: 12) {
                         Spacer()
-                        Text(contact[contactId]!.nickname)
+                        Text(contacts.contacts[contactId]!.nickname)
                         Spacer()
                     }
                     .foregroundColor(Color("Color1"))
@@ -81,20 +81,12 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                        ForEach(messages[contactId], id:\.id)
+                        ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
                         {message in
                             ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
                                 Text(message.messageBody)
                             }
                         }
-//                        ForEach(messages.messages
-//                            .filter { $0.contactId == contactId }
-//                            .sorted { $0.timeCreated < $1.timeCreated }, id:\.id)
-//                          {message in
-//                              ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-//                                  Text(message.messageBody)
-//                              }
-//                          }
                     }
                 }
                 .onAppear {
@@ -112,7 +104,7 @@ struct ChatView: View {
                     
                     Button("Send") {
                         if messageSent != "" {
-                            let m = Contact2.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
+                            Contact2.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
 //                            print(messages)
 //                            messages.append(m)
 //                            contact = Contact2.all

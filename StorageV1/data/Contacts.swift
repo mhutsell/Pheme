@@ -9,6 +9,8 @@ import Foundation
 
 
 class Contacts: ObservableObject {
+    static let sharedInstance = Contacts()
+    
     @Published(persistingTo: "Contact/contact_messages.json") var contacts: [UUID: Contact2] = [:]
 
 	init() {}

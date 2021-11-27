@@ -31,9 +31,11 @@ Everything we need for the Messages page
 
 struct MessageView : View {
     
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
-    @EnvironmentObject private var messages: Messages
+//    @EnvironmentObject private var identity: Identity
+//    @EnvironmentObject private var contacts: Contacts
+//    @EnvironmentObject private var messages: Messages
+
+	@ObservedObject private var contacts = Contacts.sharedInstance
     var username : String
     @Binding var expand : Bool
     var contact = Contact2.all
@@ -49,9 +51,7 @@ struct MessageView : View {
 
             chatTopView(username: self.username, expand: self.$expand)
                 .zIndex(25)
-            List(Array(contact.values), id:\.id){i in
-
-//                if i.id == 0{
+            List(Array(contacts.contacts.values.sorted()), id:\.id){i in
 
                     if #available(iOS 14.0, *) {
                         NavigationLink(destination: ChatView(contactId: i.id)) {
@@ -62,24 +62,12 @@ struct MessageView : View {
                                 .onDisappear{
                                     self.expand = false
                                 }
-                                .environmentObject(messages)
-                        }.environmentObject(contacts)
-                        .environmentObject(messages)
+                        }
 
                     } else {
                         // Fallback on earlier versions
                     }
-//               // ii+=1
                 }
-//                else{
-//                    if #available(iOS 14.0, *) {
-//                        NavigationLink(destination: ChatView(id: i.name)) {
-//                            cellMessagesView(data : i)
-//                        }
-//                    } else {
-//                        // Fallback on earlier versions
-//                    }
-//                }
 
             }
             .padding(.top, 5)
@@ -92,8 +80,6 @@ struct MessageView : View {
 
 struct chatTopView : View {
 
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
     @State var username: String
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
@@ -141,8 +127,7 @@ struct chatTopView : View {
 
 struct cellMessagesView : View {
 
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
+    @ObservedObject private var contacts = Contacts.sharedInstance
     var contactId : UUID
     var contact = Contact2.all
 
@@ -156,12 +141,12 @@ struct cellMessagesView : View {
             
             VStack(alignment: .leading, spacing: 12) {
 
-                Text(contact[contactId]!.nickname)
+                Text(contacts.contacts[contactId]!.nickname)
 
                 // TODO: need improvement for notification
-                Text(contact[contactId]!.LatestMessageString())
+                Text(contacts.contacts[contactId]!.LatestMessageString())
                 .font(.caption)
-                .foregroundColor(contact[contactId]!.newMessage == true ? .red : .black)
+                .foregroundColor(contacts.contacts[contactId]!.newMessage == true ? .red : .black)
             }
 
             Spacer(minLength: 0)
@@ -175,7 +160,7 @@ struct cellMessagesView : View {
     }
     
     func time () -> String {
-        let time2 = contact[contactId]!.timeLatest
+        let time2 = contacts.contacts[contactId]!.timeLatest
         let formatter1 = DateFormatter()
         formatter1.dateStyle = .short
         
