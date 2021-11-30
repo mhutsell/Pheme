@@ -35,18 +35,12 @@ struct Home : View {
                     
                     MessageView(username: self.username, expand: self.$expand)
                         .opacity(self.index == 0 ? 1 : 0)
-                        .environmentObject(identity)
-                        .environmentObject(contacts)
 //
                     ContactsView(expand: self.$expand)
                         .opacity(self.index == 1 ? 1 : 0)
-                        .environmentObject(identity)
-                        .environmentObject(contacts)
                     
                     SettingsView(username: self.username)
                         .opacity(self.index == 2 ? 1 : 0)
-                        .environmentObject(identity)
-                        .environmentObject(contacts)
             
                 }
                 
