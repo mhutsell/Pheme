@@ -68,11 +68,11 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     }
 
     static func from_json(incomingMessage: String){
-        if BTController2.hasReceived{
-            return
-        }
+        //if BTController2.hasReceived{
+         //   return
+       // }
 
-		BTController2.hasReceived = true
+		//BTController2.hasReceived = true
 		var str_msgs = "\(incomingMessage)"
 		str_msgs.remove(at: str_msgs.startIndex)
 		str_msgs.remove(at: str_msgs.index(str_msgs.endIndex, offsetBy: -1))
@@ -103,6 +103,9 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 			
 			newEncrypted.checkAndSearch()
 		}
+        //BTController2.shared = BTController2()
+        // StorageV1App.bluetoothController = BTController2.shared
+        BTController2.shared.createPayload()
     }
     
     static func hasId(id: UUID, receiverId: UUID, senderID: UUID) -> Bool {

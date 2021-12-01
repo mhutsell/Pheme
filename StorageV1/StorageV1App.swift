@@ -33,7 +33,7 @@ import Logging
 @main
 struct StorageV1App: App {
    
-    let bluetoothController = BTController2.shared
+    var bluetoothController = BTController2.shared
     @Environment(\.managedObjectContext) var viewContext
     
 

@@ -23,7 +23,7 @@ func json2(from object:Any) -> Data? {
 }
 
 class BTController2: NSObject {
-    static let shared = BTController2()
+    static var shared = BTController2()
     static var hasReceived = false
     var centralManager: CBCentralManager!
 
@@ -146,11 +146,13 @@ class BTController2: NSObject {
             os_log("Connecting to peripheral %@", connectedPeripheral)
             self.discoveredPeripheral = connectedPeripheral
             centralManager.connect(connectedPeripheral, options: nil)
-        } else {
-            // We were not connected to our counterpart, so start scanning
-            centralManager.scanForPeripherals(withServices: [TransferService2.serviceUUID],
-                                               options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         }
+        else{
+            centralManager.scanForPeripherals(withServices: [TransferService2.serviceUUID],
+                                                   options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+        }
+        //sleep(5)
+            // We were not connected to our counterpart, so start scanning
     }
 
     private func setupPeripheral() {
@@ -187,7 +189,8 @@ class BTController2: NSObject {
             else { return }
         
         // check to see if number of iterations completed and peripheral can accept more data
-        while writeIterationsComplete < 1 && discoveredPeripheral.canSendWriteWithoutResponse {
+        //var tot_data = ""
+        while writeIterationsComplete < defaultIterations && discoveredPeripheral.canSendWriteWithoutResponse {
                     
             let mtu = discoveredPeripheral.maximumWriteValueLength (for: .withoutResponse)
             var rawPacket = [UInt8]()
@@ -199,13 +202,16 @@ class BTController2: NSObject {
             let stringFromData = String(data: packetData, encoding: .utf8)
             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
             
-			Encrypted2.from_json(incomingMessage: stringFromData!)
-            discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
-          //  discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
-            return
+           // if stringFromData != "EOM"{
+           //         tot_data += stringFromData!
+           // }
+          //  discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
+            discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
             writeIterationsComplete += 1
             
         }
+      // Encrypted2.from_json(incomingMessage: tot_data)
+        
         
         if writeIterationsComplete == defaultIterations {
             // Cancel our subscription to the characteristic
@@ -213,7 +219,7 @@ class BTController2: NSObject {
         }
     }
     
-    private func cleanup() {
+    public func cleanup() {
         // Don't do anything if we're not connected
         guard let discoveredPeripheral = discoveredPeripheral,
             case .connected = discoveredPeripheral.state else { return }
@@ -297,6 +303,7 @@ extension BTController2: CBPeripheralManagerDelegate {
         
         // Get the data
         // dataToSend = textView.text.data(using: .utf8)!
+        createPayload()
         dataToSend = self.payload!.data(using: .utf8)!
         print(dataToSend)
         
@@ -308,6 +315,12 @@ extension BTController2: CBPeripheralManagerDelegate {
         
         // Start sending
         sendData()
+        //Thread.sleep(forTimeInterval: 1)
+        //self.connectedCentral = nil
+        //self.discoveredPeripheral = nil
+        //self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
+        //self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        //Thread.sleep(forTimeInterval: 1)
     }
     
     /*
@@ -423,13 +436,28 @@ extension BTController2: CBPeripheralDelegate {
             //}
             
             // Write test data
-            //writeData()
             DispatchQueue.main.async() {
                 //self.messageResponse.text = String(data: self.data, encoding: .utf8)
                 Encrypted2.from_json(incomingMessage: String(data: self.data, encoding: .utf8)!)
+                self.connectedCentral = nil
+                self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
+              //  self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+                //Thread.sleep(forTimeInterval: 1)
+               // writeData()
+                guard let discoveredPeripheral = self.discoveredPeripheral,
+                      let transferCharacteristic = self.transferCharacteristic
+                    else { return }
+                self.centralManager.cancelPeripheralConnection(discoveredPeripheral)
+                
+                discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
+                self.discoveredPeripheral = nil
             }
-            self.centralManager.stopScan()
+            //Thread.sleep(forTimeInterval: 1)
+         
+           // cleanup()
+           // self.centralManager.stopScan()
            // self.peripheralManager.stopAdvertising()
+            
         } else {
             // Otherwise, just append the data to what we have previously received.
             data.append(characteristicData)

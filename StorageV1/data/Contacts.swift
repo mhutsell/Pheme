@@ -49,6 +49,8 @@ class Contacts: ObservableObject {
 	
 	//	create message
 	func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) {
+      //  BTController2.shared.cleanup()
+        //BTController2.shared  = BTController2()
         let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
         self.addMessage(contactId: contactId, message: newMessage, newMessage: false)
 		newMessage.encryptAndQueue(contactId: contactId)
