@@ -134,6 +134,13 @@ struct cellMessagesView : View {
     var body : some View{
 		HStack(spacing: 12){
 
+            if(contacts.contacts[contactId]!.newMessage){
+                Image(systemName:"circle.fill")
+                .resizable()
+                .frame(width: 55, height: 55)
+                .foregroundColor(.red)
+            }
+            
             Image(systemName:"person.crop.circle.fill")
             .resizable()
             .frame(width: 55, height: 55)

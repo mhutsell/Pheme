@@ -19,11 +19,13 @@ struct SettingsView : View {
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     @State private var isShowingScanner = false
+    @State private var helpOthers = Identity.sharedInstance.idtt.helpOthers
+    @State private var maxEncrypted = Identity.sharedInstance.idtt.maxEncrypted
+    @ObservedObject private var identity = Identity.sharedInstance
     var body : some View{
-        let identity = Identity2.fetchIdentity()
-        let key = identity.myKey()
-        let id = identity.myID()
-        let name = identity.myName()
+        let key = identity.idtt.myKey()
+        let id = identity.idtt.myID()
+        let name = identity.idtt.myName()
         
         return VStack {
         
@@ -33,6 +35,26 @@ struct SettingsView : View {
                 .scaledToFit()
                 .frame(width: 200, height: 200)
                 .padding()
+            
+            Section{
+				Toggle("Help Others: ", isOn: self.$helpOthers)
+					.onChange(of: helpOthers) { _ in
+						identity.updateHelpOthers()
+					}
+					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
+								
+					HStack{
+						Text("Number of Messages: ")
+								Spacer()
+						Picker("Number of encrypted messages to save", selection: self.$maxEncrypted) {
+								ForEach(0 ..< 100) {
+									Text("\($0)")
+								}
+						}.onChange(of: maxEncrypted) { _ in
+							identity.updateMaxEncrypted(max: maxEncrypted)
+						}
+					}
+				}
             
             Spacer()
             

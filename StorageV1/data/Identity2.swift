@@ -15,7 +15,7 @@ struct Identity2: Identifiable, Hashable, Codable{
     
     public var id: UUID
     public var nickname: String
-    public var maxEncrypted: Int16
+    public var maxEncrypted: Int
     public var privateKey: Data
     public var publicKey: Data
     public var helpOthers: Bool

@@ -22,7 +22,7 @@ class Identity: ObservableObject {
 
     
     //  update the max number of encrypte stored
-    func updateMaxEncrypted(max: Int16) {
+    func updateMaxEncrypted(max: Int) {
         idtt.maxEncrypted = max
     }
     
