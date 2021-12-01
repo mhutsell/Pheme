@@ -63,7 +63,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         to_return += "|||||\(self.timeCreated)"
         to_return += "|||||\(self.senderNickname)"
         to_return += "|||||\(self.id)"
-        to_return += "|||||" + Identity2.fetchIdentity().publicKey.base64EncodedString() + "|||||}}}}}"
+        to_return += "|||||" + self.senderKey + "|||||}}}}}"
         return to_return
     }
 
@@ -93,9 +93,11 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 			let senderNickname: String? = split_comps[5]
 			let id:  UUID? = UUID(uuidString: split_comps[6])
 			var senderKey: String? = split_comps[7]
+			print(senderKey)
 			senderKey = senderKey!.padding(toLength: ((senderKey!.count+3)/4)*4,
 										  withPad: "=",
 										  startingAt: 0)
+			print(senderKey)
 			if Encrypted2.hasId(id: id!, receiverId: receiverId!, senderID: senderId!) {
 				continue
 			}
