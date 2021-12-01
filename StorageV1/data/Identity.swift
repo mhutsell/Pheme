@@ -24,14 +24,14 @@ class Identity: ObservableObject {
     //  update the max number of encrypte stored
     func updateMaxEncrypted(max: Int) {
         idtt.maxEncrypted = max
+        Encrypteds.sharedInstance.checkMaxEncrypted()
     }
     
     //	update if you want to help others
     func updateHelpOthers() {
 		idtt.helpOthers = !idtt.helpOthers
 		if !idtt.helpOthers {
-			let encrypteds = Encrypteds()
-			encrypteds.clearAllOthers()
+			Encrypteds.sharedInstance.clearAllOthers()
 		}
 	}
     
