@@ -60,9 +60,5 @@ struct Identity2: Identifiable, Hashable, Codable{
         return self.id.uuidString
     }
 
-    // delete
-    func delete() {
-        //TODO
-    }
 
 }
