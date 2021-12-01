@@ -93,11 +93,9 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 			let senderNickname: String? = split_comps[5]
 			let id:  UUID? = UUID(uuidString: split_comps[6])
 			var senderKey: String? = split_comps[7]
-			print(senderKey)
 			senderKey = senderKey!.padding(toLength: ((senderKey!.count+3)/4)*4,
 										  withPad: "=",
 										  startingAt: 0)
-			print(senderKey)
 			if Encrypted2.hasId(id: id!, receiverId: receiverId!, senderID: senderId!) {
 				continue
 			}

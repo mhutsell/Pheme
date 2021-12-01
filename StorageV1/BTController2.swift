@@ -534,7 +534,7 @@ extension BTController2: CBCentralManagerDelegate {
         
         // Reject if the signal strength is too low to attempt data transfer.
         // Change the minimum RSSI value depending on your app’s use case.
-        guard RSSI.intValue >= -50
+        guard RSSI.intValue >= -100
             else {
                 os_log("Discovered perhiperal not in expected range, at %d", RSSI.intValue)
                 return

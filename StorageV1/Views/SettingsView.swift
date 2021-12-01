@@ -22,6 +22,7 @@ struct SettingsView : View {
     @State private var helpOthers = Identity.sharedInstance.idtt.helpOthers
     @State private var maxEncrypted = Identity.sharedInstance.idtt.maxEncrypted
     @ObservedObject private var identity = Identity.sharedInstance
+    @ObservedObject private var encrypteds = Encrypteds.sharedInstance
     var body : some View{
         let key = identity.idtt.myKey()
         let id = identity.idtt.myID()
@@ -44,11 +45,11 @@ struct SettingsView : View {
 					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
 								
 					HStack{
-						Text("Number of Messages: ")
+						Text("Current #Encrypted / Max #Encrypted in queue: ")
 								Spacer()
-						Picker("Number of encrypted messages to save", selection: self.$maxEncrypted) {
+						Picker("Encrypted", selection: self.$maxEncrypted) {
 								ForEach(0 ..< 100) {
-									Text(String(Encrypteds.sharedInstance.encrypteds.count) + "/\($0)")
+									Text(String(encrypteds.encrypteds.count) + "/\($0)")
 								}
 						}.onChange(of: maxEncrypted) { _ in
 							identity.updateMaxEncrypted(max: maxEncrypted)
