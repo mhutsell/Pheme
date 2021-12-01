@@ -48,7 +48,7 @@ struct SettingsView : View {
 								Spacer()
 						Picker("Number of encrypted messages to save", selection: self.$maxEncrypted) {
 								ForEach(0 ..< 100) {
-									Text("\($0)")
+									Text(String(Encrypteds.sharedInstance.encrypteds.count) + "/\($0)")
 								}
 						}.onChange(of: maxEncrypted) { _ in
 							identity.updateMaxEncrypted(max: maxEncrypted)
