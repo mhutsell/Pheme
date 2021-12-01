@@ -11,8 +11,6 @@ import SwiftUI
 // This determines which part of homepage is displayed
 struct Home : View {
     
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
     var username : String
     
     @State var index = 1
