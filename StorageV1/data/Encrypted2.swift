@@ -19,7 +19,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     
     public var id: UUID
     public var encryptedBody: Data
-    public var messageType: Int16
+    public var messageType: Int
     public var receiverId: UUID
     public var senderId: UUID
     public var timeCreated: Date
@@ -28,7 +28,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     
     public init (
 		id: UUID = UUID(),
-		messageType: Int16 = 0,
+		messageType: Int = 0,
 		timeCreated: Date = Date(),
 		receiverId: UUID? = nil,
 		senderId: UUID? = nil,
@@ -86,7 +86,7 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 			}
 			let split_comps:[String] = json_msg.components(separatedBy: "|||||")
 			let encryptedBody: Data? = Data(base64Encoded: split_comps[0], options: .ignoreUnknownCharacters)
-			let messageType: Int16? = Int16(split_comps[1])
+			let messageType: Int? = Int(split_comps[1])
 			let receiverId: UUID? = UUID(uuidString: split_comps[2])
 			let senderId: UUID? = UUID(uuidString: split_comps[3])
 			let timeCreated: Date? = date_formatter.date(from: split_comps[4])

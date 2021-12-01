@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 class Contacts: ObservableObject {
@@ -48,10 +49,15 @@ class Contacts: ObservableObject {
 	}
 	
 	//	create message
-	func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID) {
-        let newMessage = Message2(messageBody: messageBody, sentByMe: sentByMe, contactId: contactId)
+	func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID, messageType: Int = 0) {
+        let newMessage = Message2(messageBody: messageBody, messageType: messageType,sentByMe: sentByMe, contactId: contactId)
         self.addMessage(contactId: contactId, message: newMessage, newMessage: false)
 		newMessage.encryptAndQueue(contactId: contactId)
+	}
+	
+	//	create message
+	func createImageMessage(messageBody: UIImage, sentByMe: Bool, contactId: UUID) {
+        self.createMessage(messageBody: messageBody.pngData()!.base64EncodedString(), sentByMe: sentByMe, contactId: contactId, messageType: 1)
 	}
 	
 	func sawNewMessage(contactId: UUID) {

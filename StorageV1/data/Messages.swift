@@ -28,17 +28,4 @@ class Messages: ObservableObject {
             .sorted { $0.timeCreated < $1.timeCreated }
     }
     
-    func contactMessages(contactId: UUID, messages: [Message2])->[Message2] {
-        let ml = messages.filter { $0.contactId == contactId }
-                .sorted { $0.timeCreated < $1.timeCreated }
-        
-        return ml
-    }
-    
-    
-    func createMessages(message: Message2) {
-        messages[message.id] = message
-    }
-    
-    
 }

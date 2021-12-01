@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 struct Message2: Identifiable, Hashable, Codable, Comparable{
 	
 	public var id: UUID
@@ -19,20 +20,22 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
     }
     
     static public var all: [Message2] = Array(Messages().messages.values)
-     public var messageBody: String
-     public var messageType: Int16
-     public var timeCreated: Date
-     public var sentByMe: Bool
-     public var contactId: UUID
+	public var messageBody: String
+	public var messageType: Int
+//	messageType: 0 pure text, 1 image
+//	TODO: 2 text with emoji (no need?)
+	public var timeCreated: Date
+	public var sentByMe: Bool
+	public var contactId: UUID
      
-     public init (
+	public init (
 		id: UUID = UUID(),
 		messageBody: String? = nil,
-		messageType: Int16 = 0,
+		messageType: Int = 0,
 		timeCreated: Date = Date(),
 		sentByMe: Bool? = nil,
         contactId: UUID
-     ) {
+	) {
 		self.id = id
 		self.messageBody = messageBody!
 		self.messageType = messageType
@@ -41,21 +44,23 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
         self.contactId = contactId
         Message2.all.append(self)
         Messages().messages[id] = self
-	 }
+	}
 	 
-	 public func hash(into hasher: inout Hasher) {
+	public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(timeCreated)
-    }
+	}
     
-    //	encrypted the message and add to the queue
+		//	encrypted the message and add to the queue
 	func encryptAndQueue(contactId: UUID) {
-        let identity = Identity2.fetchIdentity()
+		let identity = Identity2.fetchIdentity()
 		_ = Encrypted2(id: self.id, messageType: self.messageType, timeCreated: self.timeCreated, receiverId: contactId, senderId: identity.id, senderNickname: identity.nickname, senderKey: identity.publicKey.base64EncodedString(), encryptedBody: encryptToData(publicKey: dataToPublicKey(keyBody: Contacts.sharedInstance.contacts[contactId]!.publicKey), msBody: self.messageBody), add: true)
-        BTController2.shared.createPayload()
-    }
+		BTController2.shared.createPayload()
+	}
     
+    func displayImageMessage() -> UIImage {
+		return UIImage(data: Data(base64Encoded: self.messageBody, options: .ignoreUnknownCharacters)!)!
+	}
     
-
     
 }
