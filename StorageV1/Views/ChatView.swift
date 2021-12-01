@@ -1,110 +1,119 @@
 //
-//  HomeView.swift
-//  StorageV1
+//  ChatView.swift
+//  Message UI
 //
-//  Created by Chen Gong on 11/23/21.
+//  Created by Bryce Chang on 11/4/21.
+//  Copyright © 2021 Balaji. All rights reserved.
 //
 
 import Foundation
 import SwiftUI
 
-// This determines which part of homepage is displayed
-struct Home : View {
-    
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
-    var username : String
-    
-    @State var index = 1
-    @State var expand = true
-    
-    
-    var body : some View{
-        
-        ZStack{
-            
-            VStack{
-                
-                Color.white
-                Color("Color")
-            }
-            
-            VStack{
-                // checks Messages, Contacts, Settings
-                ZStack{
-                    
-                    MessageView(username: self.username, expand: self.$expand)
-                        .opacity(self.index == 0 ? 1 : 0)
+//struct IDUser: {
 //
-                    ContactsView(expand: self.$expand)
-                        .opacity(self.index == 1 ? 1 : 0)
-                    
-                    SettingsView(username: self.username)
-                        .opacity(self.index == 2 ? 1 : 0)
-            
-                }
-                
-                BottomView(index: self.$index)
-                    .padding()
-                
-            }
+//}
+
+
+struct ChatBubble<Content>: View where Content: View {
+    let position: Bool
+    let color : Color
+    let content: () -> Content
+    init(position: Bool, color: Color, @ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+        self.color = color
+        self.position = position
+    }
+    
+    var body: some View {
+        HStack(spacing: 0 ) {
+            content()
+                .padding(.all, 15)
+                .foregroundColor(Color.white)
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 18))
+                .overlay(
+                    Image(systemName: "arrowtriangle.left.fill")
+                        .foregroundColor(color)
+                        .rotationEffect(Angle(degrees: position == false ? -50 : -130))
+                        .offset(x: position == false ? -5 : 5)
+                    ,alignment: position == false ? .bottomLeading : .bottomTrailing)
         }
-        .edgesIgnoringSafeArea(.all)
+        .padding(position == false ? .leading : .trailing , 15)
+        .padding(position == true ? .leading : .trailing , 60)
+        .frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
     }
 }
 
-struct BottomView : View {
+
+
+@available(iOS 14.0, *)
+struct ChatView: View {
+//    @EnvironmentObject private var identity: Identity
+//    @EnvironmentObject private var contacts: Contacts
+//    @EnvironmentObject private var messages: Messages
+    @ObservedObject private var contacts = Contacts.sharedInstance
     
-    @EnvironmentObject private var identity: Identity
-    @Binding var index : Int
+    @State var contactId: UUID
+    @State var messageSent: String = ""
+//    @State var contact = Contact2.all
+//    @State var messages = Message2.all
+//    @State var messages: [Message2]
     
-    var body : some View{
-        
-        HStack{
-            
-            Button(action: {
-                
-                self.index = 0
-                
-            }) {
-                Image(systemName: "message.fill")
-                .resizable()
-                .frame(width: 25, height: 25)
-                    .foregroundColor(self.index == 0 ? Color.white : Color.white.opacity(0.5))
-                .padding(.horizontal)
-            }
-            
-            Spacer(minLength: 10)
-            
-            Button(action: {
-                
-                self.index = 1
-                
-            }) {
-                
-                Image(systemName: "person.2.fill")
-                .resizable()
-                .frame(width: 28, height: 25)
-                .foregroundColor(self.index == 1 ? Color.white : Color.white.opacity(0.5))
-                .padding(.horizontal)
-            }
-            
-            Spacer(minLength: 10)
-            
-            Button(action: {
 
-                self.index = 2
+    
+    var body: some View {
+    
+//		   TODO: need check, notification related attempt
+        GeometryReader { geo in
+            VStack {
+                VStack{
+                    HStack(spacing: 12) {
+                        Spacer()
+                        Text(contacts.contacts[contactId]!.nickname)
+                        Spacer()
+                    }
+                    .foregroundColor(Color("Color1"))
+                    .background(Color("Color"))
+                }.padding(.top, -50)
+                .background(Color("Color").edgesIgnoringSafeArea(.top))
+                .animation(.default)
 
-            }) {
-
-                Image(systemName: "gearshape.fill")
-                .resizable()
-                .frame(width: 25, height: 25)
-                .foregroundColor(self.index == 2 ? Color.white : Color.white.opacity(0.5))
-                .padding(.horizontal)
-            }
-            
-        }.padding(.horizontal, 30)
-        .padding(.bottom, UIApplication.shared.windows.first?.safeAreaInsets.bottom)
-    }
+//                MARK:- ScrollView
+                CustomScrollView(scrollToEnd: true) {
+                    LazyVStack {
+                        ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
+                        {message in
+                            ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+                                Text(message.messageBody)
+                            }
+                        }
+                    }
+                }
+                .onAppear {
+                    contacts.sawNewMessage(contactId: contactId)
+				}
+				
+                //MARK:- text editor
+                HStack {
+                    ZStack {
+                        TextEditor(text: $messageSent)
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke()
+                            .foregroundColor(.gray)
+                    }.frame(height: 50)
+                    
+                    Button("Send") {
+                        if messageSent != "" {
+                            contacts.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
+//                            print(messages)
+//                            messages.append(m)
+//                            contact = Contact2.all
+                        }
+                    }
+                    .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
+                }.padding()
+            }.navigationBarBackButtonHidden(false)
+            .navigationViewStyle(StackNavigationViewStyle())
+        }
+	}
 }
