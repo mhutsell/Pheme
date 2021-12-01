@@ -7,6 +7,8 @@
 
 import Foundation
 import UIKit
+import UserNotifications
+
 struct Message2: Identifiable, Hashable, Codable, Comparable{
 	
 	public var id: UUID

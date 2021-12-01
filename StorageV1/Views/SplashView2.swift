@@ -18,16 +18,9 @@ struct Logo3 : View {
     }
 }
 
-//struct SplashView2_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SplashView2()
-//    }
-//}
+
 
 struct SplashView2: View {
-//    @EnvironmentObject private var identity: Identity
-//    @EnvironmentObject private var contacts: Contacts
-//    @EnvironmentObject private var messages: Messages
     var body: some View {
         NavigationView {
         ZStack {

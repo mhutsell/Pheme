@@ -45,6 +45,15 @@ class Contacts: ObservableObject {
         }
         if newMessage {
 			contacts[contactId]!.newMessage = true
+			let content = UNMutableNotificationContent()
+			content.title = "New Message"
+			content.body = "from " + contacts[contactId]!.nickname
+			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+			let request = UNNotificationRequest(identifier: message.id.uuidString, content: content, trigger: trigger)
+
+			// Schedule the request with the system.
+			let notificationCenter = UNUserNotificationCenter.current()
+			notificationCenter.add(request)
 		}
 	}
 	

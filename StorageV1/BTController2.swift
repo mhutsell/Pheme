@@ -294,18 +294,19 @@ extension BTController2: CBPeripheralManagerDelegate {
      */
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         os_log("Central subscribed to characteristic")
-        
+
         // Get the data
         // dataToSend = textView.text.data(using: .utf8)!
+        createPayload()
         dataToSend = self.payload!.data(using: .utf8)!
         print(dataToSend)
-        
+
         // Reset the index
         sendDataIndex = 0
-        
+
         // save central
         connectedCentral = central
-        
+
         // Start sending
         sendData()
     }

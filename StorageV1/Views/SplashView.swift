@@ -17,20 +17,13 @@ struct Logo2 : View {
     }
 }
 
-//struct SplashView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SplashView()
-////            .environmentObject(profile)
-//    }
-//}
-
 struct SplashView: View {
     @State var username: String = ""
     @EnvironmentObject private var identity: Identity
     @EnvironmentObject private var contacts: Contacts
     @EnvironmentObject private var messages: Messages
-//    var data = Contact2.fetchContacts()
     var body: some View {
+        
         NavigationView {
         ZStack {
             Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255).edgesIgnoringSafeArea(.all)

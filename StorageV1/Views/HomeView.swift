@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UserNotifications
 
 // This determines which part of homepage is displayed
 struct Home : View {
@@ -18,8 +19,19 @@ struct Home : View {
     
     
     var body : some View{
+    
+		
         
         ZStack{
+			
+//			UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+//				if success {
+//					print("All set!")
+//				} else if let error = error {
+//					print(error.localizedDescription)
+//				}
+//			}
+        
             
             VStack{
                 
