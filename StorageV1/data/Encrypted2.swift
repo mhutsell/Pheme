@@ -68,11 +68,11 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     }
 
     static func from_json(incomingMessage: String){
-        if BTController2.hasReceived{
-            return
-        }
-
-		BTController2.hasReceived = true
+//        if BTController2.hasReceived{
+//            return
+//        }
+//
+//		BTController2.hasReceived = true
 		var str_msgs = "\(incomingMessage)"
 		str_msgs.remove(at: str_msgs.startIndex)
 		str_msgs.remove(at: str_msgs.index(str_msgs.endIndex, offsetBy: -1))
@@ -96,18 +96,21 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 			senderKey = senderKey!.padding(toLength: ((senderKey!.count+3)/4)*4,
 										  withPad: "=",
 										  startingAt: 0)
-			if Encrypted2.hasId(id: id!, receiverId: receiverId!, senderID: senderId!) {
+			if Encrypted2.hasId(id: id!, receiverId: receiverId!, senderId: senderId!) {
 				continue
 			}
 			let newEncrypted = Encrypted2(id: id!, messageType: messageType!, timeCreated: timeCreated!, receiverId: receiverId!, senderId: senderId!, senderNickname: senderNickname!, senderKey: senderKey!, encryptedBody: encryptedBody!)
 			
 			newEncrypted.checkAndSearch()
 		}
+		BTController2.shared.createPayload()
     }
     
-    static func hasId(id: UUID, receiverId: UUID, senderID: UUID) -> Bool {
+    static func hasId(id: UUID, receiverId: UUID, senderId: UUID) -> Bool {
 		if receiverId == Identity2.fetchIdentity().id {
-			return Contacts.sharedInstance.contacts[senderID] != nil && Contacts.sharedInstance.contacts[senderID]?.messages[id] != nil
+			return Contacts.sharedInstance.contacts[senderId] != nil && Contacts.sharedInstance.contacts[senderId]!.messages[id] != nil
+		} else if receiverId == Identity2.globalId {
+			return !Identity2.fetchIdentity().globalChatroom || Contacts.sharedInstance.contacts[receiverId]!.messages[id] != nil
 		} else {
 			return Encrypteds.sharedInstance.encrypteds[id] != nil
 		}
@@ -120,7 +123,10 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         if (self.receiverId != Identity2.fetchIdentity().id) {
             // Read in stored identity
             Encrypteds.sharedInstance.addEncrypted(encrypted: self)
-        } else {
+        } else if self.receiverId == Identity2.globalId {
+			Encrypteds.sharedInstance.addEncrypted(encrypted: self)
+			self.decryptTo(contactId: self.receiverId)
+		} else {
             Contacts.sharedInstance.searchOrCreate(nn: self.senderNickname, id: self.senderId, keyBody: stringToKeyBody(key: self.senderKey))
 			self.decryptTo(contactId: self.senderId)
         }
@@ -128,8 +134,13 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     
     //    decrypt the encrypt with my key
     func decryptTo(contactId: UUID) {
-        let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
-		Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
+        if (contactId != Identity2.globalId) {
+			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
+			Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
+		} else {
+			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.globalPrivateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
+			Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
+		}
     }
     
 }

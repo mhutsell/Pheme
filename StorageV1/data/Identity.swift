@@ -20,7 +20,6 @@ class Identity: ObservableObject {
         return idtt.nickname != ""
     }
 
-    
     //  update the max number of encrypte stored
     func updateMaxEncrypted(max: Int) {
         idtt.maxEncrypted = max
@@ -32,6 +31,14 @@ class Identity: ObservableObject {
 		idtt.helpOthers = !idtt.helpOthers
 		if !idtt.helpOthers {
 			Encrypteds.sharedInstance.clearAllOthers()
+		}
+	}
+	
+	//	update if you want to enable global chatroom
+    func updateGlobalChatroom() {
+		idtt.globalChatroom = !idtt.globalChatroom
+		if !idtt.globalChatroom {
+			Encrypteds.sharedInstance.clearGlobal()
 		}
 	}
     

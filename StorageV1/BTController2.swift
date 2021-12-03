@@ -1,6 +1,5 @@
 /*
 See LICENSE folder for this sample’s licensing information.
-
 Abstract:
 A class to advertise, send notifications and receive data from central looking for transfer service and characteristic.
 */
@@ -23,7 +22,7 @@ func json2(from object:Any) -> Data? {
 }
 
 class BTController2: NSObject {
-    static let shared = BTController2()
+    static var shared = BTController2()
     static var hasReceived = false
     var centralManager: CBCentralManager!
 
@@ -63,7 +62,6 @@ class BTController2: NSObject {
     }
     
     // MARK: - Helper Methods
-
     /*
      *  Sends the next amount of data to the connected central
      */
@@ -146,11 +144,13 @@ class BTController2: NSObject {
             os_log("Connecting to peripheral %@", connectedPeripheral)
             self.discoveredPeripheral = connectedPeripheral
             centralManager.connect(connectedPeripheral, options: nil)
-        } else {
-            // We were not connected to our counterpart, so start scanning
-            centralManager.scanForPeripherals(withServices: [TransferService2.serviceUUID],
-                                               options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
         }
+        else{
+            centralManager.scanForPeripherals(withServices: [TransferService2.serviceUUID],
+                                                   options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+        }
+        //sleep(5)
+            // We were not connected to our counterpart, so start scanning
     }
 
     private func setupPeripheral() {
@@ -187,7 +187,8 @@ class BTController2: NSObject {
             else { return }
         
         // check to see if number of iterations completed and peripheral can accept more data
-        while writeIterationsComplete < 1 && discoveredPeripheral.canSendWriteWithoutResponse {
+        //var tot_data = ""
+        while writeIterationsComplete < defaultIterations && discoveredPeripheral.canSendWriteWithoutResponse {
                     
             let mtu = discoveredPeripheral.maximumWriteValueLength (for: .withoutResponse)
             var rawPacket = [UInt8]()
@@ -199,13 +200,16 @@ class BTController2: NSObject {
             let stringFromData = String(data: packetData, encoding: .utf8)
             os_log("Writing %d bytes: %s", bytesToCopy, String(describing: stringFromData))
             
-			Encrypted2.from_json(incomingMessage: stringFromData!)
-            discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
-          //  discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
-            return
+           // if stringFromData != "EOM"{
+           //         tot_data += stringFromData!
+           // }
+          //  discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
+            discoveredPeripheral.writeValue(packetData, for: transferCharacteristic, type: .withoutResponse)
             writeIterationsComplete += 1
             
         }
+      // Encrypted2.from_json(incomingMessage: tot_data)
+        
         
         if writeIterationsComplete == defaultIterations {
             // Cancel our subscription to the characteristic
@@ -213,7 +217,7 @@ class BTController2: NSObject {
         }
     }
     
-    private func cleanup() {
+    public func cleanup() {
         // Don't do anything if we're not connected
         guard let discoveredPeripheral = discoveredPeripheral,
             case .connected = discoveredPeripheral.state else { return }
@@ -234,7 +238,6 @@ class BTController2: NSObject {
 
 extension BTController2: CBPeripheralManagerDelegate {
     // implementations of the CBPeripheralManagerDelegate methods
-
     /*
      *  Required protocol method.  A full app should take care of all the possible states,
      *  but we're just waiting for to know when the CBPeripheralManager is ready
@@ -294,21 +297,27 @@ extension BTController2: CBPeripheralManagerDelegate {
      */
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         os_log("Central subscribed to characteristic")
-
+        
         // Get the data
         // dataToSend = textView.text.data(using: .utf8)!
         createPayload()
         dataToSend = self.payload!.data(using: .utf8)!
         print(dataToSend)
-
+        
         // Reset the index
         sendDataIndex = 0
-
+        
         // save central
         connectedCentral = central
-
+        
         // Start sending
         sendData()
+        //Thread.sleep(forTimeInterval: 1)
+        //self.connectedCentral = nil
+        //self.discoveredPeripheral = nil
+        //self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
+        //self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        //Thread.sleep(forTimeInterval: 1)
     }
     
     /*
@@ -344,7 +353,6 @@ extension BTController2: CBPeripheralManagerDelegate {
 }
 extension BTController2: CBPeripheralDelegate {
     // implementations of the CBPeripheralDelegate methods
-
     /*
      *  The peripheral letting us know when services have been invalidated.
      */
@@ -424,13 +432,28 @@ extension BTController2: CBPeripheralDelegate {
             //}
             
             // Write test data
-            //writeData()
             DispatchQueue.main.async() {
                 //self.messageResponse.text = String(data: self.data, encoding: .utf8)
                 Encrypted2.from_json(incomingMessage: String(data: self.data, encoding: .utf8)!)
+                self.connectedCentral = nil
+                self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
+              //  self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+                //Thread.sleep(forTimeInterval: 1)
+               // writeData()
+                guard let discoveredPeripheral = self.discoveredPeripheral,
+                      let transferCharacteristic = self.transferCharacteristic
+                    else { return }
+                self.centralManager.cancelPeripheralConnection(discoveredPeripheral)
+                
+                discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
+                self.discoveredPeripheral = nil
             }
-            self.centralManager.stopScan()
+            //Thread.sleep(forTimeInterval: 1)
+         
+           // cleanup()
+           // self.centralManager.stopScan()
            // self.peripheralManager.stopAdvertising()
+            
         } else {
             // Otherwise, just append the data to what we have previously received.
             data.append(characteristicData)
@@ -472,7 +495,6 @@ extension BTController2: CBPeripheralDelegate {
 
 extension BTController2: CBCentralManagerDelegate {
     // implementations of the CBCentralManagerDelegate methods
-
     /*
      *  centralManagerDidUpdateState is a required protocol method.
      *  Usually, you'd check for other states to make sure the current device supports LE, is powered on, etc.
@@ -534,7 +556,7 @@ extension BTController2: CBCentralManagerDelegate {
         
         // Reject if the signal strength is too low to attempt data transfer.
         // Change the minimum RSSI value depending on your app’s use case.
-        guard RSSI.intValue >= -100
+        guard RSSI.intValue >= -50
             else {
                 os_log("Discovered perhiperal not in expected range, at %d", RSSI.intValue)
                 return
@@ -602,4 +624,3 @@ extension BTController2: CBCentralManagerDelegate {
     }
 
 }
-

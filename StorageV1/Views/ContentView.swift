@@ -18,7 +18,7 @@ struct ContentView: View {
     @State var expand = true
     
     var body: some View {
-
+		
         if #available(iOS 14.0, *) {
             Home(username: self.username)
                 .navigationBarBackButtonHidden(true)

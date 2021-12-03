@@ -12,28 +12,11 @@ import os
 import Logging
 
 
-//private class AppState {
-//    let identity: Identity
-//    let contacts: Contacts
-////    let messages: Messages
-//
-//    init() {
-//        let identity = Identity()
-//        let contacts = Contacts()
-////        let messages = Messages()
-//        self.identity = identity
-//        self.contacts = contacts
-////        self.messages = messages
-//    }
-//
-//}
-//
-//private let state = AppState()
 
 @main
 struct StorageV1App: App {
    
-    let bluetoothController = BTController2.shared
+    var bluetoothController = BTController2.shared
     @Environment(\.managedObjectContext) var viewContext
     
 
@@ -41,15 +24,9 @@ struct StorageV1App: App {
         WindowGroup {
             if Identity.sharedInstance.hasIdentity() {
                 SplashView2()
-//                    .environmentObject(state.identity)
-//                    .environmentObject(state.contacts)
-//                    .environmentObject(state.messages)
             }
             else {
                 SplashView()
-//                    .environmentObject(state.identity)
-//                    .environmentObject(state.contacts)
-//                    .environmentObject(state.messages)
             }
         }
        

@@ -33,9 +33,6 @@ struct ContactsView : View {
                 .zIndex(25)
             
 			List(Array(contacts.contacts.values.sorted(by: nn)), id:\.id){i in
-            
-
-                            
                             if #available(iOS 14.0, *) {
                                 NavigationLink(destination: ChatView(contactId: i.id)) {
                                     cellContactView(contactId: i.id)

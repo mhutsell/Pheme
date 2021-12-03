@@ -31,22 +31,12 @@ Everything we need for the Messages page
 
 struct MessageView : View {
     
-//    @EnvironmentObject private var identity: Identity
-//    @EnvironmentObject private var contacts: Contacts
-//    @EnvironmentObject private var messages: Messages
 
 	@ObservedObject private var contacts = Contacts.sharedInstance
     var username : String
     @Binding var expand : Bool
-//    var contact = Contact2.all
-    
- //   @FetchRequest(
- //           sortDescriptors: [NSSortDescriptor(keyPath: \Contact.timeLatest, ascending:false)],
- //           animation: .default)
- //       var data: FetchedResults<Contact>
     
     var body : some View{
-//		let data = Array(contacts.contacts.values)
         VStack(spacing: 0){
 
             chatTopView(username: self.username, expand: self.$expand)
@@ -54,6 +44,7 @@ struct MessageView : View {
             List(Array(contacts.contacts.values.sorted()), id:\.id){i in
 
                     if #available(iOS 14.0, *) {
+                        
                         NavigationLink(destination: ChatView(contactId: i.id)) {
                             cellMessagesView(contactId : i.id)
                                 .onAppear{
@@ -129,7 +120,6 @@ struct cellMessagesView : View {
 
     @ObservedObject private var contacts = Contacts.sharedInstance
     var contactId : UUID
-//    var contact = Contact2.all
 
     var body : some View{
 		HStack(spacing: 12){
@@ -178,8 +168,6 @@ struct cellMessagesView : View {
 
 struct contactTopView : View {
     
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
     @Binding var expand : Bool
     
     var body : some View{

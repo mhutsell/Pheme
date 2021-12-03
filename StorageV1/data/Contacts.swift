@@ -59,9 +59,11 @@ class Contacts: ObservableObject {
 	
 	//	create message
 	func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID, messageType: Int = 0) {
-        let newMessage = Message2(messageBody: messageBody, messageType: messageType,sentByMe: sentByMe, contactId: contactId)
-        self.addMessage(contactId: contactId, message: newMessage, newMessage: false)
-		newMessage.encryptAndQueue(contactId: contactId)
+		if contactId != Identity2.globalId || Identity2.fetchIdentity().globalChatroom {
+			let newMessage = Message2(messageBody: messageBody, messageType: messageType,sentByMe: sentByMe, contactId: contactId)
+			self.addMessage(contactId: contactId, message: newMessage, newMessage: false)
+			newMessage.encryptAndQueue(contactId: contactId)
+		}
 	}
 	
 	//	create message
@@ -75,15 +77,6 @@ class Contacts: ObservableObject {
 	
 	func fetchMessages(id: UUID) -> [Message2] {
 		return contacts[id]!.fetchMessages()
-	}
-	
-	func LatestMessageString(id: UUID) -> String {
-		let messages = self.fetchMessages(id: id)
-		if messages.count == 0 {
-			return "We are friends now."
-		} else {
-			return messages[messages.count-1].messageBody
-		}
 	}
 	
 	func deleteContact(id: UUID) {

@@ -37,4 +37,8 @@ class Encrypteds: ObservableObject {
 	func clearAllOthers() {
 		encrypteds = encrypteds.filter { $0.value.senderId == Identity2.fetchIdentity().id }
 	}
+	
+	func clearGlobal() {
+		encrypteds = encrypteds.filter { $0.value.receiverId != Identity2.globalId }
+	}
 }

@@ -53,7 +53,10 @@ extension Contact2 {
 	func LatestMessageString() -> String {
 		let messages = self.fetchMessages()
 		if messages.count == 0 {
-			return "We are friends now."
+			if self.id == Identity2.globalId {
+					return "Welcome to the global chatroom!"
+				}
+			return "We are friends now!"
 		} else {
 			return messages[messages.count-1].messageBody
 		}

@@ -21,6 +21,7 @@ struct SettingsView : View {
     @State private var isShowingScanner = false
     @State private var helpOthers = Identity.sharedInstance.idtt.helpOthers
     @State private var maxEncrypted = Identity.sharedInstance.idtt.maxEncrypted
+    @State private var globalChatroom = Identity.sharedInstance.idtt.globalChatroom
     @ObservedObject private var identity = Identity.sharedInstance
     @ObservedObject private var encrypteds = Encrypteds.sharedInstance
     var body : some View{
@@ -43,9 +44,14 @@ struct SettingsView : View {
 						identity.updateHelpOthers()
 					}
 					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
+				Toggle("Enable global chatroom: ", isOn: self.$globalChatroom)
+					.onChange(of: globalChatroom) { _ in
+						identity.updateGlobalChatroom()
+					}
+					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
 								
 					HStack{
-						Text("Current #Encrypted / Max #Encrypted in queue: ")
+						Text("Current/max messages in queue: ")
 								Spacer()
 						Picker("Encrypted", selection: self.$maxEncrypted) {
 								ForEach(0 ..< 100) {
@@ -91,7 +97,6 @@ struct SettingsView : View {
                 let details = code.components(separatedBy: "\n")
                 guard details.count == 3 else { return }
 
-//			contacts.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
                 Contacts.sharedInstance.searchOrCreate(nn: details[0], id: details[2], keyString: details[1])
                 
         case .failure(_):

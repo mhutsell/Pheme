@@ -19,9 +19,6 @@ struct Logo2 : View {
 
 struct SplashView: View {
     @State var username: String = ""
-    @EnvironmentObject private var identity: Identity
-    @EnvironmentObject private var contacts: Contacts
-    @EnvironmentObject private var messages: Messages
     var body: some View {
         
         NavigationView {
