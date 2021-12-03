@@ -120,13 +120,13 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     //    search if this encrypted is for me and search the contact who send this message
     //    if no existing contact exists, create contact
     func checkAndSearch() {
-        if (self.receiverId != Identity2.fetchIdentity().id) {
-            // Read in stored identity
-            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
-        } else if self.receiverId == Identity2.globalId {
+        if self.receiverId == Identity2.globalId {
 			Encrypteds.sharedInstance.addEncrypted(encrypted: self)
 			self.decryptTo(contactId: self.receiverId)
-		} else {
+		} else if (self.receiverId != Identity2.fetchIdentity().id) {
+            // Read in stored identity
+            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
+        } else {
             Contacts.sharedInstance.searchOrCreate(nn: self.senderNickname, id: self.senderId, keyBody: stringToKeyBody(key: self.senderKey))
 			self.decryptTo(contactId: self.senderId)
         }
