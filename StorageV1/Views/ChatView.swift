@@ -9,9 +9,6 @@
 import Foundation
 import SwiftUI
 
-//struct IDUser: {
-//
-//}
 
 
 struct ChatBubble<Content>: View where Content: View {
@@ -48,16 +45,10 @@ struct ChatBubble<Content>: View where Content: View {
 
 @available(iOS 14.0, *)
 struct ChatView: View {
-//    @EnvironmentObject private var identity: Identity
-//    @EnvironmentObject private var contacts: Contacts
-//    @EnvironmentObject private var messages: Messages
     @ObservedObject private var contacts = Contacts.sharedInstance
     
     @State var contactId: UUID
     @State var messageSent: String = ""
-//    @State var contact = Contact2.all
-//    @State var messages = Message2.all
-//    @State var messages: [Message2]
     
 
     
@@ -105,9 +96,6 @@ struct ChatView: View {
                     Button("Send") {
                         if messageSent != "" {
                             contacts.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
-//                            print(messages)
-//                            messages.append(m)
-//                            contact = Contact2.all
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
