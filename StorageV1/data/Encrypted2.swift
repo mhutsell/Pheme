@@ -123,12 +123,11 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         if self.receiverId == Identity2.globalId {
 			Encrypteds.sharedInstance.addEncrypted(encrypted: self)
 			self.decryptTo(contactId: self.receiverId)
-		} else if (self.receiverId != Identity2.fetchIdentity().id) {
-            // Read in stored identity
-            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
-        } else {
+		} else if (self.receiverId == Identity2.fetchIdentity().id) {
             Contacts.sharedInstance.searchOrCreate(nn: self.senderNickname, id: self.senderId, keyBody: stringToKeyBody(key: self.senderKey))
 			self.decryptTo(contactId: self.senderId)
+        } else if (Identity2.fetchIdentity().helpOthers) {
+            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
         }
     }
     
