@@ -101,7 +101,7 @@ struct ChatView: View {
     @ObservedObject private var contacts = Contacts.sharedInstance
     @State var showingImagePicker = false
     @State var imageAlert = false
-    @State var messageAlert: UUID?
+    @State var messageAlert: Message2?
     @State var inputImage: UIImage?
     @State var contactId: UUID
     @State var messageSent: String = ""
@@ -130,35 +130,27 @@ struct ChatView: View {
 						{message in
 							if message.messageType == 1 {
 								ImageBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858), image: message.displayImageMessage())
-//								.onLongPressGesture(minimumDuration: 1) {
-//									messageAlert = message.id
-//								}
-//								.alert(item: $messageAlert) { messageAlert in
-//									Alert(title: Text("Are you sure to delete this message?"),
-//										primaryButton: .destructive(Text("Delete")) {
-//											contacts.deleteMessage(id: messageAlert, contactId: contactId)
-//										},
-//										secondaryButton: .cancel()
-//									)
-//								}
+								.onLongPressGesture(minimumDuration: 1) {
+									messageAlert = message
+								}
 							} else {
 								ChatBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
 								Text(message.messageBody)
 								}
-//								.onLongPressGesture(minimumDuration: 1) {
-//									messageAlert = message.id
-//								}
-//								.alert(item: $messageAlert) { messageAlert in
-//									Alert(title: Text("Are you sure to delete this message?"),
-//										primaryButton: .destructive(Text("Delete")) {
-//											contacts.deleteMessage(id: messageAlert, contactId: contactId)
-//										},
-//										secondaryButton: .cancel()
-//									)
-//								}
+								.onLongPressGesture(minimumDuration: 1) {
+									messageAlert = message
+								}
 							}
 						}
                     }
+					.alert(item: $messageAlert) { messageAlert in
+						Alert(title: Text("Are you sure to delete this message?"),
+							primaryButton: .destructive(Text("Delete")) {
+								contacts.deleteMessage(id: messageAlert.id, contactId: contactId)
+							},
+							secondaryButton: .cancel()
+						)
+					}
                 }
                 .onAppear {
                     contacts.sawNewMessage(contactId: contactId)
