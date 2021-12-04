@@ -50,7 +50,15 @@ class BTController2: NSObject {
     
     func createPayload(){
         self.payload = "["
-        for enc in Encrypteds.sharedInstance.encrypteds.values{
+        var count = 0
+        var tot = Encrypteds.sharedInstance.encrypteds.values.count
+        for enc in Encrypteds.sharedInstance.encrypteds.values.sorted(){
+            count += 1
+            if (tot-count > 4){
+                continue
+            }
+            print(tot-count)
+            print(enc.timeCreated.description)
             self.payload! += enc.to_json()
         }
         self.payload! += "]"
@@ -311,12 +319,14 @@ extension BTController2: CBPeripheralManagerDelegate {
         connectedCentral = central
         
         // Start sending
-        sendData()
+        DispatchQueue.main.async() {
+            self.sendData()
+        }
         //Thread.sleep(forTimeInterval: 1)
         //self.connectedCentral = nil
         //self.discoveredPeripheral = nil
         //self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
-        //self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+        self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
         //Thread.sleep(forTimeInterval: 1)
     }
     
@@ -436,16 +446,15 @@ extension BTController2: CBPeripheralDelegate {
                 //self.messageResponse.text = String(data: self.data, encoding: .utf8)
                 Encrypted2.from_json(incomingMessage: String(data: self.data, encoding: .utf8)!)
                 self.connectedCentral = nil
-                self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
-              //  self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
+               // self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: [CBPeripheralManagerOptionShowPowerAlertKey: true])
+                self.centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionShowPowerAlertKey: true])
                 //Thread.sleep(forTimeInterval: 1)
                // writeData()
                 guard let discoveredPeripheral = self.discoveredPeripheral,
                       let transferCharacteristic = self.transferCharacteristic
                     else { return }
-                self.centralManager.cancelPeripheralConnection(discoveredPeripheral)
-                
                 discoveredPeripheral.setNotifyValue(false, for: transferCharacteristic)
+                self.centralManager.cancelPeripheralConnection(discoveredPeripheral)
                 self.discoveredPeripheral = nil
             }
             //Thread.sleep(forTimeInterval: 1)
@@ -570,6 +579,7 @@ extension BTController2: CBCentralManagerDelegate {
             // Save a local copy of the peripheral, so CoreBluetooth doesn't get rid of it.
             discoveredPeripheral = peripheral
             
+            
             // And finally, connect to the peripheral.
             os_log("Connecting to perhiperal %@", peripheral)
             centralManager.connect(peripheral, options: nil)
@@ -616,11 +626,11 @@ extension BTController2: CBCentralManagerDelegate {
         discoveredPeripheral = nil
         
         // We're disconnected, so start scanning again
-        if connectionIterationsComplete < defaultIterations {
-            retrievePeripheral()
-        } else {
-            os_log("Connection iterations completed")
-        }
+       // if connectionIterationsComplete < defaultIterations {
+       //     retrievePeripheral()
+       // } else {
+       //     os_log("Connection iterations completed")
+       // }
     }
 
 }

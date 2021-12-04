@@ -74,6 +74,9 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 //
 //		BTController2.hasReceived = true
 		var str_msgs = "\(incomingMessage)"
+        if (incomingMessage == ""){
+            return
+        }
 		str_msgs.remove(at: str_msgs.startIndex)
 		str_msgs.remove(at: str_msgs.index(str_msgs.endIndex, offsetBy: -1))
 		let split_msgs:[String] = str_msgs.components(separatedBy: "{{{{{")
@@ -85,6 +88,9 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
 				continue
 			}
 			let split_comps:[String] = json_msg.components(separatedBy: "|||||")
+            if(split_comps.count < 8){
+                continue
+            }
 			let encryptedBody: Data? = Data(base64Encoded: split_comps[0], options: .ignoreUnknownCharacters)
 			let messageType: Int? = Int(split_comps[1])
 			let receiverId: UUID? = UUID(uuidString: split_comps[2])
