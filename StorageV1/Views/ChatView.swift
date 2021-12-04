@@ -130,7 +130,7 @@ struct ChatView: View {
                     LazyVStack {
 						ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
 						{message in
-							message.messageType == 0 ? ImageBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858), image: message.displayImageMessage()) : ChatBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+							message.messageType == 1 ? ImageBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858), image: message.displayImageMessage()) : ChatBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
 								Text(message.messageBody)
 							}
 						}
