@@ -24,10 +24,13 @@ struct SettingsView : View {
     @State private var globalChatroom = Identity.sharedInstance.idtt.globalChatroom
     @ObservedObject private var identity = Identity.sharedInstance
     @ObservedObject private var encrypteds = Encrypteds.sharedInstance
+    
+    @State private var stepperValue = 0
     var body : some View{
         let key = identity.idtt.myKey()
         let id = identity.idtt.myID()
         let name = identity.idtt.myName()
+
         
         return VStack {
         
@@ -49,18 +52,22 @@ struct SettingsView : View {
 						identity.updateGlobalChatroom()
 					}
 					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
-								
-					HStack{
-						Text("Current/max messages in queue: ")
-								Spacer()
-						Picker("Encrypted", selection: self.$maxEncrypted) {
-								ForEach(0 ..< 100) {
-									Text(String(encrypteds.encrypteds.count) + "/\($0)")
-								}
-						}.onChange(of: maxEncrypted) { _ in
-							identity.updateMaxEncrypted(max: maxEncrypted)
-						}
-					}
+                Stepper( onIncrement: {
+                    if self.maxEncrypted < 100{
+                        print("Stepper onIncrement")
+                        self.maxEncrypted += 10
+                        identity.updateMaxEncrypted(max: maxEncrypted)
+                    }
+                }, onDecrement: {
+                    if self.maxEncrypted > 10{
+                        print("Stepper onDecrement")
+                        self.maxEncrypted -= 10
+                        identity.updateMaxEncrypted(max: maxEncrypted)
+                    }
+                }) {
+                    Text("Max Encrypted Messages: ")
+                    Text(String(encrypteds.encrypteds.count) + "/" +  String(self.maxEncrypted))
+                }
 				}
             
             Spacer()
