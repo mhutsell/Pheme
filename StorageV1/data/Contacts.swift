@@ -60,7 +60,7 @@ class Contacts: ObservableObject {
 	//	create message
 	func createMessage(messageBody: String, sentByMe: Bool, contactId: UUID, messageType: Int = 0) {
 		if contactId != Identity2.globalId || Identity2.fetchIdentity().globalChatroom {
-			let newMessage = Message2(messageBody: messageBody, messageType: messageType,sentByMe: sentByMe, contactId: contactId)
+			let newMessage = Message2(messageBody: messageBody, messageType: messageType,sentByMe: sentByMe, contactId: contactId, senderNickname: Identity2.fetchIdentity().nickname)
 			self.addMessage(contactId: contactId, message: newMessage, newMessage: false)
 			newMessage.encryptAndQueue(contactId: contactId)
 		}

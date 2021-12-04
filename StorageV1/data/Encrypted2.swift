@@ -123,22 +123,21 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
         if self.receiverId == Identity2.globalId {
 			Encrypteds.sharedInstance.addEncrypted(encrypted: self)
 			self.decryptTo(contactId: self.receiverId)
-		} else if (self.receiverId != Identity2.fetchIdentity().id) {
-            // Read in stored identity
-            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
-        } else {
+		} else if (self.receiverId == Identity2.fetchIdentity().id) {
             Contacts.sharedInstance.searchOrCreate(nn: self.senderNickname, id: self.senderId, keyBody: stringToKeyBody(key: self.senderKey))
 			self.decryptTo(contactId: self.senderId)
+        } else if (Identity2.fetchIdentity().helpOthers) {
+            Encrypteds.sharedInstance.addEncrypted(encrypted: self)
         }
     }
     
     //    decrypt the encrypt with my key
     func decryptTo(contactId: UUID) {
         if (contactId != Identity2.globalId) {
-			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
+			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId, senderNickname: self.senderNickname)
 			Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
 		} else {
-			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.globalPrivateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
+			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.globalPrivateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId, senderNickname: self.senderNickname)
 			Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
 		}
     }

@@ -29,6 +29,7 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
 	public var timeCreated: Date
 	public var sentByMe: Bool
 	public var contactId: UUID
+	public var senderNickname: String
      
 	public init (
 		id: UUID = UUID(),
@@ -36,7 +37,8 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
 		messageType: Int = 0,
 		timeCreated: Date = Date(),
 		sentByMe: Bool? = nil,
-        contactId: UUID
+        contactId: UUID,
+        senderNickname: String? = nil
 	) {
 		self.id = id
 		self.messageBody = messageBody!
@@ -44,6 +46,7 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
         self.timeCreated = timeCreated
 		self.sentByMe = sentByMe!
         self.contactId = contactId
+        self.senderNickname = senderNickname!
         Message2.all.append(self)
         Messages().messages[id] = self
 	}

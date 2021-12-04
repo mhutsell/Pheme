@@ -11,6 +11,47 @@ import SwiftUI
 
 
 
+struct ChatBubbleWithNN<Content>: View where Content: View {
+    let position: Bool
+    let color : Color
+    let content: () -> Content
+    let nickname: String
+    init(position: Bool, nickname: String, color: Color, @ViewBuilder content: @escaping () -> Content) {
+        self.content = content
+        self.nickname = nickname
+        self.color = color
+        self.position = position
+    }
+    
+    var body: some View {
+		VStack(spacing:0){
+			Text(nickname)
+				.font(.system(size: 10))
+				.foregroundColor(Color("Color"))
+			.padding(position == false ? .leading : .trailing , 20)
+			.padding(position == true ? .leading : .trailing , 60)
+			.frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
+			
+			HStack(spacing: 0 ) {
+				content()
+					.padding(.all, 15)
+					.foregroundColor(Color.white)
+					.background(color)
+					.clipShape(RoundedRectangle(cornerRadius: 18))
+					.overlay(
+						Image(systemName: "arrowtriangle.left.fill")
+							.foregroundColor(color)
+							.rotationEffect(Angle(degrees: position == false ? -50 : -130))
+							.offset(x: position == false ? -5 : 5)
+						,alignment: position == false ? .bottomLeading : .bottomTrailing)
+			}
+			.padding(position == false ? .leading : .trailing , 15)
+			.padding(position == true ? .leading : .trailing , 60)
+			.frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
+		}
+    }
+}
+
 struct ChatBubble<Content>: View where Content: View {
     let position: Bool
     let color : Color
@@ -22,23 +63,23 @@ struct ChatBubble<Content>: View where Content: View {
     }
     
     var body: some View {
-        HStack(spacing: 0 ) {
-            content()
-                .padding(.all, 15)
-                .foregroundColor(Color.white)
-                .background(color)
-                .clipShape(RoundedRectangle(cornerRadius: 18))
-                .overlay(
-                    Image(systemName: "arrowtriangle.left.fill")
-                        .foregroundColor(color)
-                        .rotationEffect(Angle(degrees: position == false ? -50 : -130))
-                        .offset(x: position == false ? -5 : 5)
-                    ,alignment: position == false ? .bottomLeading : .bottomTrailing)
-        }
-        .padding(position == false ? .leading : .trailing , 15)
-        .padding(position == true ? .leading : .trailing , 60)
-        .frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
-    }
+	HStack(spacing: 0 ) {
+			content()
+				.padding(.all, 15)
+				.foregroundColor(Color.white)
+				.background(color)
+				.clipShape(RoundedRectangle(cornerRadius: 18))
+				.overlay(
+					Image(systemName: "arrowtriangle.left.fill")
+						.foregroundColor(color)
+						.rotationEffect(Angle(degrees: position == false ? -50 : -130))
+						.offset(x: position == false ? -5 : 5)
+					,alignment: position == false ? .bottomLeading : .bottomTrailing)
+		}
+		.padding(position == false ? .leading : .trailing , 15)
+		.padding(position == true ? .leading : .trailing , 60)
+		.frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
+	}
 }
 
 
@@ -53,8 +94,7 @@ struct ChatView: View {
 
     
     var body: some View {
-    
-//		   TODO: need check, notification related attempt
+
         GeometryReader { geo in
             VStack {
                 VStack{
@@ -72,12 +112,21 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-                        ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
-                        {message in
-                            ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-                                Text(message.messageBody)
-                            }
-                        }
+						if (contactId == Identity2.globalId) {
+							ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
+							{message in
+								ChatBubbleWithNN(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+									Text(message.messageBody)
+								}
+							}
+						} else {
+							ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
+							{message in
+								ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+									Text(message.messageBody)
+								}
+							}
+						}
                     }
                 }
                 .onAppear {
