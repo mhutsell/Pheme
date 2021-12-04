@@ -100,14 +100,12 @@ struct ImageBubble: View  {
 struct ChatView: View {
     @ObservedObject private var contacts = Contacts.sharedInstance
     @State var showingImagePicker = false
+    @State var imageAlert = false
+    @State var messageAlert: UUID?
     @State var inputImage: UIImage?
     @State var contactId: UUID
     @State var messageSent: String = ""
-    
-	func loadImage() {
-		guard let inputImage: UIImage = inputImage else { return }
-		contacts.createImageMessage(messageBody: inputImage, sentByMe: true, contactId: contactId)
-	}
+
     
     var body: some View {
 
@@ -130,8 +128,34 @@ struct ChatView: View {
                     LazyVStack {
 						ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
 						{message in
-							message.messageType == 1 ? ImageBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858), image: message.displayImageMessage()) : ChatBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+							if message.messageType == 1 {
+								ImageBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858), image: message.displayImageMessage())
+//								.onLongPressGesture(minimumDuration: 1) {
+//									messageAlert = message.id
+//								}
+//								.alert(item: $messageAlert) { messageAlert in
+//									Alert(title: Text("Are you sure to delete this message?"),
+//										primaryButton: .destructive(Text("Delete")) {
+//											contacts.deleteMessage(id: messageAlert, contactId: contactId)
+//										},
+//										secondaryButton: .cancel()
+//									)
+//								}
+							} else {
+								ChatBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
 								Text(message.messageBody)
+								}
+//								.onLongPressGesture(minimumDuration: 1) {
+//									messageAlert = message.id
+//								}
+//								.alert(item: $messageAlert) { messageAlert in
+//									Alert(title: Text("Are you sure to delete this message?"),
+//										primaryButton: .destructive(Text("Delete")) {
+//											contacts.deleteMessage(id: messageAlert, contactId: contactId)
+//										},
+//										secondaryButton: .cancel()
+//									)
+//								}
 							}
 						}
                     }
@@ -153,31 +177,46 @@ struct ChatView: View {
 								.sheet(isPresented: $showingImagePicker) {
 									ImagePicker(image: $inputImage)
 								}
-								.onChange(of: inputImage) { _ in loadImage() }
                     }
-//                    ZStack {
-//                        Image(uiImage: self.inputImage)
-//                                        .resizable()
-//                                        .scaledToFill()
-//                                        .frame(minWidth: 0, maxWidth: .infinity)
-//                                        .edgesIgnoringSafeArea(.all)
-//                        TextEditor(text: $messageSent)
-//                        RoundedRectangle(cornerRadius: 10)
-//                            .stroke()
-//                            .foregroundColor(.gray)
-//                    }.frame(height: 50)
+                    
                     ZStack {
-                        TextEditor(text: $messageSent)
+						TextEditor(text: $messageSent)
                         RoundedRectangle(cornerRadius: 10)
                             .stroke()
                             .foregroundColor(.gray)
                     }.frame(height: 50)
+                    
+                    if (inputImage != nil) {
+						ZStack {
+							Image(uiImage: inputImage!)
+										.resizable()
+										.scaledToFill()
+//										.aspectRatio(contentMode: .fit)
+										.frame(minWidth: 0, maxWidth: .infinity)
+										.edgesIgnoringSafeArea(.all)
+										.onLongPressGesture(minimumDuration: 0.1) {
+											imageAlert = true
+										}
+										.alert(isPresented: $imageAlert) {
+											Alert(title: Text("Delete sending?"),
+												primaryButton: .destructive(Text("Delete")) {
+													inputImage = nil
+												},
+												secondaryButton: .cancel()
+											)
+										}
+						}.frame(height: 50)
+					}
                     
                     Button("Send") {
                         if messageSent != "" {
                             contacts.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
                             messageSent = ""
                         }
+                        if inputImage != nil {
+							contacts.createImageMessage(messageBody: inputImage!, sentByMe: true, contactId: contactId)
+							inputImage = nil
+						}
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
                 }.padding()

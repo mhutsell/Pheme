@@ -61,10 +61,11 @@ extension Contact2 {
 			if messages[messages.count-1].messageType == 0 {
 				return messages[messages.count-1].messageBody
 			} else {
-				return "[Message]"
+				return "[Image]"
 			}
 		}
 	}
+	
 
 }
 

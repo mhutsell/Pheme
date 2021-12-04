@@ -80,11 +80,23 @@ class Contacts: ObservableObject {
 	}
 	
 	func deleteContact(id: UUID) {
+		if id == Identity2.globalId {
+			Identity.sharedInstance.updateGlobalChatroom(b: false)
+		}
 		contacts[id] = nil
+		Encrypteds.sharedInstance.deleteEncryptedFor(id: id)
+	}
+	
+	func deleteAllMessages(id: UUID) {
+		for k in contacts[id]!.messages.keys {
+			contacts[id]!.messages[k] = nil
+		}
+		Encrypteds.sharedInstance.deleteEncryptedFor(id: id)
 	}
 	
 	func deleteMessage(id: UUID, contactId: UUID) {
 		contacts[contactId]!.messages[id] = nil
+		Encrypteds.sharedInstance.deleteEncrypted(id: id)
 	}
 	
 	

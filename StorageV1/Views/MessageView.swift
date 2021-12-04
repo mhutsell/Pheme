@@ -119,58 +119,80 @@ struct chatTopView : View {
 struct cellMessagesView : View {
 
     @ObservedObject private var contacts = Contacts.sharedInstance
+    @State var showingAlert = false
     var contactId : UUID
 
     var body : some View{
 		HStack(spacing: 12){
-
-            if(contacts.contacts[contactId]!.newMessage){
+			if contacts.contacts[contactId] != nil {
+				if(contacts.contacts[contactId]!.newMessage){
 					GeometryReader { proxy in
-					ZStack {
+						ZStack {
 
-						Image(systemName: "person.crop.circle.fill")
-							.resizable()
-							.foregroundColor(Color("Color"))
-							.frame(
-								   width: proxy.size.width,
-								   height: proxy.size.width,
-								   alignment: .center
-							)
-						Image(systemName: "circle.fill")
-							.resizable()
-							.foregroundColor(.red)
-							.frame(
-								   width: proxy.size.width * 0.4,
-								   height: proxy.size.width * 0.4
-							)
-							.padding(.bottom, 37.5)
-							.padding(.leading, 37.5)
+							Image(systemName: "person.crop.circle.fill")
+								.resizable()
+								.foregroundColor(Color("Color"))
+								.frame(
+									   width: proxy.size.width,
+									   height: proxy.size.width,
+									   alignment: .center
+								)
+							Image(systemName: "circle.fill")
+								.resizable()
+								.foregroundColor(.red)
+								.frame(
+									   width: proxy.size.width * 0.4,
+									   height: proxy.size.width * 0.4
+								)
+								.padding(.bottom, 37.5)
+								.padding(.leading, 37.5)
+								.onLongPressGesture(minimumDuration: 1) {
+									showingAlert = true
+								}
+								.alert(isPresented: $showingAlert) {
+									Alert(title: Text("Are you sure to delete this contact?"),
+										primaryButton: .destructive(Text("Delete")) {
+											contacts.deleteContact(id: contactId)
+										},
+										secondaryButton: .cancel()
+									)
+								}
+						}
+					}.frame(width: 55, height: 55, alignment: .center)
+				} else{
+					Image(systemName:"person.crop.circle.fill")
+					.resizable()
+					.frame(width: 55, height: 55)
+					.foregroundColor(Color("Color"))
+					.onLongPressGesture(minimumDuration: 1) {
+						showingAlert = true
 					}
-				}.frame(width: 55, height: 55, alignment: .center)
-            } else{
-            Image(systemName:"person.crop.circle.fill")
-            .resizable()
-            .frame(width: 55, height: 55)
-            .foregroundColor(Color("Color"))
-            }
-            
-            VStack(alignment: .leading, spacing: 12) {
+					.alert(isPresented: $showingAlert) {
+						Alert(title: Text("Are you sure to delete all messages of this contact?"),
+							primaryButton: .destructive(Text("Delete")) {
+								contacts.deleteAllMessages(id: contactId)
+							},
+							secondaryButton: .cancel()
+						)
+					}
+				}
+				
+				VStack(alignment: .leading, spacing: 12) {
 
-                Text(contacts.contacts[contactId]!.nickname)
+					Text(contacts.contacts[contactId]!.nickname)
 
-                // TODO: need improvement for notification
-                Text(contacts.contacts[contactId]!.LatestMessageString())
-                .font(.caption)
-                .foregroundColor(contacts.contacts[contactId]!.newMessage == true ? .red : .black)
-            }
+					Text(contacts.contacts[contactId]!.LatestMessageString())
+					.font(.caption)
+					.foregroundColor(contacts.contacts[contactId]!.newMessage == true ? .red : .black)
+				}
 
-            Spacer(minLength: 0)
+				Spacer(minLength: 0)
 
-            VStack{
-                Text(time())
-
-                Spacer()
-            }
+				VStack{
+					Text(time())
+					Spacer()
+				}
+			}
         }.padding(.vertical)
     }
     

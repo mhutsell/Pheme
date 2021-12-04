@@ -49,7 +49,7 @@ struct SettingsView : View {
 					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
 				Toggle("Enable global chatroom: ", isOn: self.$globalChatroom)
 					.onChange(of: globalChatroom) { _ in
-						identity.updateGlobalChatroom()
+						identity.updateGlobalChatroom(b: globalChatroom)
 					}
 					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
                 Stepper( onIncrement: {

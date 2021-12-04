@@ -35,10 +35,12 @@ class Identity: ObservableObject {
 	}
 	
 	//	update if you want to enable global chatroom
-    func updateGlobalChatroom() {
-		idtt.globalChatroom = !idtt.globalChatroom
+    func updateGlobalChatroom(b: Bool) {
+		idtt.globalChatroom = b
 		if !idtt.globalChatroom {
 			Encrypteds.sharedInstance.clearGlobal()
+		} else {
+			Contacts.sharedInstance.searchOrCreate(nn: "Global Chatroom", id: Identity2.globalId, keyBody: Identity2.globalPublicKey)
 		}
 	}
     
