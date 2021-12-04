@@ -20,7 +20,6 @@
 		114567A5274C6417008394EF /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1145679E274C6417008394EF /* DataUtils.swift */; };
 		114567A6274C6417008394EF /* URLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1145679F274C6417008394EF /* URLUtils.swift */; };
 		114567A9274C646F008394EF /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 114567A8274C646F008394EF /* Logging */; };
-		119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */; };
 		119C624A2738D6A200116A4F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C62492738D6A200116A4F /* ChatView.swift */; };
 		11B56D912757038A00C35E12 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B56D902757038A00C35E12 /* HomeView.swift */; };
 		AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD256987273EF70F0065A85D /* SwiftUIView.swift */; };
@@ -48,7 +47,6 @@
 		11082C61270E7EC40099285E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		11082C63270E7EC60099285E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11082C66270E7EC60099285E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		11082C6B270E7EC60099285E /* StorageV1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StorageV1.xcdatamodel; sourceTree = "<group>"; };
 		11082C6D270E7EC60099285E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1142228F275B146700B79CF4 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		11456799274C6416008394EF /* CollectionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionUtils.swift; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 				B748AA75274D7BAC003B76D2 /* Views */,
 				11082C63270E7EC60099285E /* Assets.xcassets */,
 				11082C6D270E7EC60099285E /* Info.plist */,
-				11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */,
 				11082C65270E7EC60099285E /* Preview Content */,
 			);
 			path = StorageV1;
@@ -263,7 +260,6 @@
 				114567A1274C6417008394EF /* PersistenceUtils.swift in Sources */,
 				B748AAA6274DB29E003B76D2 /* Encrypted2.swift in Sources */,
 				B748AA7E274D85B2003B76D2 /* MessageView.swift in Sources */,
-				119C62452738D41000116A4F /* StorageV1.xcdatamodeld in Sources */,
 				B748AAA7274DB29E003B76D2 /* Identity2.swift in Sources */,
 				B748AAA4274DB29E003B76D2 /* Message2.swift in Sources */,
 				11B56D912757038A00C35E12 /* HomeView.swift in Sources */,
@@ -504,19 +500,6 @@
 			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		11082C6A270E7EC60099285E /* StorageV1.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				11082C6B270E7EC60099285E /* StorageV1.xcdatamodel */,
-			);
-			currentVersion = 11082C6B270E7EC60099285E /* StorageV1.xcdatamodel */;
-			path = StorageV1.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 11082C54270E7EC40099285E /* Project object */;
 }

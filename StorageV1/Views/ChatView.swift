@@ -155,6 +155,17 @@ struct ChatView: View {
 								}
 								.onChange(of: inputImage) { _ in loadImage() }
                     }
+//                    ZStack {
+//                        Image(uiImage: self.inputImage)
+//                                        .resizable()
+//                                        .scaledToFill()
+//                                        .frame(minWidth: 0, maxWidth: .infinity)
+//                                        .edgesIgnoringSafeArea(.all)
+//                        TextEditor(text: $messageSent)
+//                        RoundedRectangle(cornerRadius: 10)
+//                            .stroke()
+//                            .foregroundColor(.gray)
+//                    }.frame(height: 50)
                     ZStack {
                         TextEditor(text: $messageSent)
                         RoundedRectangle(cornerRadius: 10)
