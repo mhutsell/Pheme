@@ -54,13 +54,11 @@ struct SettingsView : View {
 					.toggleStyle(SwitchToggleStyle(tint: Color("Color")))
                 Stepper( onIncrement: {
                     if self.maxEncrypted < 100{
-                        print("Stepper onIncrement")
                         self.maxEncrypted += 10
                         identity.updateMaxEncrypted(max: maxEncrypted)
                     }
                 }, onDecrement: {
                     if self.maxEncrypted > 10{
-                        print("Stepper onDecrement")
                         self.maxEncrypted -= 10
                         identity.updateMaxEncrypted(max: maxEncrypted)
                     }
@@ -122,7 +120,6 @@ struct SettingsView : View {
         }
         return UIImage(systemName: "xmark.circle") ?? UIImage()
     }
-
 }
 
 struct SettingsView_Previews: PreviewProvider {

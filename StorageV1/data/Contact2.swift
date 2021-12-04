@@ -58,7 +58,11 @@ extension Contact2 {
 				}
 			return "We are friends now!"
 		} else {
-			return messages[messages.count-1].messageBody
+			if messages[messages.count-1].messageType == 0 {
+				return messages[messages.count-1].messageBody
+			} else {
+				return "[Message]"
+			}
 		}
 	}
 

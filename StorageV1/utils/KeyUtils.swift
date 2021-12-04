@@ -37,14 +37,15 @@ func stringToKeyBody(key: String) -> Data {
 func encryptToData(publicKey: SecKey, msBody: String) -> Data {
 	let bodyData: CFData = msBody.data(using: .utf8)! as CFData
 	var error: Unmanaged<CFError>?
-	let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, bodyData, &error)! as Data
+	let encryptedBody: Data = SecKeyCreateEncryptedData(publicKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256AESGCM, bodyData, &error)! as Data
 	return encryptedBody
 }
+
 
 // decrypt body with private key and return the converted string
 func decryptToString(privateKey: SecKey, body: Data) -> String {
 	var error: Unmanaged<CFError>?
-	let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256, body as CFData, &error)! as Data
+	let decryptedBody: Data = SecKeyCreateDecryptedData(privateKey, SecKeyAlgorithm.rsaEncryptionOAEPSHA256AESGCM, body as CFData, &error)! as Data
 	return String(decoding: decryptedBody, as: UTF8.self)
 }
 

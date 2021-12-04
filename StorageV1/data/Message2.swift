@@ -21,8 +21,7 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
         return lhs.timeCreated == rhs.timeCreated
     }
     
-    static public var all: [Message2] = Array(Messages().messages.values)
-	public var messageBody: String
+    public var messageBody: String
 	public var messageType: Int
 //	messageType: 0 pure text, 1 image
 //	TODO: 2 text with emoji (no need?)
@@ -47,8 +46,6 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
 		self.sentByMe = sentByMe!
         self.contactId = contactId
         self.senderNickname = senderNickname!
-        Message2.all.append(self)
-        Messages().messages[id] = self
 	}
 	 
 	public func hash(into hasher: inout Hasher) {
@@ -66,6 +63,5 @@ struct Message2: Identifiable, Hashable, Codable, Comparable{
     func displayImageMessage() -> UIImage {
 		return UIImage(data: Data(base64Encoded: self.messageBody, options: .ignoreUnknownCharacters)!)!
 	}
-    
     
 }

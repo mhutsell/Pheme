@@ -11,7 +11,7 @@ import SwiftUI
 
 
 
-struct ChatBubbleWithNN<Content>: View where Content: View {
+struct ChatBubble<Content>: View where Content: View {
     let position: Bool
     let color : Color
     let content: () -> Content
@@ -52,46 +52,62 @@ struct ChatBubbleWithNN<Content>: View where Content: View {
     }
 }
 
-struct ChatBubble<Content>: View where Content: View {
+struct ImageBubble: View  {
     let position: Bool
     let color : Color
-    let content: () -> Content
-    init(position: Bool, color: Color, @ViewBuilder content: @escaping () -> Content) {
-        self.content = content
+    let image: UIImage
+    let nickname: String
+    init(position: Bool, nickname: String, color: Color, image: UIImage) {
+        self.image = image
+        self.nickname = nickname
         self.color = color
         self.position = position
     }
     
     var body: some View {
-	HStack(spacing: 0 ) {
-			content()
-				.padding(.all, 15)
-				.foregroundColor(Color.white)
-				.background(color)
-				.clipShape(RoundedRectangle(cornerRadius: 18))
-				.overlay(
-					Image(systemName: "arrowtriangle.left.fill")
-						.foregroundColor(color)
-						.rotationEffect(Angle(degrees: position == false ? -50 : -130))
-						.offset(x: position == false ? -5 : 5)
-					,alignment: position == false ? .bottomLeading : .bottomTrailing)
+		VStack(spacing:0){
+			Text(nickname)
+				.font(.system(size: 10))
+				.foregroundColor(Color("Color"))
+			.padding(position == false ? .leading : .trailing , 20)
+			.padding(position == true ? .leading : .trailing , 60)
+			.frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
+			
+			HStack(spacing: 0 ) {
+				Image(uiImage: image)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
+					.padding(.all, 15)
+					.foregroundColor(Color.white)
+					.background(color)
+					.clipShape(RoundedRectangle(cornerRadius: 18))
+					.overlay(
+						Image(systemName: "arrowtriangle.left.fill")
+							.foregroundColor(color)
+							.rotationEffect(Angle(degrees: position == false ? -50 : -130))
+							.offset(x: position == false ? -5 : 5)
+						,alignment: position == false ? .bottomLeading : .bottomTrailing)
+			}
+			.padding(position == false ? .leading : .trailing , 15)
+			.padding(position == true ? .leading : .trailing , 60)
+			.frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
 		}
-		.padding(position == false ? .leading : .trailing , 15)
-		.padding(position == true ? .leading : .trailing , 60)
-		.frame(width: UIScreen.main.bounds.width, alignment: position == false ? .leading : .trailing)
-	}
+    }
 }
-
 
 
 @available(iOS 14.0, *)
 struct ChatView: View {
     @ObservedObject private var contacts = Contacts.sharedInstance
-    
+    @State var showingImagePicker = false
+    @State var inputImage: UIImage?
     @State var contactId: UUID
     @State var messageSent: String = ""
     
-
+	func loadImage() {
+		guard let inputImage: UIImage = inputImage else { return }
+		contacts.createImageMessage(messageBody: inputImage, sentByMe: true, contactId: contactId)
+	}
     
     var body: some View {
 
@@ -112,19 +128,10 @@ struct ChatView: View {
 //                MARK:- ScrollView
                 CustomScrollView(scrollToEnd: true) {
                     LazyVStack {
-						if (contactId == Identity2.globalId) {
-							ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
-							{message in
-								ChatBubbleWithNN(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-									Text(message.messageBody)
-								}
-							}
-						} else {
-							ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
-							{message in
-								ChatBubble(position: message.sentByMe, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
-									Text(message.messageBody)
-								}
+						ForEach(contacts.contacts[contactId]!.messages.values.sorted(), id:\.id)
+						{message in
+							message.messageType == 0 ? ImageBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858), image: message.displayImageMessage()) : ChatBubble(position: message.sentByMe, nickname: message.senderNickname, color: message.sentByMe == true ?.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255) : .init(red: 0.765, green: 0.783, blue: 0.858)) {
+								Text(message.messageBody)
 							}
 						}
                     }
@@ -135,6 +142,19 @@ struct ChatView: View {
 				
                 //MARK:- text editor
                 HStack {
+					Button(action: {
+                        self.showingImagePicker = true
+                    }) {
+                            Image(systemName: "photo")
+                                .font(.system(size: 20))
+								.background(Color.blue)
+								.foregroundColor(.white)
+								.padding(.horizontal)
+								.sheet(isPresented: $showingImagePicker) {
+									ImagePicker(image: $inputImage)
+								}
+								.onChange(of: inputImage) { _ in loadImage() }
+                    }
                     ZStack {
                         TextEditor(text: $messageSent)
                         RoundedRectangle(cornerRadius: 10)
@@ -145,6 +165,7 @@ struct ChatView: View {
                     Button("Send") {
                         if messageSent != "" {
                             contacts.createMessage(messageBody: messageSent, sentByMe: true, contactId: contactId)
+                            messageSent = ""
                         }
                     }
                     .foregroundColor(Color.init(red: 53 / 255, green: 61 / 255, blue: 96 / 255))
@@ -154,3 +175,4 @@ struct ChatView: View {
         }
 	}
 }
+
