@@ -135,10 +135,10 @@ struct Encrypted2: Identifiable, Hashable, Codable, Comparable{
     //    decrypt the encrypt with my key
     func decryptTo(contactId: UUID) {
         if (contactId != Identity2.globalId) {
-			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
+			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.fetchIdentity().privateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId, senderNickname: self.senderNickname)
 			Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
 		} else {
-			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.globalPrivateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId)
+			let newMessage = Message2(id: self.id, messageBody: decryptToString(privateKey: dataToPrivateKey(keyBody: Identity2.globalPrivateKey), body: self.encryptedBody), messageType: self.messageType, timeCreated: self.timeCreated, sentByMe: false, contactId: contactId, senderNickname: self.senderNickname)
 			Contacts.sharedInstance.addMessage(contactId: contactId, message: newMessage, newMessage: true)
 		}
     }

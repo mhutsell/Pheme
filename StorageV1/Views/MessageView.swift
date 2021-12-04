@@ -125,16 +125,34 @@ struct cellMessagesView : View {
 		HStack(spacing: 12){
 
             if(contacts.contacts[contactId]!.newMessage){
-                Image(systemName:"circle.fill")
-                .resizable()
-                .frame(width: 55, height: 55)
-                .foregroundColor(.red)
-            }
-            
+					GeometryReader { proxy in
+					ZStack {
+
+						Image(systemName: "person.crop.circle.fill")
+							.resizable()
+							.foregroundColor(Color("Color"))
+							.frame(
+								   width: proxy.size.width,
+								   height: proxy.size.width,
+								   alignment: .center
+							)
+						Image(systemName: "circle.fill")
+							.resizable()
+							.foregroundColor(.red)
+							.frame(
+								   width: proxy.size.width * 0.4,
+								   height: proxy.size.width * 0.4
+							)
+							.padding(.bottom, 37.5)
+							.padding(.leading, 37.5)
+					}
+				}.frame(width: 55, height: 55, alignment: .center)
+            } else{
             Image(systemName:"person.crop.circle.fill")
             .resizable()
             .frame(width: 55, height: 55)
             .foregroundColor(Color("Color"))
+            }
             
             VStack(alignment: .leading, spacing: 12) {
 
