@@ -20,6 +20,7 @@
 		114567A5274C6417008394EF /* DataUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1145679E274C6417008394EF /* DataUtils.swift */; };
 		114567A6274C6417008394EF /* URLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1145679F274C6417008394EF /* URLUtils.swift */; };
 		114567A9274C646F008394EF /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 114567A8274C646F008394EF /* Logging */; };
+		115DE3BF275BE10900F4132C /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DE3BE275BE10900F4132C /* ImageUtil.swift */; };
 		119C624A2738D6A200116A4F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119C62492738D6A200116A4F /* ChatView.swift */; };
 		11B56D912757038A00C35E12 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B56D902757038A00C35E12 /* HomeView.swift */; };
 		AD256988273EF70F0065A85D /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD256987273EF70F0065A85D /* SwiftUIView.swift */; };
@@ -56,6 +57,7 @@
 		1145679D274C6417008394EF /* EnvironmentUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentUtils.swift; sourceTree = "<group>"; };
 		1145679E274C6417008394EF /* DataUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataUtils.swift; sourceTree = "<group>"; };
 		1145679F274C6417008394EF /* URLUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLUtils.swift; sourceTree = "<group>"; };
+		115DE3BE275BE10900F4132C /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
 		119C62492738D6A200116A4F /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		11B56D902757038A00C35E12 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AD256987273EF70F0065A85D /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				B748AA8E274DA4BF003B76D2 /* KeyUtils.swift */,
 				1145679C274C6417008394EF /* StringUtils.swift */,
 				1145679F274C6417008394EF /* URLUtils.swift */,
+				115DE3BE275BE10900F4132C /* ImageUtil.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				ADC654A72741C69A00E11CB5 /* SplashView2.swift in Sources */,
 				114567A5274C6417008394EF /* DataUtils.swift in Sources */,
 				114567A4274C6417008394EF /* EnvironmentUtils.swift in Sources */,
+				115DE3BF275BE10900F4132C /* ImageUtil.swift in Sources */,
 				114567A2274C6417008394EF /* PersistenceError.swift in Sources */,
 				119C624A2738D6A200116A4F /* ChatView.swift in Sources */,
 				B748AA78274D83B7003B76D2 /* SettingsView.swift in Sources */,
@@ -417,7 +421,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pheme;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pheme1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

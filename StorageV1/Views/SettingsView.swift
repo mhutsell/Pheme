@@ -63,9 +63,12 @@ struct SettingsView : View {
                         identity.updateMaxEncrypted(max: maxEncrypted)
                     }
                 }) {
-                    Text("Max Encrypted Messages: ")
+                    Text("Max messages in queue: ")
                     Text(String(encrypteds.encrypteds.count) + "/" +  String(self.maxEncrypted))
                 }
+				}
+				Button("Clear image messages in queue") {
+					Encrypteds.sharedInstance.clearImages()
 				}
             
             Spacer()

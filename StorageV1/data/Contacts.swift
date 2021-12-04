@@ -68,7 +68,8 @@ class Contacts: ObservableObject {
 	
 	//	create message
 	func createImageMessage(messageBody: UIImage, sentByMe: Bool, contactId: UUID) {
-        self.createMessage(messageBody: messageBody.pngData()!.base64EncodedString(), sentByMe: sentByMe, contactId: contactId, messageType: 1)
+		let resizedImage = messageBody.resized(toWidth: 96.0)
+		self.createMessage(messageBody: resizedImage!.pngData()!.base64EncodedString(), sentByMe: sentByMe, contactId: contactId, messageType: 1)
 	}
 	
 	func sawNewMessage(contactId: UUID) {

@@ -183,7 +183,6 @@ struct ChatView: View {
 							Image(uiImage: inputImage!)
 										.resizable()
 										.scaledToFill()
-//										.aspectRatio(contentMode: .fit)
 										.frame(minWidth: 0, maxWidth: .infinity)
 										.edgesIgnoringSafeArea(.all)
 										.onLongPressGesture(minimumDuration: 0.1) {

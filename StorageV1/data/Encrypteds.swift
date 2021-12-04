@@ -42,6 +42,10 @@ class Encrypteds: ObservableObject {
 		encrypteds = encrypteds.filter { $0.value.receiverId != Identity2.globalId }
 	}
 	
+	func clearImages() {
+		encrypteds = encrypteds.filter { $0.value.messageType == 0 }
+	}
+	
 	func deleteEncrypted(id: UUID) {
 		encrypteds = encrypteds.filter { $0.value.id != id }
 	}
