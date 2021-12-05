@@ -2,14 +2,14 @@
 //  StorageV1App.swift
 //  StorageV1
 //
-//  Created by Ray Chen on 10/6/21.
+//  Created by Chen Gong 12/4/2021
 //
 
 import SwiftUI
 import Foundation
 import CoreBluetooth
 import os
-import Logging
+
 
 
 
