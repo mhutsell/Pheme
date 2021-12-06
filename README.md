@@ -23,7 +23,7 @@ To add a contact, go to the setting page via the navigation bar at the bottom, c
 
 
 
-| <img src="Images/Simulator Screen Shot - iPhone 12 Pro Max - 2021-12-04 at 18.53.15.png" width=50% height=20% /> | <img src="Images/Simulator Screen Shot - iPhone 12 Pro Max - 2021-12-04 at 18.54.31.png" width=50% height=20% /> |
+| <img src="Images/Simulator Screen Shot - iPhone 12 Pro Max - 2021-12-04 at 18.53.15.png" width=60% height=20% /> | <img src="Images/Simulator Screen Shot - iPhone 12 Pro Max - 2021-12-04 at 18.54.31.png" width=60% height=20% /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
 
